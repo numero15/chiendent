@@ -1,10 +1,16 @@
 extends CharacterBody3D
 
+@export var affected_by_gravity: bool = true
+@export var screen_lines: Node
+@export var distortion: Node
+
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
 var avgNormal : Vector3 = Vector3.UP
 var MOUSE_SENS := 0.005
-var speed := 30.0
+var maxSpeed := 40.0
+var minSpeed := 5.0
+var curSpeed := 0.0
 var vel := Vector3.ZERO
 var jumpNum := 0
 var maxJumpAmt := 10
@@ -40,8 +46,8 @@ func checkRays() -> void:
 		avgNor /= numOfRaysColliding
 		avgNormal = avgNor.normalized()
 		jumpVec = avgNormal * 50
-		gravity = avgNormal * -2
-	else: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
+		gravity = avgNormal * -3
+	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
 		avgNormal = avgNormal.lerp(Vector3.UP, .02)
 		jumpVec = avgNormal * 50
 		gravity = avgNormal * -3
@@ -57,12 +63,12 @@ func jump() -> void:
 	jumpVectors += jumpVec
 	#avgNormal = Vector3.UP
 	jumpVec = avgNormal * 50
-	gravity = avgNormal * -5
+	gravity = avgNormal * -3
 	
 
 func _physics_process(delta: float) -> void:
-	
-	vel = speed * get_dir()
+	if is_on_floor():
+		vel = curSpeed * get_dir()
 	checkRays()
 	if not is_on_floor():
 		jumpVectors += gravity
@@ -71,9 +77,9 @@ func _physics_process(delta: float) -> void:
 		jumpVectors = Vector3.ZERO
 	if Input.is_action_just_pressed("ui_select"):
 		jump() 
-	vel += jumpVectors
+	#vel += jumpVectors
 	
-	velocity = vel
+	velocity = vel+ jumpVectors
 	up_direction = avgNormal.normalized()
 	move_and_slide()
 	#empèche de monter un angle à 90°
@@ -85,13 +91,19 @@ func _physics_process(delta: float) -> void:
 	if !_isWall :
 		var _transform= align_with_up(global_transform,up_direction)
 		global_transform = global_transform.interpolate_with(_transform, .4)
+		
+	distortion.get_material().set("shader_param/coeff", velocity.length()/150)
+	distortion.get_material().set("shader_param/aberration_amount", velocity.length()/300.0 )
 
 func get_dir() -> Vector3:
 	var dir : Vector3 = Vector3.ZERO
 	var fowardDir : Vector3 = ( $head/SpringArm3D/Camera/Marker3D.global_transform.origin - $head.global_transform.origin  ).normalized()
 	var dirBase :Vector3= avgNormal.cross( fowardDir ).normalized()
-	if Input.is_action_pressed("ui_up"):
-		dir = dirBase.rotated( avgNormal.normalized(), -PI/2 )
+	dir = dirBase.rotated( avgNormal.normalized(), -PI/2 )
+	if Input.is_action_pressed("ui_up"):		
+		curSpeed = lerp(curSpeed,maxSpeed,.01)
+	else :
+		curSpeed = lerp(curSpeed,0.0,.1)
 	return dir.normalized()
 	
 func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
@@ -100,3 +112,6 @@ func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
 	_transform.basis.x = -_transform.basis.z.cross(_new_up)
 	_transform.basis = _transform.basis.orthonormalized()
 	return _transform
+	
+func above_ground()->void :
+	pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://ci8h3aa075lw3"]
+[gd_scene load_steps=37 format=3 uid="uid://ci8h3aa075lw3"]
 
 [ext_resource type="Script" path="res://trail.gd" id="1_85j4r"]
 [ext_resource type="Shader" path="res://assets/shaders/shardNoise.gdshader" id="1_a73gh"]
@@ -6,6 +6,8 @@
 [ext_resource type="Shader" path="res://assets/shaders/outlines.gdshader" id="1_nv5k6"]
 [ext_resource type="Shader" path="res://assets/shaders/blocking.gdshader" id="3_rqb5u"]
 [ext_resource type="Script" path="res://Player.gd" id="4_8vnlj"]
+[ext_resource type="Shader" path="res://assets/shaders/FishEye.gdshader" id="7_r42hv"]
+[ext_resource type="Texture2D" uid="uid://bip5q3kwxpupb" path="res://assets/shaders/vignette.png" id="8_wke0v"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o267s"]
 
@@ -16,10 +18,8 @@ sky_material = SubResource("ProceduralSkyMaterial_o267s")
 background_mode = 2
 sky = SubResource("Sky_fgx8b")
 ambient_light_color = Color(1, 1, 1, 1)
-ssr_enabled = true
 adjustment_enabled = true
 adjustment_contrast = 1.5
-adjustment_saturation = 0.8
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tn3y5"]
 dof_blur_far_enabled = true
@@ -79,15 +79,17 @@ buffer = PackedFloat32Array(1.11006, -0.0306963, 0.142103, 61.8499, 0.0294958, 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ot7aw"]
 albedo_color = Color(0.509804, 1, 0.329412, 1)
+emission_enabled = true
+emission = Color(0.509804, 1, 0.329412, 1)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_vjc3b"]
+[sub_resource type="SphereMesh" id="SphereMesh_5xptc"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_q6kaf"]
 flip_faces = true
 size = Vector3(2, 2, 2)
 
 [sub_resource type="Gradient" id="Gradient_iqveq"]
-offsets = PackedFloat32Array(0, 0.442623)
+offsets = PackedFloat32Array(0, 0.204918)
 colors = PackedColorArray(0.392, 0, 0.56, 1, 0.89, 0.83393, 0.5162, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_gh8od"]
@@ -113,11 +115,15 @@ shader_parameter/depth_limit = 500.0
 shader_parameter/gradient = SubResource("GradientTexture1D_gh8od")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0x8m"]
-transparency = 1
 cull_mode = 2
-shading_mode = 0
 vertex_color_use_as_albedo = true
-albedo_color = Color(0.509804, 1, 0.329412, 0.552941)
+albedo_color = Color(0.509804, 1, 0.329412, 1)
+emission_enabled = true
+emission = Color(0.509804, 1, 0.329412, 1)
+
+[sub_resource type="Curve" id="Curve_5mk6v"]
+_data = [Vector2(0, 1), 0.0, -0.910116, 0, 0, Vector2(1, 0), -0.949051, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ha64i"]
 radius = 0.8
@@ -127,6 +133,12 @@ size = Vector3(50, 50, 10)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_b3uem"]
 data = PackedVector3Array(-25, 25, 5, 25, 25, 5, -25, -25, 5, 25, 25, 5, 25, -25, 5, -25, -25, 5, 25, 25, -5, -25, 25, -5, 25, -25, -5, -25, 25, -5, -25, -25, -5, 25, -25, -5, 25, 25, 5, 25, 25, -5, 25, -25, 5, 25, 25, -5, 25, -25, -5, 25, -25, 5, -25, 25, -5, -25, 25, 5, -25, -25, -5, -25, 25, 5, -25, -25, 5, -25, -25, -5, 25, 25, 5, -25, 25, 5, 25, 25, -5, -25, 25, 5, -25, 25, -5, 25, 25, -5, -25, -25, 5, 25, -25, 5, -25, -25, -5, 25, -25, 5, 25, -25, -5, -25, -25, -5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_scb6e"]
+shader = ExtResource("7_r42hv")
+shader_parameter/coeff = 0.275
+shader_parameter/aberration_amount = 0.0
+shader_parameter/aberration_offset_texture = ExtResource("8_wke0v")
 
 [node name="Root" type="Node3D"]
 
@@ -155,7 +167,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0692902, -20.8385)
 shape = SubResource("ConcavePolygonShape3D_jfx2i")
 
 [node name="Building3" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.70765, -0.706564, 0, 0.706564, 0.70765, 0, 10.4901, 2.87132)
+transform = Transform3D(1, 0, 0, 0, 0.70765, -0.706564, 0, 0.706564, 0.70765, 0, 32.9848, 25.0213)
 
 [node name="MeshInstance" type="MeshInstance3D" parent="Building3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -27.5285, -28.643)
@@ -163,6 +175,30 @@ mesh = SubResource("BoxMesh_3b48p")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Building3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -27.5285, -28.643)
+shape = SubResource("ConcavePolygonShape3D_73sv7")
+
+[node name="Building4" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0230538, -0.999735, 0, 0.999735, 0.0230538, 0, 24.4025, 40.57)
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Building4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -27.5285, -28.643)
+mesh = SubResource("BoxMesh_3b48p")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Building4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -27.5285, -28.643)
+shape = SubResource("ConcavePolygonShape3D_73sv7")
+
+[node name="Building5" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.540593, -0.841285, 0, 0.841285, 0.540593, -7.62939e-06, 56.2937, 93.7028)
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Building5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -27.5285, -28.643)
+mesh = SubResource("BoxMesh_3b48p")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Building5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -27.5285, -28.643)
 shape = SubResource("ConcavePolygonShape3D_73sv7")
 
@@ -201,17 +237,18 @@ visible = false
 material_override = SubResource("StandardMaterial3D_26fdh")
 multimesh = SubResource("MultiMesh_yfcxj")
 
-[node name="Player" type="CharacterBody3D" parent="."]
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("distortion")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
 collision_layer = 2
 script = ExtResource("4_8vnlj")
+distortion = NodePath("../Distortion")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("SphereShape3D_hjvdc")
 
 [node name="head" type="MeshInstance3D" parent="Player"]
 material_override = SubResource("StandardMaterial3D_ot7aw")
-mesh = SubResource("CapsuleMesh_vjc3b")
+mesh = SubResource("SphereMesh_5xptc")
 skeleton = NodePath("Trail3D")
 
 [node name="rayFolderWall" type="Node3D" parent="Player/head"]
@@ -248,7 +285,6 @@ spring_length = 10.0
 current = true
 
 [node name="Outlines" type="MeshInstance3D" parent="Player/head/SpringArm3D/Camera"]
-visible = false
 mesh = SubResource("BoxMesh_q6kaf")
 surface_material_override/0 = SubResource("ShaderMaterial_clc18")
 
@@ -306,9 +342,11 @@ transform = Transform3D(0.353553, 0.612372, 0.707107, -0.866025, 0.5, 0, -0.3535
 target_position = Vector3(1, 0, 0)
 
 [node name="Trail3D" type="MeshInstance3D" parent="Player/head"]
-visible = false
 material_override = SubResource("StandardMaterial3D_g0x8m")
 script = ExtResource("1_85j4r")
+lifetime = 0.2
+base_width = 1.0
+width_profile = SubResource("Curve_5mk6v")
 
 [node name="checker" type="Area3D" parent="Player"]
 visible = false
@@ -324,3 +362,11 @@ mesh = SubResource("BoxMesh_kdk45")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_b3uem")
+
+[node name="Distortion" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_scb6e")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
