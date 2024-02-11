@@ -2,9 +2,9 @@ extends CharacterBody3D
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
-var avgNormal : Vector3 = Vector3.ZERO
+var avgNormal : Vector3 = Vector3.UP
 var MOUSE_SENS := 0.005
-var speed := 10.0
+var speed := 30.0
 var vel := Vector3.ZERO
 var jumpNum := 0
 var maxJumpAmt := 10
@@ -36,15 +36,15 @@ func checkRays() -> void:
 		if r.is_colliding():
 			numOfRaysColliding += 1
 			avgNor += r.get_collision_normal()
-	if avgNor:
+	if avgNor and is_on_floor():
 		avgNor /= numOfRaysColliding
 		avgNormal = avgNor.normalized()
 		jumpVec = avgNormal * 50
+		gravity = avgNormal * -2
+	else: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
+		avgNormal = avgNormal.lerp(Vector3.UP, .05)
+		jumpVec = avgNormal * 50
 		gravity = avgNormal * -3
-	#else: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
-		#avgNormal = Vector3.UP
-		#jumpVec = avgNormal * 50
-		#gravity = avgNormal * -3
 
 #func _process(delta: float) -> void:
 	#
@@ -55,12 +55,13 @@ func checkRays() -> void:
 
 func jump() -> void:
 	jumpVectors += jumpVec
-	avgNormal = Vector3.UP
+	#avgNormal = Vector3.UP
 	jumpVec = avgNormal * 50
 	gravity = avgNormal * -3
 	
 
 func _physics_process(delta: float) -> void:
+	
 	vel = speed * get_dir()
 	checkRays()
 	if not is_on_floor():
@@ -80,11 +81,12 @@ func _physics_process(delta: float) -> void:
 	for ray in $head/rayFolderWall.get_children():
 		if ray.is_colliding():
 			_isWall = true
-	if !_isWall and $head/RayCastGround.is_colliding():
+	#if !_isWall and $head/RayCastGround.is_colliding():
+	if !_isWall :
 		var _transform= align_with_up(global_transform,up_direction)
 		global_transform = global_transform.interpolate_with(_transform, .4)
 
-func get_dir() -> Vector3:		
+func get_dir() -> Vector3:
 	var dir : Vector3 = Vector3.ZERO
 	var fowardDir : Vector3 = ( $head/SpringArm3D/Camera/Marker3D.global_transform.origin - $head.global_transform.origin  ).normalized()
 	var dirBase :Vector3= avgNormal.cross( fowardDir ).normalized()
