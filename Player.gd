@@ -42,7 +42,7 @@ func checkRays() -> void:
 		jumpVec = avgNormal * 50
 		gravity = avgNormal * -2
 	else: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
-		avgNormal = avgNormal.lerp(Vector3.UP, .05)
+		avgNormal = avgNormal.lerp(Vector3.UP, .02)
 		jumpVec = avgNormal * 50
 		gravity = avgNormal * -3
 
@@ -57,7 +57,7 @@ func jump() -> void:
 	jumpVectors += jumpVec
 	#avgNormal = Vector3.UP
 	jumpVec = avgNormal * 50
-	gravity = avgNormal * -3
+	gravity = avgNormal * -5
 	
 
 func _physics_process(delta: float) -> void:
