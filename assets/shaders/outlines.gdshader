@@ -322,6 +322,7 @@ void fragment() {
 	if (depth > 1.0){
 		vec3 gradient_ALBEDO ;
 		//gradient_ALBEDO =  mix(original.rgb, fog_color.rgb, fog_color.a * fog_intensity);
+		//https://www.reddit.com/r/opengl/comments/16mpmqr/have_glsl_fragment_shader_only_apply_to_gray/
 		if(abs(original.r -original.g) <.05 && abs(original.r -original.b) <.1 && depth< depth_limit )
 			gradient_ALBEDO = 1.0 - (1.0 - original.rgb) * (1.0 - fog_color.rgb);
 			//gradient_ALBEDO = hard_light(original.rgb,fog_color.rgb);

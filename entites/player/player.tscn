@@ -1,0 +1,210 @@
+[gd_scene load_steps=19 format=3 uid="uid://bpogwtwx10igk"]
+
+[ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
+[ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
+[ext_resource type="Script" path="res://entites/player/playerStateMove.gd" id="3_mrvrb"]
+[ext_resource type="Script" path="res://entites/player/playerStateGrind.gd" id="5_5lvde"]
+[ext_resource type="Script" path="res://entites/player/playerStateAir.gd" id="6_ji8i7"]
+[ext_resource type="Shader" path="res://assets/shaders/outlines.gdshader" id="7_45gid"]
+[ext_resource type="Script" path="res://trail.gd" id="8_lv3q6"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hjvdc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ot7aw"]
+albedo_color = Color(0.509804, 1, 0.329412, 1)
+emission_enabled = true
+emission = Color(0.509804, 1, 0.329412, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_5xptc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_q6kaf"]
+flip_faces = true
+size = Vector3(2, 2, 2)
+
+[sub_resource type="Gradient" id="Gradient_iqveq"]
+offsets = PackedFloat32Array(0, 0.204918)
+colors = PackedColorArray(0.392, 0, 0.56, 1, 0.89, 0.83393, 0.5162, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gh8od"]
+gradient = SubResource("Gradient_iqveq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_clc18"]
+render_priority = 0
+shader = ExtResource("7_45gid")
+shader_parameter/outlineColor = Color(0, 0, 0, 0.78)
+shader_parameter/depth_threshold = 0.025
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 0.7
+shader_parameter/min_thickness = 0.5
+shader_parameter/max_distance = 200.0
+shader_parameter/min_distance = 0.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+shader_parameter/fog_intensity = 1.0
+shader_parameter/fog_amount = 0.005
+shader_parameter/depth_limit = 500.0
+shader_parameter/gradient = SubResource("GradientTexture1D_gh8od")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0x8m"]
+cull_mode = 2
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.509804, 1, 0.329412, 1)
+emission_enabled = true
+emission = Color(0.509804, 1, 0.329412, 1)
+
+[sub_resource type="Curve" id="Curve_5mk6v"]
+_data = [Vector2(0, 1), 0.0, -0.910116, 0, 0, Vector2(1, 0), -0.949051, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qujwy"]
+radius = 0.2
+height = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ha64i"]
+radius = 1.5
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
+collision_layer = 2
+script = ExtResource("1_gujcv")
+
+[node name="States" type="Node" parent="." node_paths=PackedStringArray("state")]
+script = ExtResource("2_lbal6")
+state = NodePath("Move")
+
+[node name="Move" type="Node" parent="States"]
+script = ExtResource("3_mrvrb")
+
+[node name="Fall" type="Node" parent="States"]
+script = ExtResource("6_ji8i7")
+
+[node name="Air" type="Node" parent="States"]
+script = ExtResource("6_ji8i7")
+
+[node name="Grind" type="Node" parent="States"]
+script = ExtResource("5_5lvde")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_hjvdc")
+
+[node name="head" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_ot7aw")
+mesh = SubResource("SphereMesh_5xptc")
+skeleton = NodePath("Trail3D")
+
+[node name="rayFolderWall" type="Node3D" parent="head"]
+
+[node name="RayCastWall" type="RayCast3D" parent="head/rayFolderWall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01332, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayCastWall2" type="RayCast3D" parent="head/rayFolderWall"]
+transform = Transform3D(0.819152, 0, 0.573576, 0, 1, 0, -0.573576, 0, 0.819152, 0, 1.01332, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayCastWall4" type="RayCast3D" parent="head/rayFolderWall"]
+transform = Transform3D(0.34202, 0, 0.939693, 0, 1, 0, -0.939693, 0, 0.34202, 0, 1.01332, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayCastWall3" type="RayCast3D" parent="head/rayFolderWall"]
+transform = Transform3D(0.819152, 0, -0.573576, 0, 1, 0, 0.573576, 0, 0.819152, 0, 1.01332, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayCastWall5" type="RayCast3D" parent="head/rayFolderWall"]
+transform = Transform3D(0.34202, 0, -0.939693, 0, 1, 0, 0.939693, 0, 0.34202, 0, 1.01332, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayCastGround" type="RayCast3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+target_position = Vector3(0, -2, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 0.835357, 0.549708, 0, -0.549708, 0.835357, 0, 0, 0)
+spring_length = 10.0
+
+[node name="Camera" type="Camera3D" parent="head/SpringArm3D"]
+current = true
+
+[node name="Outlines" type="MeshInstance3D" parent="head/SpringArm3D/Camera"]
+visible = false
+mesh = SubResource("BoxMesh_q6kaf")
+surface_material_override/0 = SubResource("ShaderMaterial_clc18")
+
+[node name="Marker3D" type="Marker3D" parent="head/SpringArm3D/Camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.186)
+
+[node name="rayFolder" type="Node3D" parent="head"]
+
+[node name="RayUp" type="RayCast3D" parent="head/rayFolder"]
+target_position = Vector3(0, 1, 0)
+
+[node name="RayDown" type="RayCast3D" parent="head/rayFolder"]
+
+[node name="RayForward" type="RayCast3D" parent="head/rayFolder"]
+target_position = Vector3(0, 0, -1)
+
+[node name="RayForward4" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayForward5" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayForward2" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayForward3" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="RayLeft" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
+target_position = Vector3(-1, 0, 0)
+
+[node name="RayLeft2" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(0.612372, -0.353553, -0.707107, 0.5, 0.866025, -2.18168e-08, 0.612372, -0.353553, 0.707107, 0, 0, 0)
+target_position = Vector3(-1, 0, 0)
+
+[node name="RayLeft3" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(0.353553, -0.612372, -0.707107, 0.866025, 0.5, 2.18168e-08, 0.353553, -0.612372, 0.707107, 0, 0, 0)
+target_position = Vector3(-1, 0, 0)
+
+[node name="RayRight" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
+target_position = Vector3(1, 0, 0)
+
+[node name="RayRight2" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(0.612372, 0.353553, 0.707107, -0.5, 0.866025, 0, -0.612372, -0.353553, 0.707107, 0, 0, 0)
+target_position = Vector3(1, 0, 0)
+
+[node name="RayRight3" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(0.353553, 0.612372, 0.707107, -0.866025, 0.5, 0, -0.353553, -0.612372, 0.707107, 0, 0, 0)
+target_position = Vector3(1, 0, 0)
+
+[node name="Trail3D" type="MeshInstance3D" parent="head"]
+material_override = SubResource("StandardMaterial3D_g0x8m")
+cast_shadow = 0
+script = ExtResource("8_lv3q6")
+lifetime = 0.2
+base_width = 1.0
+width_profile = SubResource("Curve_5mk6v")
+
+[node name="nose" type="MeshInstance3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -1.19236)
+mesh = SubResource("CapsuleMesh_qujwy")
+
+[node name="checkerGrind" type="Area3D" parent="."]
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="checkerGrind"]
+shape = SubResource("SphereShape3D_ha64i")
+
+[connection signal="change_state" from="States/Move" to="States" method="change_state"]
+[connection signal="change_state" from="States/Fall" to="States" method="change_state"]
+[connection signal="change_state" from="States/Air" to="States" method="change_state"]
+[connection signal="change_state" from="States/Grind" to="States" method="change_state"]
+[connection signal="body_entered" from="checkerGrind" to="States/Move" method="_on_checker_grind_body_entered"]

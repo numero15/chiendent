@@ -3,31 +3,43 @@ extends CharacterBody3D
 @export var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
+@export var maxSpeed := 40.0
+
+@onready var checkerGrind = get_node("checkerGrind")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
 var avgNormal : Vector3 = Vector3.UP
 var MOUSE_SENS := 0.005
-var maxSpeed := 40.0
-var minSpeed := 5.0
+
 var curSpeed := 0.0
 var vel := Vector3.ZERO
-var jumpNum := 0
-var maxJumpAmt := 10
-var extraVel := Vector3.ZERO
-var theUpDir := Vector3.UP
 var jumpVectors := Vector3.ZERO
 var bodyOn : StaticBody3D
-var mouseSensMulti := 1
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	$checker.connect("body_entered",bodyEntered)
-	
-func bodyEntered(body:PhysicsBody3D) -> void:
-	if body and body != bodyOn and body is StaticBody3D:
-		bodyOn = body
-		jumpVectors = Vector3.ZERO
+	$checkerGrind.connect("body_entered",bodyEntered)
+
+#remove from player
+func bodyEntered(_body:CSGPolygon3D) -> void:
+	#detection du rail
+	var path: Path3D = _body.get_parent_node_3d()
+	var curve: Curve3D = path.curve
+
+	# transform the target position to local space
+	var path_transform: Transform3D = path.global_transform
+	var local_pos: Vector3 = global_position * path_transform
+
+	# get the nearest offset on the curve
+	var offset: float = curve.get_closest_offset(local_pos)
+	$"../Path3DRail/PathFollow3D".progress=offset
+
+	# get the local position at this offset
+	#var curve_pos: Vector3 = curve.sample_baked(offset, true)
+
+	# transform it back to world space
+	#curve_pos = path_transform * curve_pos
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -48,52 +60,54 @@ func checkRays() -> void:
 		jumpVec = avgNormal * 50
 		gravity = avgNormal * -3
 	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
-		avgNormal = avgNormal.lerp(Vector3.UP, .02)
+		avgNormal = avgNormal.lerp(Vector3.UP, .08)
 		jumpVec = avgNormal * 50
 		gravity = avgNormal * -3
 
-#func _process(delta: float) -> void:
+#remove from player
+#func jump() -> void:
+	#jumpVectors += jumpVec
+	##avgNormal = Vector3.UP
+	#jumpVec = avgNormal * 50
+	#gravity = avgNormal * -3
+	
+
+#remove from player
+#func _physics_process(delta: float) -> void:
+	#if is_on_floor():
+		#vel = curSpeed * get_dir()
+	#checkRays()
 	#
-	#if Input.is_action_just_pressed("shift"):
-		#speed = 10.0
-	#if Input.is_action_just_released("shift"):
-		#speed = 50.0
-
-func jump() -> void:
-	jumpVectors += jumpVec
-	#avgNormal = Vector3.UP
-	jumpVec = avgNormal * 50
-	gravity = avgNormal * -3
+	#if not is_on_floor():
+		#jumpVectors += gravity
+	#elif is_on_floor():
+		#jumpVectors = Vector3.ZERO
+	#if Input.is_action_just_pressed("ui_select"):
+		#jump() 
+	#
+	#velocity = vel+ jumpVectors
+	#
+	#move()
 	
-
-func _physics_process(delta: float) -> void:
-	if is_on_floor():
-		vel = curSpeed * get_dir()
-	checkRays()
-	if not is_on_floor():
-		jumpVectors += gravity
-#		avgNormal = Vector3.UP
-	elif is_on_floor():
-		jumpVectors = Vector3.ZERO
-	if Input.is_action_just_pressed("ui_select"):
-		jump() 
-	#vel += jumpVectors
-	
-	velocity = vel+ jumpVectors
+func move():
 	up_direction = avgNormal.normalized()
 	move_and_slide()
-	#empèche de monter un angle à 90°
+	#empèche de monter un angle à 90°	
+	#if !_isWall and $head/RayCastGround.is_colliding():
+	if !isWall() :
+		var _transform= align_with_up(global_transform,up_direction)
+		global_transform = global_transform.interpolate_with(_transform, .4)
+		
+	distortion.material.set("shader_parameter/coeff", velocity.length()/150)
+	distortion.material.set("shader_parameter/aberration_amount", velocity.length()/300.0 )
+	
+
+func isWall()-> bool:
 	var _isWall : bool = false
 	for ray in $head/rayFolderWall.get_children():
 		if ray.is_colliding():
 			_isWall = true
-	#if !_isWall and $head/RayCastGround.is_colliding():
-	if !_isWall :
-		var _transform= align_with_up(global_transform,up_direction)
-		global_transform = global_transform.interpolate_with(_transform, .4)
-		
-	distortion.get_material().set("shader_param/coeff", velocity.length()/150)
-	distortion.get_material().set("shader_param/aberration_amount", velocity.length()/300.0 )
+	return _isWall
 
 func get_dir() -> Vector3:
 	var dir : Vector3 = Vector3.ZERO
@@ -113,5 +127,3 @@ func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
 	_transform.basis = _transform.basis.orthonormalized()
 	return _transform
 	
-func above_ground()->void :
-	pass
