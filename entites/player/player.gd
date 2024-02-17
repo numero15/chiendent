@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-@export var affected_by_gravity: bool = true
+var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
 @export var maxSpeed := 40.0
@@ -19,27 +19,6 @@ var bodyOn : StaticBody3D
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	$checkerGrind.connect("body_entered",bodyEntered)
-
-#remove from player
-func bodyEntered(_body:CSGPolygon3D) -> void:
-	#detection du rail
-	var path: Path3D = _body.get_parent_node_3d()
-	var curve: Curve3D = path.curve
-
-	# transform the target position to local space
-	var path_transform: Transform3D = path.global_transform
-	var local_pos: Vector3 = global_position * path_transform
-
-	# get the nearest offset on the curve
-	var offset: float = curve.get_closest_offset(local_pos)
-	$"../Path3DRail/PathFollow3D".progress=offset
-
-	# get the local position at this offset
-	#var curve_pos: Vector3 = curve.sample_baked(offset, true)
-
-	# transform it back to world space
-	#curve_pos = path_transform * curve_pos
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -60,7 +39,7 @@ func checkRays() -> void:
 		jumpVec = avgNormal * 50
 		gravity = avgNormal * -3
 	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
-		avgNormal = avgNormal.lerp(Vector3.UP, .08)
+		avgNormal = avgNormal.lerp(Vector3.UP, .02)
 		jumpVec = avgNormal * 50
 		gravity = avgNormal * -3
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ci8h3aa075lw3"]
+[gd_scene load_steps=26 format=3 uid="uid://ci8h3aa075lw3"]
 
 [ext_resource type="Shader" path="res://assets/shaders/shardNoise.gdshader" id="1_a73gh"]
 [ext_resource type="ArrayMesh" uid="uid://dp10h4f7eau74" path="res://assets/rock01.obj" id="1_bd1cx"]
@@ -87,12 +87,10 @@ shader_parameter/aberration_offset_texture = ExtResource("8_wke0v")
 
 [sub_resource type="Curve3D" id="Curve3D_vgcq4"]
 _data = {
-"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.311888, -0.734752, 0.0149207, 3.4068, -0.534247, -6.77096, -3.4068, 0.534247, 6.77096, -9.5057, -0.389812, -2.13476, -4.76255, 0.290524, -6.76455, 4.76255, -0.290524, 6.76455, -14.276, 0.822182, 10.0235, 0, 0, 0, 0, 0, 0, 3.57196, 12.5355, 14.9616),
-"tilts": PackedFloat32Array(0, 0, 0, 0)
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.311888, -0.734752, 0.0149207, 3.4068, -0.534247, -6.77096, -3.4068, 0.534247, 6.77096, -9.5057, -0.389812, -2.13476, -4.76255, 0.290524, -6.76455, 4.76255, -0.290524, 6.76455, -14.276, 0.822182, 10.0235),
+"tilts": PackedFloat32Array(0, 0, 0)
 }
-point_count = 4
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_g3c6a"]
+point_count = 3
 
 [node name="Root" type="Node3D"]
 
@@ -212,16 +210,8 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Path3DRail" type="Path3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2758, -3.93565, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2758, 1.98945, 0)
 curve = SubResource("Curve3D_vgcq4")
-
-[node name="PathFollow3D" type="PathFollow3D" parent="Path3DRail"]
-transform = Transform3D(0.564456, 0.130079, 0.815148, -0.0413311, 0.990702, -0.129478, -0.824424, 0.0393933, 0.564596, -4.20675, 0.209651, -4.39879)
-progress = 6.12394
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Path3DRail/PathFollow3D"]
-transform = Transform3D(1, 7.45058e-09, 5.96046e-08, -2.6077e-08, 1, 7.45058e-09, -2.98023e-08, 7.45058e-09, 1, 0, 0, 0)
-mesh = SubResource("CapsuleMesh_g3c6a")
 
 [node name="CSGPolygon3DRail" type="CSGPolygon3D" parent="Path3DRail"]
 use_collision = true

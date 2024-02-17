@@ -11,7 +11,8 @@ func _physics_process(delta):
 	if not owner.is_on_floor():
 		change_state.emit($"../Fall")
 
-
+	if Input.is_action_just_pressed("ui_select"):
+		change_state.emit($"../Air", {jump = owner.avgNormal})
 
 func _on_checker_grind_body_entered(body):
 	change_state.emit($"../Grind",{_body = body})

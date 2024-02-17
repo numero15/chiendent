@@ -31,21 +31,25 @@ func enter_state(_msg := {}) -> void:
 	pathFollow.progress = offset
 	
 	var curve_forward : Vector3 = -curve.sample_baked_with_rotation(offset).basis.z
-	print(curve_forward)
 	curve_forward = curve_forward.normalized()
 	var vel_nor : Vector3 = owner.velocity.normalized()
-	if curve_forward.angle_to(vel_nor) < PI/4 :
+	if curve_forward.dot(vel_nor) > 0 :
 		direction = 1
 	else :
 		direction = -1
 
 	
 func _physics_process(delta):
-	offset += 20*delta*direction
+	offset += owner.curSpeed*delta*direction
 	pathFollow.progress = offset
 	owner.global_transform = pathFollow.global_transform.rotated_local(Vector3.UP, -PI/2*direction)
 	
+	if Input.is_action_just_pressed("ui_select"):
+		change_state.emit($"../Air", {jump = curve.sample_baked_up_vector(offset, true)})
+	
 	
 func exit_state() -> void:
+	set_physics_process(false)
 	pathFollow.queue_free()
+	owner.curSpeed = 20.0
 	
