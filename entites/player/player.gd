@@ -3,7 +3,7 @@ extends CharacterBody3D
 var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
-@export var maxSpeed := 40.0
+@export var maxSpeed := 25.0
 
 @onready var checkerGrind = get_node("checkerGrind")
 

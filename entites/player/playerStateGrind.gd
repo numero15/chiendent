@@ -43,9 +43,12 @@ func _physics_process(delta):
 	offset += owner.curSpeed*delta*direction
 	pathFollow.progress = offset
 	owner.global_transform = pathFollow.global_transform.rotated_local(Vector3.UP, -PI/2*direction)
+	owner.curSpeed-= 5*delta
+	if owner.curSpeed < 5 :
+		owner.curSpeed = 5
 	
 	if Input.is_action_just_pressed("ui_select"):
-		change_state.emit($"../Air", {jump = curve.sample_baked_up_vector(offset, true)})
+		change_state.emit($"../Air", {jump = curve.sample_baked_up_vector(offset, true)*2})
 	
 	
 func exit_state() -> void:

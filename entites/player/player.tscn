@@ -12,7 +12,6 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ot7aw"]
 albedo_color = Color(0.509804, 1, 0.329412, 1)
-emission_enabled = true
 emission = Color(0.509804, 1, 0.329412, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_5xptc"]
@@ -62,8 +61,9 @@ point_count = 2
 radius = 0.2
 height = 1.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_ha64i"]
-radius = 1.5
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_dut3s"]
+height = 1.0
+radius = 2.0
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
@@ -128,7 +128,6 @@ spring_length = 10.0
 current = true
 
 [node name="Outlines" type="MeshInstance3D" parent="head/SpringArm3D/Camera"]
-visible = false
 mesh = SubResource("BoxMesh_q6kaf")
 surface_material_override/0 = SubResource("ShaderMaterial_clc18")
 
@@ -201,7 +200,7 @@ mesh = SubResource("CapsuleMesh_qujwy")
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="checkerGrind"]
-shape = SubResource("SphereShape3D_ha64i")
+shape = SubResource("CylinderShape3D_dut3s")
 
 [connection signal="change_state" from="States/Move" to="States" method="change_state"]
 [connection signal="change_state" from="States/Fall" to="States" method="change_state"]

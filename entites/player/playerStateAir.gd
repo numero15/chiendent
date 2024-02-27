@@ -23,7 +23,7 @@ func _physics_process(delta):
 		owner.checkerGrind.set_deferred("monitoring", true)
 		
 	owner.jumpVectors += owner.gravity
-	owner.velocity = owner.vel/2 + owner.jumpVectors
+	owner.velocity = owner.vel*.75 + owner.jumpVectors
 	owner.move()
 	
 	if owner.is_on_floor():
