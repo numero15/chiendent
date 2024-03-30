@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ci8h3aa075lw3"]
+[gd_scene load_steps=32 format=3 uid="uid://ci8h3aa075lw3"]
 
 [ext_resource type="Shader" path="res://assets/shaders/shardNoise.gdshader" id="1_a73gh"]
 [ext_resource type="ArrayMesh" uid="uid://dp10h4f7eau74" path="res://assets/rock01.obj" id="1_bd1cx"]
@@ -7,6 +7,7 @@
 [ext_resource type="Shader" path="res://assets/shaders/FishEye.gdshader" id="7_r42hv"]
 [ext_resource type="Texture2D" uid="uid://bip5q3kwxpupb" path="res://assets/shaders/vignette.png" id="8_wke0v"]
 [ext_resource type="Texture2D" uid="uid://8d38gt2avni4" path="res://assets/robots_texture.png" id="8_ypn7q"]
+[ext_resource type="PackedScene" uid="uid://45xcg5j0kpn0" path="res://assets/character_rigged.tscn" id="9_y5yaq"]
 [ext_resource type="Shader" uid="uid://co1e2fe04j6dk" path="res://assets/shaders/glass_visual.tres" id="9_ytnx5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o267s"]
@@ -26,7 +27,6 @@ adjustment_enabled = true
 adjustment_contrast = 1.5
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tn3y5"]
-dof_blur_far_enabled = true
 dof_blur_far_distance = 20.0
 dof_blur_far_transition = 200.0
 dof_blur_amount = 0.05
@@ -59,10 +59,10 @@ shader_parameter/darkColor = Color(0.521569, 0.521569, 0.521569, 1)
 shader_parameter/borderColor = Color(0.188235, 0.188235, 0.188235, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_p3ma5"]
-size = Vector2(200, 200)
+size = Vector2(400, 400)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wxii7"]
-points = PackedVector3Array(-100, 0, -100, -100, 0, 100, 100, 0, -100, 100, 0, 100)
+points = PackedVector3Array(-200, 0, -200, -200, 0, 200, 200, 0, -200, 200, 0, 200)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tnkov"]
 albedo_color = Color(0.729412, 0, 0.607843, 1)
@@ -258,3 +258,8 @@ mesh = SubResource("PlaneMesh_nddl2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.9811, 0.774843, 0)
 mesh = ExtResource("1_bd1cx")
 surface_material_override/0 = SubResource("ShaderMaterial_tqdxd")
+
+[node name="character_rigged" parent="." instance=ExtResource("9_y5yaq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2993, 0.204363, 5.98253)
+
+[editable path="Player"]

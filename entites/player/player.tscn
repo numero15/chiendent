@@ -1,28 +1,23 @@
-[gd_scene load_steps=19 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=18 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
 [ext_resource type="Script" path="res://entites/player/playerStateMove.gd" id="3_mrvrb"]
 [ext_resource type="Script" path="res://entites/player/playerStateGrind.gd" id="5_5lvde"]
+[ext_resource type="PackedScene" uid="uid://45xcg5j0kpn0" path="res://assets/character_rigged.tscn" id="6_2fdn8"]
 [ext_resource type="Script" path="res://entites/player/playerStateAir.gd" id="6_ji8i7"]
 [ext_resource type="Shader" path="res://assets/shaders/outlines.gdshader" id="7_45gid"]
 [ext_resource type="Script" path="res://trail.gd" id="8_lv3q6"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hjvdc"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ot7aw"]
-albedo_color = Color(0.509804, 1, 0.329412, 1)
-emission = Color(0.509804, 1, 0.329412, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_5xptc"]
-
 [sub_resource type="BoxMesh" id="BoxMesh_q6kaf"]
 flip_faces = true
 size = Vector3(2, 2, 2)
 
 [sub_resource type="Gradient" id="Gradient_iqveq"]
-offsets = PackedFloat32Array(0, 0.204918)
-colors = PackedColorArray(0.392, 0, 0.56, 1, 0.89, 0.83393, 0.5162, 1)
+offsets = PackedFloat32Array(0, 0.0765306, 0.137755, 0.234694, 0.316327)
+colors = PackedColorArray(0, 0, 0, 1, 0.392, 0, 0.56, 1, 0.89, 0.5162, 0.66572, 1, 0.89, 0.83393, 0.5162, 1, 0.5162, 0.87754, 0.89, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_gh8od"]
 gradient = SubResource("Gradient_iqveq")
@@ -30,7 +25,7 @@ gradient = SubResource("Gradient_iqveq")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_clc18"]
 render_priority = 0
 shader = ExtResource("7_45gid")
-shader_parameter/outlineColor = Color(0, 0, 0, 0.78)
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
 shader_parameter/depth_threshold = 0.025
 shader_parameter/normal_threshold = 0.5
 shader_parameter/normal_smoothing = 0.25
@@ -51,7 +46,7 @@ cull_mode = 2
 vertex_color_use_as_albedo = true
 albedo_color = Color(0.509804, 1, 0.329412, 1)
 emission_enabled = true
-emission = Color(0.509804, 1, 0.329412, 1)
+emission = Color(0.717647, 1, 0.690196, 1)
 
 [sub_resource type="Curve" id="Curve_5mk6v"]
 _data = [Vector2(0, 1), 0.0, -0.910116, 0, 0, Vector2(1, 0), -0.949051, 0.0, 0, 0]
@@ -89,10 +84,10 @@ script = ExtResource("5_5lvde")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_hjvdc")
 
-[node name="head" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_ot7aw")
-mesh = SubResource("SphereMesh_5xptc")
-skeleton = NodePath("Trail3D")
+[node name="head" type="Node3D" parent="."]
+
+[node name="character_rigged" parent="head" instance=ExtResource("6_2fdn8")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="rayFolderWall" type="Node3D" parent="head"]
 
@@ -122,7 +117,7 @@ target_position = Vector3(0, -2, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 0.835357, 0.549708, 0, -0.549708, 0.835357, 0, 0, 0)
-spring_length = 10.0
+spring_length = 5.0
 
 [node name="Camera" type="Camera3D" parent="head/SpringArm3D"]
 current = true
@@ -184,12 +179,16 @@ target_position = Vector3(1, 0, 0)
 transform = Transform3D(0.353553, 0.612372, 0.707107, -0.866025, 0.5, 0, -0.353553, -0.612372, 0.707107, 0, 0, 0)
 target_position = Vector3(1, 0, 0)
 
-[node name="Trail3D" type="MeshInstance3D" parent="head"]
+[node name="Node3D" type="Node3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50953, 0.216232)
+
+[node name="Trail3D" type="MeshInstance3D" parent="head/Node3D"]
 material_override = SubResource("StandardMaterial3D_g0x8m")
 cast_shadow = 0
+skeleton = NodePath("../..")
 script = ExtResource("8_lv3q6")
-lifetime = 0.2
-base_width = 1.0
+lifetime = 0.23
+base_width = 0.1
 width_profile = SubResource("Curve_5mk6v")
 
 [node name="nose" type="MeshInstance3D" parent="head"]
