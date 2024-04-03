@@ -9,7 +9,7 @@
 [ext_resource type="Shader" path="res://assets/shaders/outlines.gdshader" id="7_45gid"]
 [ext_resource type="Texture2D" uid="uid://d1owdumaowg08" path="res://assets/particle_grind_Plan de travail 1.png" id="8_a8rmi"]
 [ext_resource type="Script" path="res://trail.gd" id="8_lv3q6"]
-[ext_resource type="Script" path="res://Camera3D.gd" id="8_mroog"]
+[ext_resource type="Script" path="res://scripts/Camera3D.gd" id="8_mroog"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oofw1"]
 radius = 0.4
