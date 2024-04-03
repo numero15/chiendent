@@ -1,16 +1,28 @@
 [gd_scene load_steps=5 format=3 uid="uid://45xcg5j0kpn0"]
 
 [ext_resource type="PackedScene" uid="uid://dsaxbpwuee5s1" path="res://assets/character_rigged.glb" id="1_wbv36"]
+[ext_resource type="Shader" path="res://assets/shaders/toon.gdshader" id="2_6770y"]
 [ext_resource type="Texture2D" uid="uid://d07dwmwyq1sdw" path="res://assets/texture_character_nb.png" id="2_hevy1"]
-[ext_resource type="Texture2D" uid="uid://7eqbqn6t1ih1" path="res://assets/texture_character_emissive.png" id="3_868yf"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d4r6d"]
-diffuse_mode = 3
-albedo_texture = ExtResource("2_hevy1")
-metallic_specular = 0.0
-roughness = 0.0
-emission_enabled = true
-emission_texture = ExtResource("3_868yf")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kt2ei"]
+render_priority = 0
+shader = ExtResource("2_6770y")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/clamp_diffuse_to_max = false
+shader_parameter/cuts = 1
+shader_parameter/wrap = -0.222
+shader_parameter/steepness = 1.0
+shader_parameter/use_attenuation = false
+shader_parameter/use_specular = false
+shader_parameter/specular_strength = 0.0
+shader_parameter/specular_shininess = 0.0
+shader_parameter/use_rim = false
+shader_parameter/rim_width = 8.0
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/use_ramp = false
+shader_parameter/use_borders = false
+shader_parameter/border_width = 0.01
+shader_parameter/albedo_texture = ExtResource("2_hevy1")
 
 [node name="character_rigged" instance=ExtResource("1_wbv36")]
 
@@ -29,7 +41,7 @@ bones/33/rotation = Quaternion(-0.507864, -0.276574, -0.175533, 0.796724)
 bones/34/rotation = Quaternion(-9.9271e-08, 0.968861, -0.247606, -1.88644e-07)
 
 [node name="Leg_001" parent="rig_game/Skeleton3D" index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_d4r6d")
+surface_material_override/0 = SubResource("ShaderMaterial_kt2ei")
 
 [node name="AnimationPlayer" parent="." index="1"]
 autoplay = "T-pose"

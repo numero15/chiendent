@@ -1,0 +1,7 @@
+res://root.tscn
+res://assets/shaders/toon.gdshader
+res://assets/shaders/outlines.gdshader
+res://assets/shaders/FishEye.gdshader
+res://assets/shaders/glass_visual.tres
+res://assets/shaders/glass.gdshader
+res://assets/shaders/pause.gdshader

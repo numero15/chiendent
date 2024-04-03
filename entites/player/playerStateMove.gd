@@ -1,18 +1,36 @@
-extends State
+extends StateFSM
 
 func _physics_process(delta):
+	
+	owner.movement_dir.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
+	owner.movement_dir.z = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
+	#owner.character.rotation.y += owner.movement_dir.x * owner.KEYBOARD_SENS
+	
 	owner.vel = owner.curSpeed * owner.get_dir()
+	
 	owner.checkRays()
 	owner.jumpVectors = Vector3.ZERO
 	owner.velocity = owner.vel + owner.jumpVectors
 	owner.move()
+	
+	if Input.is_action_pressed("ui_down") && owner.curSpeed >3:
+		owner.particlesGrind.emitting = true;
+		owner.particlesGrind.show();
+	else :
+		owner.particlesGrind.emitting = false;
+		owner.particlesGrind.hide();
 
 		
 	if not owner.is_on_floor():
 		change_state.emit($"../Fall")
+	
 
 	if Input.is_action_just_pressed("ui_select"):
-		change_state.emit($"../Air", {jump = owner.avgNormal})
+		change_state.emit($"../Air", {jump = owner.avgNormal})	
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 
 func _on_checker_grind_body_entered(body):
 	change_state.emit($"../Grind",{_body = body})

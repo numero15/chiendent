@@ -3,7 +3,7 @@
 class_name StateMachine
 extends Node
 
-@export var state: State
+@export var state: StateFSM
 
 func _ready():
 	change_state(state)
@@ -11,8 +11,8 @@ func _ready():
 #func _physics_process(delta):
 	#state.physics_update(delta)
 	
-func change_state(new_state : State,  msg: Dictionary = {}):
-	if state is State:
+func change_state(new_state : StateFSM,  msg: Dictionary = {}):
+	if state is StateFSM:
 		state.exit_state()
 	new_state.enter_state(msg)
 	state = new_state

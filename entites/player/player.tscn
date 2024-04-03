@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=26 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -7,39 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://45xcg5j0kpn0" path="res://assets/character_rigged.tscn" id="6_2fdn8"]
 [ext_resource type="Script" path="res://entites/player/playerStateAir.gd" id="6_ji8i7"]
 [ext_resource type="Shader" path="res://assets/shaders/outlines.gdshader" id="7_45gid"]
+[ext_resource type="Texture2D" uid="uid://d1owdumaowg08" path="res://assets/particle_grind_Plan de travail 1.png" id="8_a8rmi"]
 [ext_resource type="Script" path="res://trail.gd" id="8_lv3q6"]
+[ext_resource type="Script" path="res://Camera3D.gd" id="8_mroog"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_hjvdc"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_q6kaf"]
-flip_faces = true
-size = Vector3(2, 2, 2)
-
-[sub_resource type="Gradient" id="Gradient_iqveq"]
-offsets = PackedFloat32Array(0, 0.0765306, 0.137755, 0.234694, 0.316327)
-colors = PackedColorArray(0, 0, 0, 1, 0.392, 0, 0.56, 1, 0.89, 0.5162, 0.66572, 1, 0.89, 0.83393, 0.5162, 1, 0.5162, 0.87754, 0.89, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_gh8od"]
-gradient = SubResource("Gradient_iqveq")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_clc18"]
-render_priority = 0
-shader = ExtResource("7_45gid")
-shader_parameter/outlineColor = Color(0, 0, 0, 1)
-shader_parameter/depth_threshold = 0.025
-shader_parameter/normal_threshold = 0.5
-shader_parameter/normal_smoothing = 0.25
-shader_parameter/max_thickness = 0.7
-shader_parameter/min_thickness = 0.5
-shader_parameter/max_distance = 200.0
-shader_parameter/min_distance = 0.0
-shader_parameter/grazing_fresnel_power = 5.0
-shader_parameter/grazing_angle_mask_power = 1.0
-shader_parameter/grazing_angle_modulation_factor = 50.0
-shader_parameter/fog_intensity = 1.0
-shader_parameter/fog_amount = 0.005
-shader_parameter/depth_limit = 500.0
-shader_parameter/gradient = SubResource("GradientTexture1D_gh8od")
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oofw1"]
+radius = 0.4
+height = 1.80203
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0x8m"]
 cull_mode = 2
@@ -52,18 +26,92 @@ emission = Color(0.717647, 1, 0.690196, 1)
 _data = [Vector2(0, 1), 0.0, -0.910116, 0, 0, Vector2(1, 0), -0.949051, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_qujwy"]
-radius = 0.2
-height = 1.0
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lbelg"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+cull_mode = 2
+disable_ambient_light = true
+albedo_color = Color(0.509804, 1, 0.329412, 1)
+albedo_texture = ExtResource("8_a8rmi")
+emission_enabled = true
+emission = Color(0.717647, 1, 0.690196, 1)
+disable_receive_shadows = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_kqxea"]
+max_value = 2.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.40659), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_vi1w4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.472527), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_yn1dv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_6jxb6"]
+curve_x = SubResource("Curve_kqxea")
+curve_y = SubResource("Curve_vi1w4")
+curve_z = SubResource("Curve_yn1dv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cfbq8"]
+angle_max = 360.0
+angular_velocity_min = -800.0
+angular_velocity_max = 800.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_curve = SubResource("CurveXYZTexture_6jxb6")
+
+[sub_resource type="QuadMesh" id="QuadMesh_i34xo"]
+center_offset = Vector3(0, 0.5, 0)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_dut3s"]
-height = 1.0
-radius = 2.0
+height = 0.2
+radius = 1.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_44t01"]
+flip_faces = true
+size = Vector3(2, 2, 2)
+
+[sub_resource type="Gradient" id="Gradient_7o1bn"]
+offsets = PackedFloat32Array(0, 0.0765306, 0.137755, 0.234694, 0.316327)
+colors = PackedColorArray(0.105, 0, 0.15, 1, 0.392, 0, 0.56, 1, 0.89, 0.5162, 0.66572, 1, 0.89, 0.83393, 0.5162, 1, 0.5162, 0.87754, 0.89, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gh8od"]
+gradient = SubResource("Gradient_7o1bn")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ekkn5"]
+render_priority = 0
+shader = ExtResource("7_45gid")
+shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/depth_threshold = 0.025
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 1.0
+shader_parameter/min_thickness = 0.5
+shader_parameter/max_distance = 200.0
+shader_parameter/min_distance = 0.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+shader_parameter/fog_intensity = 1.0
+shader_parameter/fog_amount = 0.005
+shader_parameter/depth_limit = 500.0
+shader_parameter/gradient = SubResource("GradientTexture1D_gh8od")
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
 collision_layer = 2
 script = ExtResource("1_gujcv")
+gravity_strength = 1.5
+jump_strength = 25.0
 
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("state")]
 script = ExtResource("2_lbal6")
@@ -82,9 +130,13 @@ script = ExtResource("6_ji8i7")
 script = ExtResource("5_5lvde")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("SphereShape3D_hjvdc")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.752569, 0)
+shape = SubResource("CapsuleShape3D_oofw1")
 
 [node name="head" type="Node3D" parent="."]
+
+[node name="ForwardMarker" type="Marker3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.18651)
 
 [node name="character_rigged" parent="head" instance=ExtResource("6_2fdn8")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
@@ -112,22 +164,13 @@ transform = Transform3D(0.34202, 0, -0.939693, 0, 1, 0, 0.939693, 0, 0.34202, 0,
 target_position = Vector3(0, 0, -1)
 
 [node name="RayCastGround" type="RayCast3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-target_position = Vector3(0, -2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.176368)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 0.835357, 0.549708, 0, -0.549708, 0.835357, 0, 0, 0)
-spring_length = 5.0
+transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 1.24696, 0)
+spring_length = 3.0
 
-[node name="Camera" type="Camera3D" parent="head/SpringArm3D"]
-current = true
-
-[node name="Outlines" type="MeshInstance3D" parent="head/SpringArm3D/Camera"]
-mesh = SubResource("BoxMesh_q6kaf")
-surface_material_override/0 = SubResource("ShaderMaterial_clc18")
-
-[node name="Marker3D" type="Marker3D" parent="head/SpringArm3D/Camera"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11.186)
+[node name="CameraPlaceHolder" type="Marker3D" parent="head/SpringArm3D"]
 
 [node name="rayFolder" type="Node3D" parent="head"]
 
@@ -159,6 +202,10 @@ target_position = Vector3(0, 0, -1)
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
 target_position = Vector3(-1, 0, 0)
 
+[node name="RayLeft4" type="RayCast3D" parent="head/rayFolder"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
+target_position = Vector3(-1, 0, 0)
+
 [node name="RayLeft2" type="RayCast3D" parent="head/rayFolder"]
 transform = Transform3D(0.612372, -0.353553, -0.707107, 0.5, 0.866025, -2.18168e-08, 0.612372, -0.353553, 0.707107, 0, 0, 0)
 target_position = Vector3(-1, 0, 0)
@@ -179,27 +226,43 @@ target_position = Vector3(1, 0, 0)
 transform = Transform3D(0.353553, 0.612372, 0.707107, -0.866025, 0.5, 0, -0.353553, -0.612372, 0.707107, 0, 0, 0)
 target_position = Vector3(1, 0, 0)
 
-[node name="Node3D" type="Node3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50953, 0.216232)
+[node name="Trail" type="Node3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50953, 0.0683191)
 
-[node name="Trail3D" type="MeshInstance3D" parent="head/Node3D"]
+[node name="Trail3D" type="MeshInstance3D" parent="head/Trail"]
 material_override = SubResource("StandardMaterial3D_g0x8m")
 cast_shadow = 0
 skeleton = NodePath("../..")
 script = ExtResource("8_lv3q6")
-lifetime = 0.23
-base_width = 0.1
+lifetime = 0.1
+base_width = 0.2
 width_profile = SubResource("Curve_5mk6v")
 
-[node name="nose" type="MeshInstance3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, -1.19236)
-mesh = SubResource("CapsuleMesh_qujwy")
+[node name="ParticlesGrind" type="GPUParticles3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0666037, 0.206352)
+material_override = SubResource("StandardMaterial3D_lbelg")
+cast_shadow = 0
+emitting = false
+amount = 20
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_cfbq8")
+draw_pass_1 = SubResource("QuadMesh_i34xo")
 
 [node name="checkerGrind" type="Area3D" parent="."]
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="checkerGrind"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125683, 0)
 shape = SubResource("CylinderShape3D_dut3s")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("position_node")]
+current = true
+script = ExtResource("8_mroog")
+position_node = NodePath("../head/SpringArm3D/CameraPlaceHolder")
+
+[node name="Outlines" type="MeshInstance3D" parent="Camera3D"]
+mesh = SubResource("BoxMesh_44t01")
+surface_material_override/0 = SubResource("ShaderMaterial_ekkn5")
 
 [connection signal="change_state" from="States/Move" to="States" method="change_state"]
 [connection signal="change_state" from="States/Fall" to="States" method="change_state"]
