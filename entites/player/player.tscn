@@ -166,6 +166,9 @@ target_position = Vector3(0, 0, -1)
 [node name="RayCastGround" type="RayCast3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.176368)
 
+[node name="RayCastGroundJump" type="RayCast3D" parent="head"]
+target_position = Vector3(0, -3, 0)
+
 [node name="SpringArm3D" type="SpringArm3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 1.24696, 0)
 spring_length = 3.0
@@ -174,37 +177,11 @@ spring_length = 3.0
 
 [node name="rayFolder" type="Node3D" parent="head"]
 
-[node name="RayUp" type="RayCast3D" parent="head/rayFolder"]
-target_position = Vector3(0, 1, 0)
-
 [node name="RayDown" type="RayCast3D" parent="head/rayFolder"]
-
-[node name="RayForward" type="RayCast3D" parent="head/rayFolder"]
-target_position = Vector3(0, 0, -1)
-
-[node name="RayForward4" type="RayCast3D" parent="head/rayFolder"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, 0, 0)
-target_position = Vector3(0, 0, -1)
-
-[node name="RayForward5" type="RayCast3D" parent="head/rayFolder"]
-transform = Transform3D(1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0)
-target_position = Vector3(0, 0, -1)
-
-[node name="RayForward2" type="RayCast3D" parent="head/rayFolder"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
-target_position = Vector3(0, 0, -1)
 
 [node name="RayForward3" type="RayCast3D" parent="head/rayFolder"]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 0, 0)
 target_position = Vector3(0, 0, -1)
-
-[node name="RayLeft" type="RayCast3D" parent="head/rayFolder"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
-target_position = Vector3(-1, 0, 0)
-
-[node name="RayLeft4" type="RayCast3D" parent="head/rayFolder"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
-target_position = Vector3(-1, 0, 0)
 
 [node name="RayLeft2" type="RayCast3D" parent="head/rayFolder"]
 transform = Transform3D(0.612372, -0.353553, -0.707107, 0.5, 0.866025, -2.18168e-08, 0.612372, -0.353553, 0.707107, 0, 0, 0)
@@ -213,10 +190,6 @@ target_position = Vector3(-1, 0, 0)
 [node name="RayLeft3" type="RayCast3D" parent="head/rayFolder"]
 transform = Transform3D(0.353553, -0.612372, -0.707107, 0.866025, 0.5, 2.18168e-08, 0.353553, -0.612372, 0.707107, 0, 0, 0)
 target_position = Vector3(-1, 0, 0)
-
-[node name="RayRight" type="RayCast3D" parent="head/rayFolder"]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0)
-target_position = Vector3(1, 0, 0)
 
 [node name="RayRight2" type="RayCast3D" parent="head/rayFolder"]
 transform = Transform3D(0.612372, 0.353553, 0.707107, -0.5, 0.866025, 0, -0.612372, -0.353553, 0.707107, 0, 0, 0)
@@ -256,11 +229,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125683, 0)
 shape = SubResource("CylinderShape3D_dut3s")
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("position_node")]
+visible = false
 current = true
 script = ExtResource("8_mroog")
 position_node = NodePath("../head/SpringArm3D/CameraPlaceHolder")
 
 [node name="Outlines" type="MeshInstance3D" parent="Camera3D"]
+visible = false
 mesh = SubResource("BoxMesh_44t01")
 surface_material_override/0 = SubResource("ShaderMaterial_ekkn5")
 

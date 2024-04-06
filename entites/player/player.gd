@@ -42,6 +42,7 @@ func _input(event: InputEvent) -> void:
 			$head/SpringArm3D.rotation.x = -1.5
 
 func checkRays() -> void:
+
 	var avgNor := Vector3.ZERO
 	var numOfRaysColliding := 0
 	for ray in $head/rayFolder.get_children():
@@ -49,13 +50,23 @@ func checkRays() -> void:
 		if r.is_colliding():
 			numOfRaysColliding += 1
 			avgNor += r.get_collision_normal()
+	print (affected_by_gravity)
 	if avgNor and is_on_floor() and $head/RayCastGround.is_colliding() :
+		if isWall() :return
+		
 		avgNor /= numOfRaysColliding
 		avgNormal = avgNor.normalized()
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
 	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
-		avgNormal = avgNormal.lerp(Vector3.UP, .025)
+		
+		if $head/RayCastGroundJump.is_colliding():
+			avgNor = Vector3.ZERO
+			avgNor = $head/RayCastGroundJump.get_collision_normal()
+		else :
+			avgNor = Vector3.UP
+		#avgNormal = avgNormal.lerp(avgNor, .025)
+		avgNormal = avgNormal.lerp(avgNor, .04)
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
 
@@ -64,7 +75,7 @@ func move():
 	move_and_slide()
 	#empèche de monter un angle à 90°	
 	#if !_isWall and $head/RayCastGround.is_colliding():
-	if !isWall() :
+	if !isWall() or affected_by_gravity :
 		var _transform= align_with_up(global_transform,up_direction)
 		global_transform = global_transform.interpolate_with(_transform, .4)
 	

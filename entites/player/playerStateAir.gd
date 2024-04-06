@@ -3,6 +3,8 @@ extends StateFSM
 func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
 	set_process_input(true)
+	print('air')
+	
 	if _msg.has("jump"):
 		
 		owner.vel = owner.curSpeed * owner.get_dir()

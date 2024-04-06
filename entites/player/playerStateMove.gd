@@ -1,5 +1,11 @@
 extends StateFSM
 
+func enter_state(_msg := {}) -> void:
+	set_physics_process(true)
+	set_process_input(true)
+	owner.affected_by_gravity = false
+	print('move')
+
 func _physics_process(delta):
 	
 	owner.movement_dir.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
@@ -22,7 +28,8 @@ func _physics_process(delta):
 
 		
 	if not owner.is_on_floor():
-		change_state.emit($"../Fall")
+		print('leave')
+		change_state.emit($"../Air")
 	
 
 	if Input.is_action_just_pressed("ui_select"):
