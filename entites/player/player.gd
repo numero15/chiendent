@@ -66,7 +66,7 @@ func checkRays() -> void:
 		else :
 			avgNor = Vector3.UP
 		#avgNormal = avgNormal.lerp(avgNor, .025)
-		avgNormal = avgNormal.lerp(avgNor, .04)
+		avgNormal = avgNormal.lerp(avgNor, .03)
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
 

@@ -286,6 +286,7 @@ mesh = SubResource("BoxMesh_euvmh")
 
 [node name="MultiMeshBillboards" type="MultiMeshInstance3D" parent="."]
 transform = Transform3D(0.999612, 0.0273852, -0.00504594, -0.0274186, 0.999602, -0.00669041, 0.00486071, 0.00682617, 0.999965, 0, 8.7878, 0)
+visible = false
 material_override = SubResource("StandardMaterial3D_26fdh")
 multimesh = SubResource("MultiMesh_yfcxj")
 
