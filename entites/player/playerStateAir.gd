@@ -6,16 +6,16 @@ func enter_state(_msg := {}) -> void:
 	print('air')
 	
 	if _msg.has("jump"):
-		
+		owner.checkerGrind.set_deferred("monitoring", false)
 		owner.vel = owner.curSpeed * owner.get_dir()
 		owner.avgNormal =  _msg["jump"].normalized()
 		owner.jumpVec =  owner.avgNormal * owner.jump_strength
 		owner.gravity =  owner.avgNormal * -owner.gravity_strength
 		owner.jumpVectors += owner.jumpVec
-		#avgNormal = Vector3.UP
 		
 		owner.affected_by_gravity = false
 	else :
+		owner.checkerGrind.set_deferred("monitoring", true)
 		owner.affected_by_gravity = true
 	
 func _physics_process(delta):
@@ -33,6 +33,8 @@ func _physics_process(delta):
 	owner.move()
 	
 	if owner.is_on_floor():
+		#owner.particlesJump.global_transform = owner.global_transform
+		owner.particlesJump.emitting = true;
 		change_state.emit($"../Move")
 		
 func _input(event: InputEvent) -> void:

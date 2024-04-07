@@ -5,7 +5,6 @@ func enter_state(_msg := {}) -> void:
 	set_process_input(true)
 	owner.affected_by_gravity = false
 	print('move')
-
 func _physics_process(delta):
 	
 	owner.movement_dir.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
@@ -28,11 +27,11 @@ func _physics_process(delta):
 
 		
 	if not owner.is_on_floor():
-		print('leave')
 		change_state.emit($"../Air")
 	
 
 	if Input.is_action_just_pressed("ui_select"):
+		#owner.particlesJump.emitting = true;
 		change_state.emit($"../Air", {jump = owner.avgNormal})	
 
 func _input(event: InputEvent) -> void:

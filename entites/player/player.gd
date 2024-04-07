@@ -7,10 +7,11 @@ var affected_by_gravity: bool = true
 @export var gravity_strength :float= .5
 @export var jump_strength :float= 20
 
-@onready var checkerGrind = get_node("checkerGrind")
+@onready var checkerGrind = get_node("head/checkerGrind")
 @onready var character = get_node("head")
 @onready var checkerGround = get_node("head/RayCastGround")
 @onready var particlesGrind = get_node("head/ParticlesGrind")
+@onready var particlesJump = get_node("head/ParticlesJump")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -50,7 +51,6 @@ func checkRays() -> void:
 		if r.is_colliding():
 			numOfRaysColliding += 1
 			avgNor += r.get_collision_normal()
-	print (affected_by_gravity)
 	if avgNor and is_on_floor() and $head/RayCastGround.is_colliding() :
 		if isWall() :return
 		
@@ -93,8 +93,12 @@ func get_dir() -> Vector3:
 	var dirBase :Vector3= avgNormal.cross( fowardDir ).normalized()
 	dir = dirBase.rotated( avgNormal.normalized(), -PI/2 )
 	#accelerate
+	
+	if curSpeed>maxSpeed:
+		curSpeed = lerp(curSpeed,maxSpeed,.03)
+		
 	if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
-		curSpeed = lerp(curSpeed,maxSpeed,.01)		
+		curSpeed = lerp(curSpeed,maxSpeed,.01)
 	#brake
 	elif Input.is_action_pressed("ui_down"):
 		curSpeed = lerp(curSpeed,0.0,.08)

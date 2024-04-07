@@ -11,6 +11,7 @@ var loop : bool = false;
 var progress_ratio : float = 0.0;
 
 func enter_state(_msg := {}) -> void:
+	print('grind')
 	if !_msg.has("_body"):
 		change_state.emit($"../Move")
 		
@@ -52,6 +53,15 @@ func enter_state(_msg := {}) -> void:
 
 	
 func _physics_process(delta):
+	
+	if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
+		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.05)		
+	#brake
+	elif Input.is_action_pressed("ui_down"):
+		owner.curSpeed = lerp(owner.curSpeed,0.0,.08)
+	#decelerate
+	else :
+		owner.curSpeed = lerp(owner.curSpeed,0.0,.03)
 	
 	var  prev_progress_ratio : float
 	var  prev_offset : float

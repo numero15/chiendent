@@ -291,6 +291,7 @@ material_override = SubResource("StandardMaterial3D_26fdh")
 multimesh = SubResource("MultiMesh_yfcxj")
 
 [node name="Player" parent="." node_paths=PackedStringArray("distortion") instance=ExtResource("4_kfpib")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.229031, -1)
 distortion = NodePath("../Distortion")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
@@ -378,10 +379,5 @@ block_data = SubResource("Resource_g4o8b")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 4)
 script = ExtResource("12_u1cne")
 block_data = SubResource("Resource_f106e")
-
-[connection signal="change_state" from="Player/States/Move" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Fall" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Air" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Grind" to="Player/States" method="change_state"]
 
 [editable path="Player"]
