@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://6auvlysedmdj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3rmte"]
+cull_mode = 2
+shading_mode = 0
+use_particle_trails = true
+
+[sub_resource type="Curve" id="Curve_wmk5v"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tvaak"]
+curve = SubResource("Curve_wmk5v")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d3r2x"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 1.0
+emission_ring_radius = 200.0
+emission_ring_inner_radius = 0.0
+direction = Vector3(0, -1, 0)
+spread = 0.0
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+gravity = Vector3(0, 0, 0)
+damping_curve = SubResource("CurveTexture_tvaak")
+
+[sub_resource type="Curve" id="Curve_sirrf"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.571429, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_7mnjd"]
+size = 0.03
+section_length = 1.0
+curve = SubResource("Curve_sirrf")
+
+[node name="ParticlesGravity" type="GPUParticles3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.40161, -2.89497)
+material_override = SubResource("StandardMaterial3D_3rmte")
+cast_shadow = 0
+amount = 100
+lifetime = 2.0
+transform_align = 2
+trail_enabled = true
+trail_lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_d3r2x")
+draw_pass_1 = SubResource("RibbonTrailMesh_7mnjd")

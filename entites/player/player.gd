@@ -10,6 +10,7 @@ var affected_by_gravity: bool = true
 @onready var checkerGrind = get_node("head/checkerGrind")
 @onready var character = get_node("head")
 @onready var checkerGround = get_node("head/RayCastGround")
+@onready var checkerGroundJump = get_node("head/RayCastGroundJump")
 @onready var particlesGrind = get_node("head/ParticlesGrind")
 @onready var particlesJump = get_node("head/ParticlesJump")
 
@@ -25,13 +26,13 @@ var jumpVectors := Vector3.ZERO
 var bodyOn : StaticBody3D
 
 var movement_dir : Vector3
-
+var avgNor := Vector3.ZERO
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _physics_process(delta):
 	distortion.material.set("shader_parameter/coeff", curSpeed/150)
-	#distortion.material.set("shader_parameter/aberration_amount", curSpeed/80.0 )
+	distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 )
 
 #rotate camera vertically
 func _input(event: InputEvent) -> void:
@@ -42,33 +43,43 @@ func _input(event: InputEvent) -> void:
 		if $head/SpringArm3D.rotation.x < -1.5 :
 			$head/SpringArm3D.rotation.x = -1.5
 
-func checkRays() -> void:
-
-	var avgNor := Vector3.ZERO
+func checkRays(air : bool = false) -> void:
 	var numOfRaysColliding := 0
+	var coef_lerp: float = 0.02
 	for ray in $head/rayFolder.get_children():
 		var r : RayCast3D = ray
 		if r.is_colliding():
 			numOfRaysColliding += 1
 			avgNor += r.get_collision_normal()
-	if avgNor and is_on_floor() and $head/RayCastGround.is_colliding() :
+	if avgNor and is_on_floor() and $head/RayCastGround.is_colliding()  :
 		if isWall() :return
-		
 		avgNor /= numOfRaysColliding
 		avgNormal = avgNor.normalized()
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
 	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
-		
-		if $head/RayCastGroundJump.is_colliding():
-			avgNor = Vector3.ZERO
-			avgNor = $head/RayCastGroundJump.get_collision_normal()
+		if $head/RayCastGroundJump.is_colliding() and !is_on_floor() and !is_on_wall():
+			#if $head/RayCastGroundJump.get_collision_normal().normalized().dot(global_transform.basis.y) > .8:
+			avgNor = $head/RayCastGroundJump.get_collision_normal().normalized()
+			coef_lerp = 0.08
+			
+			#else :
+				#avgNor = Vector3.UP
+				#coef_lerp = 0.04
+			
+		#
 		else :
 			avgNor = Vector3.UP
+			coef_lerp = 0.02
+		
+		
+		
 		#avgNormal = avgNormal.lerp(avgNor, .025)
-		avgNormal = avgNormal.lerp(avgNor, .03)
+		avgNormal = avgNormal.lerp(avgNor, coef_lerp)
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
+	else :
+		avgNor = Vector3.ZERO
 
 func move():
 	up_direction = avgNormal.normalized()
@@ -94,7 +105,7 @@ func get_dir() -> Vector3:
 	dir = dirBase.rotated( avgNormal.normalized(), -PI/2 )
 	#accelerate
 	
-	if curSpeed>maxSpeed:
+	if curSpeed>maxSpeed*1.5:
 		curSpeed = lerp(curSpeed,maxSpeed,.03)
 		
 	if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
