@@ -17,7 +17,7 @@ radius = 0.4
 height = 1.80203
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_emis8"]
-points = PackedVector3Array(0, 0, 0, -2, 0, -1.5, 2, 0, -1.5, 2, -0.5, -1.5, -2, -0.5, -1.5, 0, -0.5, 0)
+points = PackedVector3Array(0, 0, 0, -2, 0, -2.5, 2, 0, -2.5, 2, -2, -2.5, -2, -2, -2.5, 0, -2, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0x8m"]
 cull_mode = 2
@@ -135,7 +135,6 @@ shader_parameter/gradient = SubResource("GradientTexture1D_gh8od")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
 collision_layer = 2
 script = ExtResource("1_gujcv")
-maxSpeed = 20.0
 gravity_strength = 1.5
 
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("state")]
@@ -164,7 +163,7 @@ shape = SubResource("CapsuleShape3D_oofw1")
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="head/checkerGrind"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00208211, 0.343293, -0.610528)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00208211, 1.71692, -0.610528)
 shape = SubResource("ConvexPolygonShape3D_emis8")
 
 [node name="ForwardMarker" type="Marker3D" parent="head"]
@@ -246,15 +245,16 @@ width_profile = SubResource("Curve_5mk6v")
 
 [node name="ParticlesGrind" type="GPUParticles3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0666037, 0.206352)
+visible = false
 material_override = SubResource("StandardMaterial3D_lbelg")
 cast_shadow = 0
-emitting = false
 amount = 20
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_cfbq8")
 draw_pass_1 = SubResource("QuadMesh_i34xo")
 
 [node name="ParticlesJump" type="GPUParticles3D" parent="head"]
+visible = false
 material_override = SubResource("StandardMaterial3D_xkf1v")
 cast_shadow = 0
 emitting = false

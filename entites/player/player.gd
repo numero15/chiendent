@@ -1,17 +1,21 @@
+class_name Player
 extends CharacterBody3D
 
 var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
-@export var maxSpeed := 25.0
+@export var maxSpeed := 20.0
+@export var boostSpeed := 40.0
 @export var gravity_strength :float= .5
 @export var jump_strength :float= 20
 
 @onready var checkerGrind = get_node("head/checkerGrind")
 @onready var character = get_node("head")
+@onready var characterMesh = get_node("head/character_rigged")
 @onready var checkerGround = get_node("head/RayCastGround")
 @onready var checkerGroundJump = get_node("head/RayCastGroundJump")
 @onready var particlesGrind = get_node("head/ParticlesGrind")
+#@onready var particlesGrind2 = get_node("head/ParticlesGrind2")
 @onready var particlesJump = get_node("head/ParticlesJump")
 
 var gravity := Vector3(0,-3,0)
@@ -27,12 +31,24 @@ var bodyOn : StaticBody3D
 
 var movement_dir : Vector3
 var avgNor := Vector3.ZERO
+
+var maxBoost: float = 30
+var curBoost : float = 30
+
+signal boostChanged
+
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _physics_process(delta):
 	distortion.material.set("shader_parameter/coeff", curSpeed/150)
 	distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 )
+	
+	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost"):
+		curBoost += delta*2
+		if curBoost > maxBoost :
+			curBoost = maxBoost
+		boostChanged.emit()
 
 #rotate camera vertically
 func _input(event: InputEvent) -> void:
@@ -96,6 +112,12 @@ func isWall()-> bool:
 	for ray in $head/rayFolderWall.get_children():
 		if ray.is_colliding():
 			_isWall = true
+			
+	#if _isWall and curSpeed>0 and is_on_wall():
+		#var a = Quaternion(character.global_transform.basis)
+		#var b = Quaternion(character.global_transform.basis.looking_at(velocity.normalized(),character.global_transform.basis.y))
+		#var c = a.slerp(b,0.05)
+		#character.global_transform.basis = Basis(c)
 	return _isWall
 
 func get_dir() -> Vector3:
@@ -105,7 +127,7 @@ func get_dir() -> Vector3:
 	dir = dirBase.rotated( avgNormal.normalized(), -PI/2 )
 	#accelerate
 	
-	if curSpeed>maxSpeed*1.5:
+	if curSpeed>maxSpeed:
 		curSpeed = lerp(curSpeed,maxSpeed,.03)
 		
 	if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
@@ -126,3 +148,11 @@ func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
 	_transform.basis = _transform.basis.orthonormalized()
 	return _transform
 	
+	
+func check_boost(delta):
+	if Input.is_action_pressed("ui_boost") and curBoost > 0:
+		curSpeed = lerp(curSpeed,boostSpeed,.2)
+		curBoost -= delta*40
+		boostChanged.emit()
+		
+	if curBoost<0 : curBoost = 0

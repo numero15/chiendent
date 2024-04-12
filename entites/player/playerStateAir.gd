@@ -21,6 +21,7 @@ func enter_state(_msg := {}) -> void:
 		owner.affected_by_gravity = true
 	
 func _physics_process(delta):
+	owner.check_boost(delta)
 	owner.checkRays(true)
 	if owner.jumpVectors.length() < (owner.jumpVectors + owner.gravity).length():
 	#if owner.jumpVectors.dot(owner.jumpVectors + owner.gravity) <0 :
@@ -40,6 +41,7 @@ func _physics_process(delta):
 			##owner.particlesJump.global_transform = owner.global_transform
 			#print('land')
 			owner.particlesJump.emitting = true;
+			owner.checkerGrind.set_deferred("monitoring", false)
 			change_state.emit($"../Move")
 		
 func _input(event: InputEvent) -> void:

@@ -17,6 +17,8 @@ func enter_state(_msg := {}) -> void:
 		
 	owner.particlesGrind.emitting = true;
 	owner.particlesGrind.show();
+	#owner.particlesGrind2.emitting = true;
+	#owner.particlesGrind2.show();
 	owner.checkerGrind.set_deferred("monitoring", false)
 	set_physics_process(true)
 	path = _msg["_body"].get_parent_node_3d()
@@ -53,8 +55,8 @@ func enter_state(_msg := {}) -> void:
 
 	
 func _physics_process(delta):
-	
-	if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
+	owner.check_boost(delta)
+	if Input.is_action_pressed("ui_up") and !Input.is_action_pressed("ui_down") and owner.curSpeed<owner.maxSpeed:
 		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.05)		
 	#brake
 	elif Input.is_action_pressed("ui_down"):
@@ -95,4 +97,6 @@ func exit_state() -> void:
 	pathFollow.queue_free()
 	owner.particlesGrind.emitting = false;
 	owner.particlesGrind.hide();
+	#owner.particlesGrind2.emitting = false;
+	#owner.particlesGrind2.hide();
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://ci8h3aa075lw3"]
+[gd_scene load_steps=52 format=3 uid="uid://ci8h3aa075lw3"]
 
 [ext_resource type="Shader" path="res://assets/shaders/shardNoise.gdshader" id="1_a73gh"]
 [ext_resource type="ArrayMesh" uid="uid://dp10h4f7eau74" path="res://assets/rock01.obj" id="1_bd1cx"]
@@ -16,6 +16,9 @@
 [ext_resource type="PackedScene" uid="uid://6auvlysedmdj" path="res://entites/particles_gravity.tscn" id="13_w6jet"]
 [ext_resource type="Material" uid="uid://biie7caja55hm" path="res://assets/materials/material_tile07.tres" id="14_05ayq"]
 [ext_resource type="Material" uid="uid://dc3omy7jso5of" path="res://assets/materials/material_brick01.tres" id="16_8akvd"]
+[ext_resource type="Script" path="res://InGameUI.gd" id="17_had5m"]
+[ext_resource type="Texture2D" uid="uid://c1d0iauntvgpm" path="res://assets/boost_bar_under.png" id="17_jetjh"]
+[ext_resource type="Texture2D" uid="uid://gf7aqd1urq87" path="res://assets/boost_bar_progress.png" id="18_47nsd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o267s"]
 
@@ -579,9 +582,26 @@ transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 
 script = ExtResource("12_u1cne")
 block_data = SubResource("Resource_fjw2j")
 
-[connection signal="change_state" from="Player/States/Move" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Fall" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Air" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Grind" to="Player/States" method="change_state"]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("player", "boostGauge")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("17_had5m")
+player = NodePath("../Player")
+boostGauge = NodePath("MarginContainer/TextureProgressBar")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="UI/MarginContainer"]
+layout_mode = 2
+value = 100.0
+texture_under = ExtResource("17_jetjh")
+texture_progress = ExtResource("18_47nsd")
 
 [editable path="Player"]

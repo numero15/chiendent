@@ -12,7 +12,7 @@ func _physics_process(delta):
 	#owner.character.rotation.y += owner.movement_dir.x * owner.KEYBOARD_SENS
 	
 	owner.vel = owner.curSpeed * owner.get_dir()
-	
+	owner.check_boost(delta)
 	owner.checkRays()
 	owner.jumpVectors = Vector3.ZERO
 	owner.velocity = owner.vel + owner.jumpVectors
@@ -37,6 +37,11 @@ func _physics_process(delta):
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
+		
+		
+		owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z, event.relative.x/3000*owner.curSpeed,.1)
+	else :
+		owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z,0.0,.1)
 
 func _on_checker_grind_body_entered(body):
 	change_state.emit($"../Grind",{_body = body})
