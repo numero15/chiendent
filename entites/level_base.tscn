@@ -1,0 +1,157 @@
+[gd_scene load_steps=20 format=3 uid="uid://dsuwfsk4jp6t5"]
+
+[ext_resource type="Script" path="res://root.gd" id="1_piqpb"]
+[ext_resource type="Shader" path="res://assets/shaders/sky.gdshader" id="2_gha10"]
+[ext_resource type="PackedScene" uid="uid://d0ban3xdesr1u" path="res://entites/levels/test_01.tscn" id="2_wwc2b"]
+[ext_resource type="PackedScene" uid="uid://bpogwtwx10igk" path="res://entites/player/player.tscn" id="4_0ha35"]
+[ext_resource type="Shader" path="res://assets/shaders/FishEye.gdshader" id="5_kn070"]
+[ext_resource type="Texture2D" uid="uid://bip5q3kwxpupb" path="res://assets/shaders/vignette.png" id="6_et47b"]
+[ext_resource type="Script" path="res://scripts/Pause.gd" id="10_7oapq"]
+[ext_resource type="Script" path="res://InGameUI.gd" id="17_myw0y"]
+[ext_resource type="Texture2D" uid="uid://c1d0iauntvgpm" path="res://assets/boost_bar_under.png" id="18_7w6is"]
+[ext_resource type="Texture2D" uid="uid://gf7aqd1urq87" path="res://assets/boost_bar_progress.png" id="19_cfcm0"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_45r5y"]
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8w4h4"]
+noise = SubResource("FastNoiseLite_45r5y")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sbib1"]
+noise_type = 0
+frequency = 0.0259
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_skthr"]
+seamless = true
+noise = SubResource("FastNoiseLite_sbib1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pm0h0"]
+shader = ExtResource("2_gha10")
+shader_parameter/clouds_samples = 16
+shader_parameter/shadow_sample = 4
+shader_parameter/clouds_density = 0.3
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_smoothness = 0.035
+shader_parameter/clouds_light_color = Color(0.917647, 1, 0.92549, 1)
+shader_parameter/clouds_shadow_intensity = 1.0
+shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_skthr")
+shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_8w4h4")
+shader_parameter/high_clouds_density = 0.0
+shader_parameter/top_color = Color(1, 1, 1, 1)
+shader_parameter/bottom_color = Color(0.184314, 0.619608, 0.576471, 1)
+shader_parameter/sun_scatter = Color(1, 0.941176, 0.941176, 1)
+shader_parameter/astro_tint = Color(1, 1, 1, 1)
+shader_parameter/astro_scale = 1.0
+shader_parameter/astro_intensity = 1.0
+shader_parameter/stars_intensity = 0.0
+shader_parameter/shooting_stars_intensity = 0.0
+shader_parameter/shooting_star_tint = null
+
+[sub_resource type="Sky" id="Sky_fgx8b"]
+sky_material = SubResource("ShaderMaterial_pm0h0")
+
+[sub_resource type="Environment" id="Environment_olw86"]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+sky = SubResource("Sky_fgx8b")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+tonemap_mode = 2
+tonemap_exposure = 0.5
+tonemap_white = 0.63
+ssao_intensity = 7.85
+glow_strength = 0.57
+glow_bloom = 0.28
+glow_blend_mode = 1
+adjustment_enabled = true
+adjustment_contrast = 1.06
+adjustment_saturation = 1.34
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tn3y5"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 20.0
+dof_blur_far_transition = 200.0
+dof_blur_amount = 0.05
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_scb6e"]
+shader = ExtResource("5_kn070")
+shader_parameter/coeff = 0.0
+shader_parameter/aberration_amount = 0.0
+shader_parameter/aberration_offset_texture = ExtResource("6_et47b")
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_piqpb")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_olw86")
+camera_attributes = SubResource("CameraAttributesPractical_tn3y5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 8.61806, 5.82749)
+shadow_enabled = true
+
+[node name="Node3D" parent="." instance=ExtResource("2_wwc2b")]
+
+[node name="Player" parent="." node_paths=PackedStringArray("distortion") instance=ExtResource("4_0ha35")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.229031, -1)
+distortion = NodePath("../Distortion")
+gravity_strength = 1.0
+
+[node name="Distortion" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_scb6e")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Pause" type="Control" parent="."]
+process_mode = 2
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_7oapq")
+
+[node name="ColorRect" type="ColorRect" parent="Pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.329412)
+
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("player", "boostGauge")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("17_myw0y")
+player = NodePath("../Player")
+boostGauge = NodePath("MarginContainer/TextureProgressBar")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="UI/MarginContainer"]
+layout_mode = 2
+value = 100.0
+texture_under = ExtResource("18_7w6is")
+texture_progress = ExtResource("19_cfcm0")
+
+[connection signal="change_state" from="Player/States/Move" to="Player/States" method="change_state"]
+[connection signal="change_state" from="Player/States/Fall" to="Player/States" method="change_state"]
+[connection signal="change_state" from="Player/States/Air" to="Player/States" method="change_state"]
+[connection signal="change_state" from="Player/States/Grind" to="Player/States" method="change_state"]
+
+[editable path="Player"]

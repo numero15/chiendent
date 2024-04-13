@@ -3,6 +3,7 @@ extends StateFSM
 func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
 	set_process_input(true)
+	owner.characterMesh.rotation.z = 0
 	print('air')
 	
 	if _msg.has("jump"):
@@ -35,8 +36,11 @@ func _physics_process(delta):
 	
 	owner.move()
 	
+	if Input.is_action_just_pressed("ui_boost"):
+		print("trick")
+		#owner.characterMesh.
+	
 	if owner.is_on_floor():
-		print('land')
 		if owner.checkerGroundJump.get_collision_normal().dot(owner.global_transform.basis.y) > .5:
 			##owner.particlesJump.global_transform = owner.global_transform
 			#print('land')

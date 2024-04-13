@@ -453,6 +453,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.229031, -1)
 distortion = NodePath("../Distortion")
 gravity_strength = 1.0
 
+[node name="character_rigged" parent="Player/head" index="2"]
+transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0, 0)
+
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 15.3231, 0, -7.98535)
 

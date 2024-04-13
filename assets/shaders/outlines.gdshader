@@ -319,7 +319,7 @@ void fragment() {
 	float fog = depth * fog_amount;
 	
 	vec4 fog_color = texture(gradient, vec2(fog, 0.0));
-	if (depth > 1.0){
+	if (depth > 0.0){
 		vec3 gradient_ALBEDO ;
 		//gradient_ALBEDO =  mix(original.rgb, fog_color.rgb, fog_color.a * fog_intensity);
 		//https://www.reddit.com/r/opengl/comments/16mpmqr/have_glsl_fragment_shader_only_apply_to_gray/
@@ -331,7 +331,9 @@ void fragment() {
 		ALBEDO.rgb = mix(gradient_ALBEDO, temp_ALBEDO, temp_ALPHA);
 	}
 	else
-		ALBEDO = fog_color.rgb;
+		//ALBEDO.rgb = fog_color.rgb;
+		ALBEDO.rgb = original.rgb;
+		
 }
 
 
