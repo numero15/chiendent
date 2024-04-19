@@ -42,7 +42,7 @@ func _ready() -> void:
 	
 func _physics_process(delta):
 	distortion.material.set("shader_parameter/coeff", curSpeed/150)
-	distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 )
+	distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 + 0.3 )
 	
 	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost"):
 		curBoost += delta*2

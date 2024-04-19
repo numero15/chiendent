@@ -368,16 +368,41 @@ void fragment() {
 		vec3 gradient_ALBEDO ;
 		//gradient_ALBEDO =  mix(original.rgb, fog_color.rgb, fog_color.a * fog_intensity);
 		//https://www.reddit.com/r/opengl/comments/16mpmqr/have_glsl_fragment_shader_only_apply_to_gray/
-		if(abs(original.r -original.g) <.05 && abs(original.r -original.b) <.1 && depth< depth_limit )
+		//if(abs(original.r -original.g) <.05 && abs(original.r -original.b) <.1 && depth< depth_limit )
 			//gradient_ALBEDO = 1.0 - (1.0 - original.rgb) * (1.0 - fog_color.rgb);
 			//possibles : multiply, darken, lighten, overlay, screen
-			gradient_ALBEDO = screen(original.rgb,fog_color.rgb);
-			//gradient_ALBEDO = fog_color.rgb;
-		else
-			gradient_ALBEDO = original.rgb;
+			//gradient_ALBEDO = screen(original.rgb,fog_color.rgb);
 			
-		//ALBEDO.rgb = gradient_ALBEDO;
-		ALBEDO.rgb = mix(gradient_ALBEDO, temp_ALBEDO, temp_ALPHA);
+			//gradient_ALBEDO = fog_color.rgb;
+		//else
+			//gradient_ALBEDO = original.rgb;
+		gradient_ALBEDO = screen(original.rgb,fog_color.rgb);
+		
+		
+		// find saturation
+		float _sat = 0.0;
+		float _min;
+		_min = min(original.r, original.g);
+		_min = min(_min, original.b);
+		float _max;
+		_max = max(original.r, original.g);
+		_max = max(_max, original.b);
+		
+		if (_max == 0.0)
+			 _sat = 0.0;
+		float _lum = _max - _min;
+		if (_lum < .5){
+			_sat = (_max - _min) / (_max + _min);
+		}
+		if (_lum > .5){
+			_sat = (_max - _min) / (2.0 - _max - _min);
+		}
+		
+		gradient_ALBEDO = mix(gradient_ALBEDO,original.rgb, _sat);
+		
+		
+		ALBEDO.rgb = gradient_ALBEDO;
+		//ALBEDO.rgb = mix(gradient_ALBEDO, temp_ALBEDO, temp_ALPHA);
 	}
 	else
 		//ALBEDO.rgb = fog_color.rgb;

@@ -473,6 +473,9 @@ gravity_strength = 1.0
 [node name="character_rigged" parent="Player/head" index="2"]
 transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0, 0)
 
+[node name="Trail" parent="Player/head" index="8"]
+transform = Transform3D(-0.96687, -0.238749, -0.0903402, -0.0614116, 0.561059, -0.825495, 0.247772, -0.792598, -0.557133, -0.303206, 1.08698, -0.253632)
+
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 15.3231, 0, -7.98535)
 
@@ -630,4 +633,9 @@ sorting_offset = 1.0
 material_override = SubResource("ShaderMaterial_mippd")
 mesh = SubResource("QuadMesh_dftfi")
 
+[connection signal="change_state" from="Player/States/Move" to="Player/States" method="change_state"]
+[connection signal="change_state" from="Player/States/Air" to="Player/States" method="change_state"]
+[connection signal="change_state" from="Player/States/Grind" to="Player/States" method="change_state"]
+
 [editable path="Player"]
+[editable path="Player/head/character_rigged"]

@@ -5,13 +5,14 @@
 [ext_resource type="PackedScene" uid="uid://d0ban3xdesr1u" path="res://entites/levels/test_01.tscn" id="2_wwc2b"]
 [ext_resource type="PackedScene" uid="uid://bpogwtwx10igk" path="res://entites/player/player.tscn" id="4_0ha35"]
 [ext_resource type="Shader" path="res://assets/shaders/FishEye.gdshader" id="5_kn070"]
-[ext_resource type="Texture2D" uid="uid://bip5q3kwxpupb" path="res://assets/shaders/vignette.png" id="6_et47b"]
+[ext_resource type="Texture2D" uid="uid://bqkitc0c8l62y" path="res://assets/shaders/vignette_02.png" id="6_rls4s"]
 [ext_resource type="Script" path="res://scripts/Pause.gd" id="10_7oapq"]
 [ext_resource type="Script" path="res://InGameUI.gd" id="17_myw0y"]
 [ext_resource type="Texture2D" uid="uid://c1d0iauntvgpm" path="res://assets/boost_bar_under.png" id="18_7w6is"]
 [ext_resource type="Texture2D" uid="uid://gf7aqd1urq87" path="res://assets/boost_bar_progress.png" id="19_cfcm0"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_45r5y"]
+frequency = 0.0067
 fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8w4h4"]
@@ -19,7 +20,7 @@ noise = SubResource("FastNoiseLite_45r5y")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sbib1"]
 noise_type = 0
-frequency = 0.0259
+frequency = 0.0035
 fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_skthr"]
@@ -32,17 +33,17 @@ shader_parameter/clouds_samples = 16
 shader_parameter/shadow_sample = 4
 shader_parameter/clouds_density = 0.3
 shader_parameter/clouds_scale = 1.0
-shader_parameter/clouds_smoothness = 0.035
-shader_parameter/clouds_light_color = Color(0.917647, 1, 0.92549, 1)
-shader_parameter/clouds_shadow_intensity = 1.0
+shader_parameter/clouds_smoothness = 0.1
+shader_parameter/clouds_light_color = Color(0.970833, 0.75, 1, 1)
+shader_parameter/clouds_shadow_intensity = 0.5
 shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_skthr")
 shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_8w4h4")
 shader_parameter/high_clouds_density = 0.0
 shader_parameter/top_color = Color(1, 1, 1, 1)
-shader_parameter/bottom_color = Color(0.184314, 0.619608, 0.576471, 1)
-shader_parameter/sun_scatter = Color(1, 0.941176, 0.941176, 1)
+shader_parameter/bottom_color = Color(0.596078, 0.541176, 0.929412, 1)
+shader_parameter/sun_scatter = Color(0.792157, 0.611765, 1, 1)
 shader_parameter/astro_tint = Color(1, 1, 1, 1)
-shader_parameter/astro_scale = 1.0
+shader_parameter/astro_scale = 10.0
 shader_parameter/astro_intensity = 1.0
 shader_parameter/stars_intensity = 0.0
 shader_parameter/shooting_stars_intensity = 0.0
@@ -61,6 +62,7 @@ ambient_light_sky_contribution = 0.0
 ambient_light_energy = 0.1
 tonemap_mode = 2
 tonemap_exposure = 0.4
+tonemap_white = 0.7
 ssao_intensity = 7.85
 glow_strength = 0.57
 glow_bloom = 0.28
@@ -68,7 +70,7 @@ glow_blend_mode = 1
 adjustment_enabled = true
 adjustment_brightness = 1.1
 adjustment_contrast = 1.2
-adjustment_saturation = 1.1
+adjustment_saturation = 1.45
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tn3y5"]
 dof_blur_far_distance = 20.0
@@ -79,7 +81,7 @@ dof_blur_amount = 0.05
 shader = ExtResource("5_kn070")
 shader_parameter/coeff = 0.0
 shader_parameter/aberration_amount = 0.0
-shader_parameter/aberration_offset_texture = ExtResource("6_et47b")
+shader_parameter/aberration_offset_texture = ExtResource("6_rls4s")
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_piqpb")
@@ -97,12 +99,15 @@ shadow_enabled = true
 [node name="Node3D" parent="LevelContainer" instance=ExtResource("2_wwc2b")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("distortion") instance=ExtResource("4_0ha35")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.229031, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09335, -3.456)
 distortion = NodePath("../Distortion")
 gravity_strength = 1.0
 
 [node name="character_rigged" parent="Player/head" index="2"]
 transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0, 0)
+
+[node name="Trail" parent="Player/head" index="8"]
+transform = Transform3D(-0.991578, -0.0359834, -0.124409, 0.0366576, 0.843358, -0.5361, 0.124212, -0.536146, -0.834936, 0.0177437, 1.23757, -0.346629)
 
 [node name="Distortion" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_scb6e")
@@ -162,4 +167,9 @@ texture_progress = ExtResource("19_cfcm0")
 [node name="GraphittiLabel" type="Label" parent="UI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
+[connection signal="change_state" from="Player/States/Move" to="Player/States" method="change_state"]
+[connection signal="change_state" from="Player/States/Air" to="Player/States" method="change_state"]
+[connection signal="change_state" from="Player/States/Grind" to="Player/States" method="change_state"]
+
 [editable path="Player"]
+[editable path="Player/head/character_rigged"]

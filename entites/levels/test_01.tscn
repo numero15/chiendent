@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://d0ban3xdesr1u"]
+[gd_scene load_steps=57 format=3 uid="uid://d0ban3xdesr1u"]
 
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/nodes/cyclops_block.gd" id="1_lmlju"]
 [ext_resource type="Script" path="res://addons/cyclops_level_builder/resources/convex_block_data.gd" id="2_7exy5"]
@@ -633,7 +633,7 @@ face_selected = PackedByteArray(0, 1, 0, 0, 0, 0, 0, 0)
 active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7)
 
-[sub_resource type="Resource" id="Resource_v3uwg"]
+[sub_resource type="Resource" id="Resource_daf8m"]
 script = ExtResource("2_7exy5")
 selected = false
 active = false
@@ -657,7 +657,7 @@ face_selected = PackedByteArray(0, 0, 0, 0, 0, 0)
 active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
 
-[sub_resource type="Resource" id="Resource_vtyj7"]
+[sub_resource type="Resource" id="Resource_pk6yx"]
 script = ExtResource("2_7exy5")
 selected = false
 active = false
@@ -999,22 +999,6 @@ size = Vector3(1.2, 0.8, 0.7)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_58y21"]
 points = PackedVector3Array(0.6, 0.4, 0.349932, 0.6, 0.4, -0.35, -0.6, 0.4, 0.349932, 0.6, -0.4, 0.349932, 0.6, -0.4, -0.35, -0.6, 0.4, -0.35, -0.6, -0.4, 0.349932, -0.6, -0.4, -0.35)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0doo2"]
-albedo_color = Color(0, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rik52"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m5flk"]
-albedo_color = Color(0.188235, 0.188235, 0.188235, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5iq6x"]
-albedo_color = Color(0.270588, 0.270588, 0.270588, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n1huo"]
-albedo_color = Color(0.34902, 0.34902, 0.34902, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fpi6l"]
-
 [sub_resource type="Gradient" id="Gradient_myaoh"]
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_u0n56"]
@@ -1027,7 +1011,7 @@ albedo_texture = SubResource("GradientTexture1D_u0n56")
 [sub_resource type="QuadMesh" id="QuadMesh_6ea6u"]
 size = Vector2(10, 1)
 
-[sub_resource type="Resource" id="Resource_rfxdl"]
+[sub_resource type="Resource" id="Resource_m32d3"]
 script = ExtResource("2_7exy5")
 selected = false
 active = false
@@ -1043,7 +1027,7 @@ active_edge = -1
 edge_face_indices = PackedInt32Array(0, 2, 0, 3, 0, 4, 0, 5, 1, 4, 1, 3, 1, 2, 1, 5, 2, 5, 2, 3, 3, 4, 4, 5)
 face_vertex_count = PackedInt32Array(4, 4, 4, 4, 4, 4)
 face_vertex_indices = PackedInt32Array(0, 1, 2, 3, 7, 6, 5, 4, 1, 0, 4, 5, 2, 1, 5, 6, 3, 2, 6, 7, 0, 3, 7, 4)
-face_material_indices = PackedInt32Array(-1, -1, 0, -1, -1, -1)
+face_material_indices = PackedInt32Array(0, 0, 0, 0, 0, 0)
 face_uv_transform = Array[Transform2D]([Transform2D(1, 0, 0, 1, 0, 6), Transform2D(1, 0, 0, 1, 0, 6), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 6), Transform2D(1, 0, 0, 1, 0, 0), Transform2D(1, 0, 0, 1, 0, 6)])
 face_visible = PackedByteArray(1, 1, 1, 1, 1, 1)
 face_color = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
@@ -1097,7 +1081,6 @@ cull_mask = 1048573
 transform = Transform3D(-0.707107, 0.707107, -3.09086e-08, 4.37114e-08, 1.91069e-15, -1, -0.707107, -0.707107, -3.09086e-08, -18.0457, 8.58327, -32.6642)
 size = Vector3(3, 3, 3)
 texture_albedo = ExtResource("3_r6k31")
-texture_emission = ExtResource("4_lqleq")
 cull_mask = 1047553
 
 [node name="Decal5" type="Decal" parent="Decals"]
@@ -1137,7 +1120,7 @@ cull_mask = 1048573
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15.921, 7.7915, -27)
 
 [node name="Billboard2" parent="Billboards" instance=ExtResource("3_2cgkn")]
-transform = Transform3D(1.91069e-15, -1, -4.37114e-08, -4.37114e-08, -4.37114e-08, 1, -1, 0, -4.37114e-08, -4.28221, 0.0693321, -21.6571)
+transform = Transform3D(0.996195, 9.28919e-16, -0.0871558, -4.02341e-21, 1, 1.06581e-14, 0.0871558, -1.06176e-14, 0.996195, -14.2822, 24.3694, -34.0837)
 
 [node name="CyclopsBlock" type="Node3D" parent="."]
 script = ExtResource("1_lmlju")
@@ -1286,14 +1269,14 @@ materials = Array[Material]([ExtResource("6_riaff")])
 [node name="Block_30" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1, -10)
 script = ExtResource("1_lmlju")
-block_data = SubResource("Resource_v3uwg")
-materials = Array[Material]([ExtResource("6_riaff")])
+block_data = SubResource("Resource_daf8m")
+materials = Array[Material]([ExtResource("7_h5t14")])
 
 [node name="Block_31" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -10)
 script = ExtResource("1_lmlju")
-block_data = SubResource("Resource_vtyj7")
-materials = Array[Material]([ExtResource("6_riaff")])
+block_data = SubResource("Resource_pk6yx")
+materials = Array[Material]([ExtResource("8_sp34k")])
 
 [node name="Block_28" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 39, -17)
@@ -1365,7 +1348,6 @@ block_data = SubResource("Resource_hgspi")
 
 [node name="Block_40" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 27, -68)
-visible = false
 script = ExtResource("1_lmlju")
 block_data = SubResource("Resource_lcrnd")
 
@@ -1384,44 +1366,14 @@ mesh = SubResource("BoxMesh_8ss2r")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBox"]
 shape = SubResource("ConvexPolygonShape3D_58y21")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63287, 0)
-material_override = SubResource("StandardMaterial3D_0doo2")
-mesh = SubResource("BoxMesh_rik52")
-skeleton = NodePath("../Block_0")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.63121, 1.63287, 0)
-material_override = SubResource("StandardMaterial3D_m5flk")
-mesh = SubResource("BoxMesh_rik52")
-skeleton = NodePath("../Block_0")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.38719, 1.63287, 0)
-material_override = SubResource("StandardMaterial3D_5iq6x")
-mesh = SubResource("BoxMesh_rik52")
-skeleton = NodePath("../Block_0")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.01102, 1.63287, 0)
-material_override = SubResource("StandardMaterial3D_n1huo")
-mesh = SubResource("BoxMesh_rik52")
-skeleton = NodePath("../Block_0")
-
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.46181, 1.63287, 0)
-material_override = SubResource("StandardMaterial3D_fpi6l")
-mesh = SubResource("BoxMesh_rik52")
-skeleton = NodePath("../Block_0")
-
 [node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.46181, 2.63287, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -14.9127, 8.53765, -27.098)
 material_override = SubResource("StandardMaterial3D_83o3x")
 mesh = SubResource("QuadMesh_6ea6u")
-skeleton = NodePath("../MeshInstance3D6")
+skeleton = NodePath("")
 
 [node name="Block_0" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -114, -5, -343)
 script = ExtResource("1_lmlju")
-block_data = SubResource("Resource_rfxdl")
+block_data = SubResource("Resource_m32d3")
 materials = Array[Material]([ExtResource("6_riaff")])

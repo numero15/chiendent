@@ -1,15 +1,14 @@
 [gd_scene load_steps=16 format=3 uid="uid://dgabxv03jv3hy"]
 
 [ext_resource type="Script" path="res://entites/billboard.gd" id="1_yjmq2"]
+[ext_resource type="Texture2D" uid="uid://cljgfck1w2fqp" path="res://assets/billboard_textures/pub_01_red.png" id="2_cswbf"]
 [ext_resource type="Texture2D" uid="uid://6yu5la3gohck" path="res://assets/billboard_textures/graph_01.png" id="2_rm01s"]
 [ext_resource type="Texture2D" uid="uid://2dmeg0f4wuek" path="res://assets/particle_textures/blob_01.png" id="3_rv814"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ugjkj"]
-load_path = "res://.godot/imported/pub_01.png-52919b1a09ffb154df64ed9fa7ce7462.s3tc.ctex"
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0b717"]
-shading_mode = 0
-albedo_texture = SubResource("CompressedTexture2D_ugjkj")
+albedo_texture = ExtResource("2_cswbf")
+emission = Color(1, 0.101961, 0.309804, 1)
+emission_energy_multiplier = 0.1
 
 [sub_resource type="QuadMesh" id="QuadMesh_hu4gu"]
 size = Vector2(8, 6)
@@ -18,8 +17,8 @@ size = Vector2(8, 6)
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
-shading_mode = 0
 albedo_texture = ExtResource("2_rm01s")
+emission = Color(1, 1, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0wdbc"]
 size = Vector3(8, 6, 1)
@@ -80,7 +79,6 @@ skeleton = NodePath("../..")
 
 [node name="Graphitti" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01)
-visible = false
 material_override = SubResource("StandardMaterial3D_8ebkd")
 mesh = SubResource("QuadMesh_hu4gu")
 skeleton = NodePath("../..")

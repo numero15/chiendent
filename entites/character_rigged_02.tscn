@@ -1,0 +1,107 @@
+[gd_scene load_steps=6 format=3 uid="uid://bl2gxjli2esux"]
+
+[ext_resource type="PackedScene" uid="uid://bnq4myqaup0wu" path="res://assets/character_rigged_02.glb" id="1_g3v4r"]
+[ext_resource type="Texture2D" uid="uid://t0bpwoy0ll1" path="res://assets/character_rigged_02_texture_character_nb.png" id="2_bl88d"]
+[ext_resource type="Shader" path="res://assets/shaders/outline_mesh_02.gdshader" id="3_8igyw"]
+[ext_resource type="Texture2D" uid="uid://7eqbqn6t1ih1" path="res://assets/texture_character_emissive.png" id="3_cvt13"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nxg4s"]
+render_priority = 0
+shader = ExtResource("3_8igyw")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.0
+shader_parameter/metallic = 0.0
+shader_parameter/emission = Color(0, 0, 0, 1)
+shader_parameter/emission_energy = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/outline_width = 1.0
+shader_parameter/texture_albedo = ExtResource("2_bl88d")
+shader_parameter/texture_emission = ExtResource("3_cvt13")
+
+[node name="character_rigged_02" instance=ExtResource("1_g3v4r")]
+
+[node name="rig_game" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.155102, 0)
+
+[node name="Skeleton3D" parent="rig_game" index="0"]
+bones/0/position = Vector3(0.0130843, 1.11265, 0.151005)
+bones/0/rotation = Quaternion(0.410377, -0.0191892, 0.0564865, 0.909963)
+bones/1/rotation = Quaternion(0.159393, 2.52322e-08, -6.56888e-08, 0.987215)
+bones/2/position = Vector3(8.38196e-09, 0.0310135, -2.66046e-07)
+bones/2/rotation = Quaternion(-0.414769, 0.00935872, -0.0343628, 0.90923)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/position = Vector3(3.72531e-09, 0.176695, -1.56188e-08)
+bones/3/rotation = Quaternion(0.130035, 0.0633223, -0.0365378, 0.98881)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(0.306815, 0.0160512, -0.0252888, 0.951298)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(-0.245341, 0.0189249, -0.00479058, 0.96924)
+bones/6/rotation = Quaternion(-0.173207, -0.0865748, 0.0567873, 0.979428)
+bones/7/rotation = Quaternion(0.660929, 0.340958, 0.461732, -0.48345)
+bones/8/rotation = Quaternion(-0.200322, 0.548954, -0.528974, 0.615392)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/position = Vector3(-9.4289e-08, 0.114755, 8.06269e-08)
+bones/9/rotation = Quaternion(-2.12307e-07, 0.244084, -9.50651e-08, 0.969754)
+bones/10/position = Vector3(-5.46585e-08, 0.114756, 9.03383e-08)
+bones/10/rotation = Quaternion(0.00535284, 0.244085, -0.00134687, 0.969738)
+bones/11/position = Vector3(-1.49739e-08, 0.142982, -1.89836e-08)
+bones/11/rotation = Quaternion(2.04269e-07, -0.149744, -6.61534e-08, 0.988725)
+bones/12/position = Vector3(6.32752e-09, 0.142982, 1.53423e-08)
+bones/12/rotation = Quaternion(0.313837, -0.155345, -0.218736, 0.910785)
+bones/13/rotation = Quaternion(0.660929, -0.340958, -0.461731, -0.48345)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/rotation = Quaternion(-0.403583, -0.548853, 0.193117, 0.706107)
+bones/15/position = Vector3(-9.32124e-08, 0.10794, -1.63646e-08)
+bones/15/rotation = Quaternion(3.97518e-07, -0.170438, 3.80554e-07, 0.985368)
+bones/16/position = Vector3(-2.42318e-08, 0.10794, 3.57162e-08)
+bones/16/rotation = Quaternion(0.604855, -0.170438, 0.134554, 0.766157)
+bones/17/position = Vector3(8.03895e-08, 0.135847, -7.75448e-08)
+bones/17/rotation = Quaternion(2.02784e-07, 0.302935, -1.10708e-07, 0.953011)
+bones/18/position = Vector3(-3.98954e-08, 0.135847, -1.40924e-08)
+bones/18/rotation = Quaternion(-0.108887, 0.308523, 0.0698974, 0.942375)
+bones/18/scale = Vector3(1, 1, 1)
+bones/19/rotation = Quaternion(-1.35572e-07, 0.70857, 0.70564, 5.34956e-08)
+bones/19/scale = Vector3(1, 0.999999, 1)
+bones/20/rotation = Quaternion(-1.35572e-07, 0.70857, 0.70564, 5.34956e-08)
+bones/21/rotation = Quaternion(-0.152455, -0.793331, -0.285504, 0.515627)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/rotation = Quaternion(-0.152455, 0.793331, 0.285504, 0.515627)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/rotation = Quaternion(0.739637, -0.0327143, -0.249013, 0.624387)
+bones/24/position = Vector3(-2.34559e-08, 0.206204, -9.04031e-08)
+bones/24/rotation = Quaternion(4.95153e-08, 0.0839283, -8.55144e-08, 0.996472)
+bones/25/position = Vector3(3.7497e-08, 0.206204, -2.32831e-08)
+bones/25/rotation = Quaternion(0.47335, 0.0839283, -0.045367, 0.875692)
+bones/26/position = Vector3(4.53333e-09, 0.267207, 8.096e-08)
+bones/26/rotation = Quaternion(9.76962e-08, -0.215702, -1.10694e-07, 0.976459)
+bones/27/position = Vector3(-1.32382e-08, 0.267207, 3.44521e-08)
+bones/27/rotation = Quaternion(-0.626975, 0.0501611, 0.202197, 0.750668)
+bones/27/scale = Vector3(1, 1, 1)
+bones/28/position = Vector3(-2.78454e-08, 0.238244, 9.79093e-09)
+bones/28/rotation = Quaternion(2.5723e-05, 0.968881, -0.247527, -6.85213e-06)
+bones/29/rotation = Quaternion(0.719186, 0.215561, 0.208838, 0.626651)
+bones/29/scale = Vector3(1, 1, 0.999998)
+bones/30/position = Vector3(8.62391e-08, 0.203869, -3.41536e-08)
+bones/30/rotation = Quaternion(2.21391e-08, -0.107977, 6.33117e-08, 0.994153)
+bones/31/position = Vector3(-4.7752e-08, 0.203869, -2.68531e-08)
+bones/31/rotation = Quaternion(0.61928, -0.107978, 0.0865178, 0.772883)
+bones/31/scale = Vector3(1, 1, 1)
+bones/32/position = Vector3(4.42658e-09, 0.263724, 2.78564e-08)
+bones/32/rotation = Quaternion(-1.16049e-07, 0.110741, -1.4128e-08, 0.993849)
+bones/33/position = Vector3(5.91071e-09, 0.263725, 1.04611e-08)
+bones/33/rotation = Quaternion(-0.666267, -0.153801, -0.0851014, 0.724701)
+bones/33/scale = Vector3(1, 1, 1)
+bones/34/position = Vector3(3.20407e-08, 0.238203, 6.11831e-08)
+bones/34/rotation = Quaternion(9.30601e-06, 0.968903, -0.247439, -2.14019e-06)
+
+[node name="Leg_001" parent="rig_game/Skeleton3D" index="0"]
+material_override = SubResource("ShaderMaterial_nxg4s")
+
+[node name="AnimationPlayer" parent="." index="1"]
+autoplay = "BAKED_push"

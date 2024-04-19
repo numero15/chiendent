@@ -1,10 +1,10 @@
-[gd_scene load_steps=46 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=48 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
 [ext_resource type="Script" path="res://entites/player/playerStateMove.gd" id="3_mrvrb"]
 [ext_resource type="Script" path="res://entites/player/playerStateGrind.gd" id="5_5lvde"]
-[ext_resource type="PackedScene" uid="uid://45xcg5j0kpn0" path="res://assets/character_rigged.tscn" id="6_2fdn8"]
+[ext_resource type="PackedScene" uid="uid://bl2gxjli2esux" path="res://entites/character_rigged_02.tscn" id="6_b4rws"]
 [ext_resource type="Script" path="res://entites/player/playerStateAir.gd" id="6_ji8i7"]
 [ext_resource type="Shader" path="res://assets/shaders/outlines.gdshader" id="7_45gid"]
 [ext_resource type="Texture2D" uid="uid://d1owdumaowg08" path="res://assets/particle_grind_Plan de travail 1.png" id="8_a8rmi"]
@@ -21,15 +21,21 @@ height = 1.80203
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_emis8"]
 points = PackedVector3Array(0, 0, 0, -2, 0, -2.5, 2, 0, -2.5, 2, -2, -2.5, -2, -2, -2.5, 0, -2, 0)
 
+[sub_resource type="Gradient" id="Gradient_exqdo"]
+offsets = PackedFloat32Array(0, 0.868, 0.968)
+colors = PackedColorArray(0.72, 1, 0.934667, 1, 0.772667, 1, 0.69, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bbami"]
+gradient = SubResource("Gradient_exqdo")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0x8m"]
 cull_mode = 2
+shading_mode = 0
 vertex_color_use_as_albedo = true
-albedo_color = Color(0.509804, 1, 0.329412, 1)
-emission_enabled = true
-emission = Color(0.717647, 1, 0.690196, 1)
+albedo_texture = SubResource("GradientTexture1D_bbami")
 
 [sub_resource type="Curve" id="Curve_5mk6v"]
-_data = [Vector2(0, 1), 0.0, -0.910116, 0, 0, Vector2(1, 0), -0.949051, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0502674, 0, 0, Vector2(1, 0), -3.37272, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lbelg"]
@@ -107,49 +113,13 @@ orientation = 1
 resource_name = "360_x"
 length = 0.25
 step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("character_rigged:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 3.14159, 0), Vector3(0, 3.14159, 6.28319)]
-}
 
 [sub_resource type="Animation" id="Animation_lni5h"]
 resource_name = "360"
 length = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("character_rigged:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 3.14159, 0), Vector3(0, 9.42478, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_8ybgy"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("character_rigged:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 3.14159, 0)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j7fy1"]
 _data = {
@@ -163,8 +133,8 @@ flip_faces = true
 size = Vector3(2, 2, 2)
 
 [sub_resource type="Gradient" id="Gradient_josom"]
-offsets = PackedFloat32Array(0, 0.056, 0.352, 0.856)
-colors = PackedColorArray(0.21, 0, 0, 1, 0.75, 0.2925, 0.689, 1, 0.2925, 0.33825, 0.75, 1, 0.88, 0.718667, 0.396, 1)
+offsets = PackedFloat32Array(0, 0.036, 0.352, 0.856)
+colors = PackedColorArray(0.21, 0, 0, 1, 0.74902, 0.294118, 0.690196, 1, 0.2925, 0.33825, 0.75, 1, 0.88, 0.718667, 0.396, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_xk12h"]
 gradient = SubResource("Gradient_josom")
@@ -189,22 +159,23 @@ shader_parameter/depth_limit = 500.0
 shader_parameter/gradient = SubResource("GradientTexture1D_xk12h")
 
 [sub_resource type="Gradient" id="Gradient_kej54"]
-offsets = PackedFloat32Array(0.06, 0.108)
+offsets = PackedFloat32Array(0, 0.112, 0.956, 1)
+colors = PackedColorArray(0.18, 0.18, 0.18, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.18, 0.18, 0.18, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_xqewx"]
 gradient = SubResource("Gradient_kej54")
 
 [sub_resource type="Gradient" id="Gradient_jgh4a"]
-offsets = PackedFloat32Array(0, 0.176, 0.664)
-colors = PackedColorArray(0.39, 0.1404, 0.25688, 1, 0.24466, 0.2223, 0.39, 1, 0.39, 0.2223, 0.381615, 1)
+offsets = PackedFloat32Array(0.596, 0.94, 1)
+colors = PackedColorArray(0.388235, 0.219608, 0.298039, 1, 0.39, 0.2223, 0.381615, 1, 0.1365, 0.0975, 0.39, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_1nh4g"]
 gradient = SubResource("Gradient_jgh4a")
 
 [sub_resource type="Gradient" id="Gradient_ieuom"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.324, 0.72)
-colors = PackedColorArray(0.78, 0.77194, 0.2964, 1, 0.436974, 0.323803, 0.730737, 1, 0.66, 0, 0.0109998, 1)
+offsets = PackedFloat32Array(0, 0.028, 0.184, 0.688, 0.956, 1)
+colors = PackedColorArray(0.211765, 0, 0, 1, 0.8, 0.6824, 0.408, 1, 0.556863, 0.490196, 0.729412, 1, 0.556863, 0.490196, 0.729412, 1, 0.87, 0.4263, 0.433695, 1, 0.85, 0.843767, 0.476, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rmmxn"]
 gradient = SubResource("Gradient_ieuom")
@@ -270,8 +241,8 @@ shape = SubResource("ConvexPolygonShape3D_emis8")
 [node name="ForwardMarker" type="Marker3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.18651)
 
-[node name="character_rigged" parent="head" instance=ExtResource("6_2fdn8")]
-transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0, 0)
+[node name="character_rigged" parent="head" instance=ExtResource("6_b4rws")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.399439, 0)
 
 [node name="rayFolderWall" type="Node3D" parent="head"]
 
@@ -304,7 +275,7 @@ target_position = Vector3(0, -7, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 0.907044, 0.421036, 0, -0.421036, 0.907044, 0, 1.24696, 0)
-spring_length = 4.0
+spring_length = 3.0
 
 [node name="CameraPlaceHolder" type="Marker3D" parent="head/SpringArm3D"]
 
@@ -332,16 +303,23 @@ target_position = Vector3(1, 0, 0)
 transform = Transform3D(0.353553, 0.612372, 0.707107, -0.866025, 0.5, 0, -0.353553, -0.612372, 0.707107, 0, 0, 0)
 target_position = Vector3(1, 0, 0)
 
-[node name="Trail" type="Node3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50953, 0.0683191)
+[node name="Trail" type="BoneAttachment3D" parent="head"]
+transform = Transform3D(-0.991578, -0.0359848, -0.124411, 0.0366576, 0.843358, -0.5361, 0.124215, -0.536146, -0.834936, 0.0177428, 0.83813, -0.346629)
+bone_name = "DEF-spine.003"
+bone_idx = 3
+use_external_skeleton = true
+external_skeleton = NodePath("../character_rigged/rig_game/Skeleton3D")
 
-[node name="Trail3D" type="MeshInstance3D" parent="head/Trail"]
+[node name="Node3D" type="Node3D" parent="head/Trail"]
+transform = Transform3D(1, 1.49012e-08, 2.98023e-08, -1.3411e-07, 1, 1.49012e-07, 1.04308e-07, -2.98023e-08, 1, -0.0145221, 0.098053, -0.103709)
+
+[node name="Trail3D" type="MeshInstance3D" parent="head/Trail/Node3D"]
+transform = Transform3D(1, 1.49012e-08, 1.49012e-08, 2.38419e-07, 1, 0, 5.96046e-08, -5.06639e-07, 1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_g0x8m")
 cast_shadow = 0
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 script = ExtResource("8_lv3q6")
-lifetime = 1.0
-base_width = 0.2
+base_width = 0.11
 width_profile = SubResource("Curve_5mk6v")
 
 [node name="ParticlesGrind" type="GPUParticles3D" parent="head"]
@@ -403,3 +381,5 @@ shape = SubResource("SphereShape3D_agdtd")
 [connection signal="change_state" from="States/Grind" to="States" method="change_state"]
 [connection signal="body_entered" from="head/checkerGrind" to="States/Move" method="_on_checker_grind_body_entered"]
 [connection signal="timeout" from="ActionArea/Timer" to="ActionArea" method="_on_timer_timeout"]
+
+[editable path="head/character_rigged"]

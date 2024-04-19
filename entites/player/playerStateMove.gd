@@ -5,6 +5,9 @@ func enter_state(_msg := {}) -> void:
 	set_process_input(true)
 	owner.affected_by_gravity = false
 	print('move')
+	if owner.characterMesh:
+		owner.characterMesh.get_node('AnimationPlayer').play('BAKED_push')
+		
 func _physics_process(delta):
 	
 	owner.movement_dir.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
