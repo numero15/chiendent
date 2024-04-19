@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=46 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -11,6 +11,8 @@
 [ext_resource type="Script" path="res://trail.gd" id="8_lv3q6"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="8_mroog"]
 [ext_resource type="Texture2D" uid="uid://ico2en2gui8l" path="res://assets/particle_textures/ripple_04.png" id="9_hel8y"]
+[ext_resource type="Script" path="res://entites/player/ActionArea.gd" id="12_icmrs"]
+[ext_resource type="Shader" path="res://assets/shaders/outlines_2.gdshader" id="12_tqejy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oofw1"]
 radius = 0.4
@@ -160,17 +162,17 @@ _data = {
 flip_faces = true
 size = Vector3(2, 2, 2)
 
-[sub_resource type="Gradient" id="Gradient_7o1bn"]
-offsets = PackedFloat32Array(0, 0.0585774, 0.171548, 0.234694, 0.316327)
-colors = PackedColorArray(0.105, 0, 0.15, 1, 0.294, 0, 0.42, 1, 0.89, 0.5162, 0.66572, 1, 0.89, 0.83393, 0.5162, 1, 0.5162, 0.87754, 0.89, 1)
+[sub_resource type="Gradient" id="Gradient_josom"]
+offsets = PackedFloat32Array(0, 0.056, 0.352, 0.856)
+colors = PackedColorArray(0.21, 0, 0, 1, 0.75, 0.2925, 0.689, 1, 0.2925, 0.33825, 0.75, 1, 0.88, 0.718667, 0.396, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_gh8od"]
-gradient = SubResource("Gradient_7o1bn")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xk12h"]
+gradient = SubResource("Gradient_josom")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ekkn5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i86so"]
 render_priority = 0
 shader = ExtResource("7_45gid")
-shader_parameter/outlineColor = Color(0, 0, 0, 1)
+shader_parameter/outlineColor = Color(0, 0, 0, 0.6)
 shader_parameter/depth_threshold = 0.025
 shader_parameter/normal_threshold = 0.5
 shader_parameter/normal_smoothing = 0.25
@@ -184,7 +186,52 @@ shader_parameter/grazing_angle_modulation_factor = 50.0
 shader_parameter/fog_intensity = 1.0
 shader_parameter/fog_amount = 0.005
 shader_parameter/depth_limit = 500.0
-shader_parameter/gradient = SubResource("GradientTexture1D_gh8od")
+shader_parameter/gradient = SubResource("GradientTexture1D_xk12h")
+
+[sub_resource type="Gradient" id="Gradient_kej54"]
+offsets = PackedFloat32Array(0.06, 0.108)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xqewx"]
+gradient = SubResource("Gradient_kej54")
+
+[sub_resource type="Gradient" id="Gradient_jgh4a"]
+offsets = PackedFloat32Array(0, 0.176, 0.664)
+colors = PackedColorArray(0.39, 0.1404, 0.25688, 1, 0.24466, 0.2223, 0.39, 1, 0.39, 0.2223, 0.381615, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1nh4g"]
+gradient = SubResource("Gradient_jgh4a")
+
+[sub_resource type="Gradient" id="Gradient_ieuom"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.324, 0.72)
+colors = PackedColorArray(0.78, 0.77194, 0.2964, 1, 0.436974, 0.323803, 0.730737, 1, 0.66, 0, 0.0109998, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rmmxn"]
+gradient = SubResource("Gradient_ieuom")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t74sj"]
+render_priority = 0
+shader = ExtResource("12_tqejy")
+shader_parameter/outlineColor = Color(0.168627, 0.0784314, 0.137255, 0)
+shader_parameter/depth_threshold = 0.025
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 1.3
+shader_parameter/min_thickness = 0.5
+shader_parameter/max_distance = 75.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+shader_parameter/fog_intensity = 0.533
+shader_parameter/fog_amount = 0.005
+shader_parameter/depth_limit = 500.0
+shader_parameter/gradient_light = SubResource("GradientTexture1D_rmmxn")
+shader_parameter/gradient_dark = SubResource("GradientTexture1D_1nh4g")
+shader_parameter/gradient_cutoff = SubResource("GradientTexture1D_xqewx")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_agdtd"]
+radius = 1.5
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
@@ -200,9 +247,6 @@ state = NodePath("Move")
 
 [node name="Move" type="Node" parent="States"]
 script = ExtResource("3_mrvrb")
-
-[node name="Fall" type="Node" parent="States"]
-script = ExtResource("6_ji8i7")
 
 [node name="Air" type="Node" parent="States"]
 script = ExtResource("6_ji8i7")
@@ -311,7 +355,6 @@ process_material = SubResource("ParticleProcessMaterial_cfbq8")
 draw_pass_1 = SubResource("QuadMesh_i34xo")
 
 [node name="ParticlesJump" type="GPUParticles3D" parent="head"]
-visible = false
 material_override = SubResource("StandardMaterial3D_xkf1v")
 cast_shadow = 0
 emitting = false
@@ -337,10 +380,26 @@ position_node = NodePath("../head/SpringArm3D/CameraPlaceHolder")
 [node name="Outlines" type="MeshInstance3D" parent="Camera3D"]
 visible = false
 mesh = SubResource("BoxMesh_44t01")
-surface_material_override/0 = SubResource("ShaderMaterial_ekkn5")
+surface_material_override/0 = SubResource("ShaderMaterial_i86so")
+
+[node name="Outlines2" type="MeshInstance3D" parent="Camera3D"]
+mesh = SubResource("BoxMesh_44t01")
+surface_material_override/0 = SubResource("ShaderMaterial_t74sj")
+
+[node name="ActionArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04155, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("12_icmrs")
+
+[node name="Timer" type="Timer" parent="ActionArea"]
+wait_time = 0.2
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ActionArea"]
+shape = SubResource("SphereShape3D_agdtd")
 
 [connection signal="change_state" from="States/Move" to="States" method="change_state"]
-[connection signal="change_state" from="States/Fall" to="States" method="change_state"]
 [connection signal="change_state" from="States/Air" to="States" method="change_state"]
 [connection signal="change_state" from="States/Grind" to="States" method="change_state"]
 [connection signal="body_entered" from="head/checkerGrind" to="States/Move" method="_on_checker_grind_body_entered"]
+[connection signal="timeout" from="ActionArea/Timer" to="ActionArea" method="_on_timer_timeout"]

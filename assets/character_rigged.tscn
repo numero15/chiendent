@@ -41,6 +41,7 @@ bones/33/rotation = Quaternion(-0.507864, -0.276574, -0.175533, 0.796724)
 bones/34/rotation = Quaternion(-9.9271e-08, 0.968861, -0.247606, -1.88644e-07)
 
 [node name="Leg_001" parent="rig_game/Skeleton3D" index="0"]
+layers = 2
 surface_material_override/0 = SubResource("ShaderMaterial_kt2ei")
 
 [node name="AnimationPlayer" parent="." index="1"]

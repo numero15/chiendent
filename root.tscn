@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://ci8h3aa075lw3"]
+[gd_scene load_steps=55 format=3 uid="uid://ci8h3aa075lw3"]
 
 [ext_resource type="Shader" path="res://assets/shaders/shardNoise.gdshader" id="1_a73gh"]
 [ext_resource type="ArrayMesh" uid="uid://dp10h4f7eau74" path="res://assets/rock01.obj" id="1_bd1cx"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://InGameUI.gd" id="17_had5m"]
 [ext_resource type="Texture2D" uid="uid://c1d0iauntvgpm" path="res://assets/boost_bar_under.png" id="17_jetjh"]
 [ext_resource type="Texture2D" uid="uid://gf7aqd1urq87" path="res://assets/boost_bar_progress.png" id="18_47nsd"]
+[ext_resource type="Shader" path="res://assets/shaders/water.gdshader" id="20_3tswg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o267s"]
 
@@ -356,6 +357,22 @@ face_selected = PackedByteArray(0, 1, 0, 0, 0, 0)
 active_face = -1
 face_ids = PackedInt32Array(0, 1, 2, 3, 4, 5)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mippd"]
+render_priority = 0
+shader = ExtResource("20_3tswg")
+shader_parameter/WATER_COL = Color(0.603922, 0.827451, 0.901961, 1)
+shader_parameter/WATER2_COL = Color(0.705882, 0.713726, 0.941176, 1)
+shader_parameter/FOAM_COL = Color(0.811765, 0.960784, 0.964706, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(15, 15)
+shader_parameter/height = 0.0
+shader_parameter/wave_size = Vector2(1, 1)
+shader_parameter/wave_speed = 1.5
+
+[sub_resource type="QuadMesh" id="QuadMesh_dftfi"]
+size = Vector2(10, 10)
+orientation = 1
+
 [node name="Root" type="Node3D"]
 script = ExtResource("1_sgbx3")
 
@@ -606,5 +623,11 @@ layout_mode = 2
 value = 100.0
 texture_under = ExtResource("17_jetjh")
 texture_progress = ExtResource("18_47nsd")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52.4725, 0.095378, 0)
+sorting_offset = 1.0
+material_override = SubResource("ShaderMaterial_mippd")
+mesh = SubResource("QuadMesh_dftfi")
 
 [editable path="Player"]

@@ -82,7 +82,7 @@ func _physics_process(delta):
 			return
 	
 
-	owner.global_transform = pathFollow.global_transform.rotated_local(Vector3.UP, -PI/2*direction)
+	owner.global_transform = pathFollow.global_transform.rotated_local(Vector3.UP, 180*direction)
 	#owner.curSpeed-= 5*delta
 	#if owner.curSpeed < 5 :
 		#owner.curSpeed = 5
