@@ -17,9 +17,17 @@ func enter_state(_msg := {}) -> void:
 		owner.jumpVectors += owner.jumpVec
 		
 		owner.affected_by_gravity = false
+		
+		if owner.animationTree:
+			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_jump")
+		
 	else :
 		owner.checkerGrind.set_deferred("monitoring", true)
 		owner.affected_by_gravity = true
+		if owner.animationTree:
+			#owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_fall")
+			owner.timerAnim.wait_time = 0.2
+			owner.timerAnim.start()
 	
 func _physics_process(delta):
 	owner.check_boost(delta)
@@ -28,11 +36,18 @@ func _physics_process(delta):
 	#if owner.jumpVectors.dot(owner.jumpVectors + owner.gravity) <0 :
 		owner.affected_by_gravity = true
 		owner.checkerGrind.set_deferred("monitoring", true)
+		#owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_fall")
+		if owner.timerAnim.is_stopped() :
+			owner.timerAnim.wait_time = 0.5
+			owner.timerAnim.start()
 		
-	owner.jumpVectors += owner.gravity
-	#add player control when jump/fall
-	#kowner.velocity = owner.vel*.75 + owner.jumpVectors
-	owner.velocity = owner.curSpeed * owner.get_dir()*1 + owner.jumpVectors
+	if !owner.isBoost:
+		owner.jumpVectors += owner.gravity
+		owner.velocity = owner.curSpeed * owner.get_dir()*1 + owner.jumpVectors
+	
+	#prevent jump from going to hight when boost
+	else:
+		owner.velocity = owner.curSpeed * owner.get_dir()*1  + owner.jumpVectors/4
 	
 	owner.move()
 	
@@ -52,3 +67,8 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 
+
+
+func _on_timer_anim_timeout():
+	owner.timerAnim.stop()
+	owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_fall")

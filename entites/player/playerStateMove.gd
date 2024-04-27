@@ -4,9 +4,12 @@ func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
 	set_process_input(true)
 	owner.affected_by_gravity = false
+	
 	print('move')
-	if owner.characterMesh:
-		owner.characterMesh.get_node('AnimationPlayer').play('BAKED_push')
+	if owner.animationTree:
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
+		owner.timerAnim.stop()
+
 		
 func _physics_process(delta):
 	
@@ -27,7 +30,11 @@ func _physics_process(delta):
 	else :
 		owner.particlesGrind.emitting = false;
 		owner.particlesGrind.hide();
-
+	
+	if !Input.is_action_pressed("ui_up"):
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_idle")
+	else :
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
 		
 	if not owner.is_on_floor():
 		change_state.emit($"../Air")
@@ -39,10 +46,16 @@ func _physics_process(delta):
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
+		
+		
+		#UGGGGLY
+		var i : float = clamp(-event.relative.x/20,-.5,.5) + .5
+		var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
+		owner.animationTree["parameters/Blend2/blend_amount"]= lerpf(j,i,.05)
 		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 		
 		
-		owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z, event.relative.x/3000*owner.curSpeed,.1)
+		owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z, event.relative.x/1000*owner.curSpeed,.1)
 	else :
 		owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z,0.0,.1)
 

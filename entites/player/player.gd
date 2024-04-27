@@ -15,8 +15,11 @@ var affected_by_gravity: bool = true
 @onready var checkerGround = get_node("head/RayCastGround")
 @onready var checkerGroundJump = get_node("head/RayCastGroundJump")
 @onready var particlesGrind = get_node("head/ParticlesGrind")
-#@onready var particlesGrind2 = get_node("head/ParticlesGrind2")
+@onready var particlesBoost = get_node("head/Trail/Node3D/ParticlesBoost")
 @onready var particlesJump = get_node("head/ParticlesJump")
+@onready var animationTree = get_node("AnimationTree")
+@onready var camera = get_node("Camera3D")
+@onready var timerAnim = get_node("TimerAnim")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -34,18 +37,35 @@ var avgNor := Vector3.ZERO
 
 var maxBoost: float = 30
 var curBoost : float = 30
+var isBoost = false
 
 signal boostChanged
 
+
+
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	animationTree["parameters/Blend2/blend_amount"]=1
+	animationTree["parameters/Blend2 2/blend_amount"]=1
 	
 func _physics_process(delta):
-	distortion.material.set("shader_parameter/coeff", curSpeed/150)
-	distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 + 0.3 )
+	
+	screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/18)
+	
+	if curSpeed-1 <= maxSpeed :
+		distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 + 0.3 )
+		distortion.material.set("shader_parameter/coeff", curSpeed/150)
+		distortion.material.set("shader_parameter/blur_power", 0)		
+		
+	else :
+		distortion.material.set("shader_parameter/aberration_amount", curSpeed/20.0 )
+		distortion.material.set("shader_parameter/coeff", curSpeed/75)
+		distortion.material.set("shader_parameter/blur_power", curSpeed/800)
+	
+	
 	
 	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost"):
-		curBoost += delta*2
+		curBoost += delta*20
 		if curBoost > maxBoost :
 			curBoost = maxBoost
 		boostChanged.emit()
@@ -82,14 +102,9 @@ func checkRays(air : bool = false) -> void:
 			#else :
 				#avgNor = Vector3.UP
 				#coef_lerp = 0.04
-			
-		#
 		else :
 			avgNor = Vector3.UP
 			coef_lerp = 0.02
-		
-		
-		
 		#avgNormal = avgNormal.lerp(avgNor, .025)
 		avgNormal = avgNormal.lerp(avgNor, coef_lerp)
 		jumpVec = avgNormal * jump_strength
@@ -152,7 +167,15 @@ func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
 func check_boost(delta):
 	if Input.is_action_pressed("ui_boost") and curBoost > 0:
 		curSpeed = lerp(curSpeed,boostSpeed,.2)
-		curBoost -= delta*40
+		curBoost -= delta*50
 		boostChanged.emit()
+		isBoost = true
+		particlesBoost.emitting = true
+		camera.fov = lerpf(camera.fov,110,.2)
+		#camera.fov = 95
+	else :
+		isBoost = false
+		particlesBoost.emitting = false
+		camera.fov = lerpf(camera.fov,75,.01)
 		
 	if curBoost<0 : curBoost = 0

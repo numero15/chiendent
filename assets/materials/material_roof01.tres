@@ -4,3 +4,4 @@
 
 [resource]
 albedo_texture = ExtResource("1_wds7y")
+distance_fade_max_distance = 1.0

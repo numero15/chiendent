@@ -17,8 +17,10 @@ size = Vector2(8, 6)
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
+shading_mode = 0
 albedo_texture = ExtResource("2_rm01s")
-emission = Color(1, 1, 1, 1)
+distance_fade_min_distance = 10.0
+distance_fade_max_distance = 15.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0wdbc"]
 size = Vector3(8, 6, 1)
@@ -79,6 +81,7 @@ skeleton = NodePath("../..")
 
 [node name="Graphitti" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01)
+visible = false
 material_override = SubResource("StandardMaterial3D_8ebkd")
 mesh = SubResource("QuadMesh_hu4gu")
 skeleton = NodePath("../..")
