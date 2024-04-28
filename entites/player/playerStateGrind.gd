@@ -87,7 +87,7 @@ func _physics_process(delta):
 	#if owner.curSpeed < 5 :
 		#owner.curSpeed = 5
 	
-	if Input.is_action_just_pressed("ui_select"):
+	if Input.is_action_just_pressed("ui_jump"):
 		change_state.emit($"../Air", {jump = curve.sample_baked_up_vector(offset, true)})
 		owner.checkerGrind.set_deferred("monitoring", false)
 	

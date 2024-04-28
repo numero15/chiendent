@@ -25,6 +25,7 @@ var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
 var avgNormal : Vector3 = Vector3.UP
 var MOUSE_SENS := 0.003
+var STICK_SENS := 0.03
 var KEYBOARD_SENS := 0.1
 
 var curSpeed := 0.0
@@ -32,7 +33,7 @@ var vel := Vector3.ZERO
 var jumpVectors := Vector3.ZERO
 var bodyOn : StaticBody3D
 
-var movement_dir : Vector3
+#var movement_dir : Vector3
 var avgNor := Vector3.ZERO
 
 var maxBoost: float = 30
@@ -69,15 +70,36 @@ func _physics_process(delta):
 		if curBoost > maxBoost :
 			curBoost = maxBoost
 		boostChanged.emit()
+		
+	#rotate camera with stick
+	if Settings.pad:
+		rotate_camera_x((Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up")) * STICK_SENS)
+		rotate_camera_y((Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")) * STICK_SENS)
+		
+		if Input.is_action_pressed("reset_camera") :
+			var tween = get_tree().create_tween()
+			tween.tween_property($head/SpringArm3D, "rotation", Vector3(0,0,0), .2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			#$head/SpringArm3D.rotation.x = 0
+			#$head/SpringArm3D.rotation.y = 0
 
-#rotate camera vertically
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		$head/SpringArm3D.rotation.x += -event.relative.y * MOUSE_SENS
-		if $head/SpringArm3D.rotation.x > 0.4 :
-			$head/SpringArm3D.rotation.x = 0.4
-		if $head/SpringArm3D.rotation.x < -1.5 :
-			$head/SpringArm3D.rotation.x = -1.5
+	#mouse control
+	if event is InputEventMouseMotion and !Settings.pad:
+		rotate_camera_x(-event.relative.y * MOUSE_SENS)
+
+func rotate_camera_x(_x:float =0):
+	$head/SpringArm3D.rotation.x +=_x
+	if $head/SpringArm3D.rotation.x > 0.4 :
+		$head/SpringArm3D.rotation.x = 0.4
+	if $head/SpringArm3D.rotation.x < -1.5 :
+		$head/SpringArm3D.rotation.x = -1.5
+
+func rotate_camera_y(_y:float =0):
+	$head/SpringArm3D.rotation.y +=_y
+	if $head/SpringArm3D.rotation.y > 1.5 :
+		$head/SpringArm3D.rotation.y = 1.5
+	if $head/SpringArm3D.rotation.y < -1.5 :
+		$head/SpringArm3D.rotation.y = -1.5
 
 func checkRays(air : bool = false) -> void:
 	var numOfRaysColliding := 0
@@ -145,14 +167,22 @@ func get_dir() -> Vector3:
 	if curSpeed>maxSpeed:
 		curSpeed = lerp(curSpeed,maxSpeed,.03)
 		
-	if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
-		curSpeed = lerp(curSpeed,maxSpeed,.01)
-	#brake
-	elif Input.is_action_pressed("ui_down"):
-		curSpeed = lerp(curSpeed,0.0,.08)
-	#decelerate
-	else :
-		curSpeed = lerp(curSpeed,0.0,.03)
+	if !Settings.pad : 
+		if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
+			curSpeed = lerp(curSpeed,maxSpeed,.01)
+		#brake
+		elif Input.is_action_pressed("ui_down"):
+			curSpeed = lerp(curSpeed,0.0,.08)
+		#decelerate
+		else :
+			curSpeed = lerp(curSpeed,0.0,.03)
+	
+	if Settings.pad : 
+		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+		if abs(_v.length())>0 :
+			curSpeed = lerp(curSpeed,maxSpeed,.01)
+		else :
+			curSpeed = lerp(curSpeed,0.0,.03)
 		
 	return dir.normalized()
 	

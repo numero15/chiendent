@@ -62,9 +62,12 @@ func _physics_process(delta):
 			owner.particlesJump.emitting = true;
 			owner.checkerGrind.set_deferred("monitoring", false)
 			change_state.emit($"../Move")
+			
+	if Settings.pad:
+		owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS
 		
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion  and !Settings.pad:
 		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 
 

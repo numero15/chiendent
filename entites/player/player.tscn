@@ -7849,7 +7849,7 @@ transform = Transform3D(0.353553, 0.612372, 0.707107, -0.866025, 0.5, 0, -0.3535
 target_position = Vector3(1, 0, 0)
 
 [node name="Trail" type="BoneAttachment3D" parent="head"]
-transform = Transform3D(1, -5.32907e-14, 2.38419e-07, 6.06205e-08, 0.967136, -0.25426, -2.30584e-07, 0.25426, 0.967136, -7.82152e-14, 1.43229, -0.0168861)
+transform = Transform3D(-1, -2.22282e-08, -3.22968e-07, 6.06202e-08, 0.967136, -0.25426, 3.18006e-07, -0.25426, -0.967136, 1.47622e-09, 0.877753, 0.016886)
 bone_name = "DEF-spine.003"
 bone_idx = 3
 use_external_skeleton = true
