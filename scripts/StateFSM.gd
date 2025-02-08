@@ -26,4 +26,3 @@ func enter_state(_msg := {}) -> void:
 func exit_state() -> void:
 	set_physics_process(false)
 	set_process_input(false)
-

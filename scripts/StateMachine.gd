@@ -16,4 +16,3 @@ func change_state(new_state : StateFSM,  msg: Dictionary = {}):
 		state.exit_state()
 	new_state.enter_state(msg)
 	state = new_state
-

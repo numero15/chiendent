@@ -1,5 +1,7 @@
 extends StateFSM
 
+var drift_multiplier : float  = 2.5
+
 func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
 	set_process_input(true)
@@ -31,8 +33,8 @@ func _physics_process(delta):
 		owner.particlesGrind.emitting = false;
 		owner.particlesGrind.hide();
 	
-	var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward").length()
-	if Input.is_action_pressed("ui_up") or _v>0:
+	var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	if Input.is_action_pressed("ui_up") or (_v.normalized().dot(Vector2(0,-1))>-.5 and  _v.length()>0):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
 	else :		
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_idle")
@@ -46,8 +48,21 @@ func _physics_process(delta):
 		change_state.emit($"../Air", {jump = owner.avgNormal})
 		
 	if Settings.pad:
-		owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS * 2
-
+		var multiplier = 1
+		
+		if Input.is_action_pressed("ui_drift"):
+			multiplier = drift_multiplier
+		
+		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
+			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * multiplier
+			owner.character.rotation.y += _r
+			
+			var i : float = clamp(_r*30,-.5,.5) + .5
+			var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
+			owner.animationTree["parameters/Blend2/blend_amount"]= lerpf(j,i,.05)
+		
+		
+		
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and !Settings.pad:
 		

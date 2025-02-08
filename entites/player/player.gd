@@ -179,8 +179,13 @@ func get_dir() -> Vector3:
 	
 	if Settings.pad : 
 		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-		if abs(_v.length())>0 :
+		
+		if Input.get_action_strength("move_backward") >0.8 :
+			curSpeed = lerp(curSpeed,0.0,.08)
+			
+		elif _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
 			curSpeed = lerp(curSpeed,maxSpeed,.01)
+		
 		else :
 			curSpeed = lerp(curSpeed,0.0,.03)
 		
