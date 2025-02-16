@@ -1,6 +1,6 @@
 extends StateFSM
 
-var drift_multiplier : float  = 2.5
+var drift_multiplier_turn : float  = 2.5
 
 func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
@@ -21,6 +21,8 @@ func _physics_process(delta):
 	
 	owner.vel = owner.curSpeed * owner.get_dir()
 	owner.check_boost(delta)
+	#temporary, this needs to be limitated to manual 
+	owner.check_trick()
 	owner.checkRays()
 	owner.jumpVectors = Vector3.ZERO
 	owner.velocity = owner.vel + owner.jumpVectors
@@ -34,7 +36,7 @@ func _physics_process(delta):
 		owner.particlesGrind.hide();
 	
 	var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	if Input.is_action_pressed("ui_up") or (_v.normalized().dot(Vector2(0,-1))>-.5 and  _v.length()>0):
+	if Input.is_action_pressed("ui_up") or (_v.normalized().dot(Vector2(0,-1))>-.5 and  _v.length()>0.8):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
 	else :		
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_idle")
@@ -48,10 +50,10 @@ func _physics_process(delta):
 		change_state.emit($"../Air", {jump = owner.avgNormal})
 		
 	if Settings.pad:
-		var multiplier = 1
+		var multiplier = 1.5
 		
 		if Input.is_action_pressed("ui_drift"):
-			multiplier = drift_multiplier
+			multiplier = drift_multiplier_turn
 		
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
 			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * multiplier

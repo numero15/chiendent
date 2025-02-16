@@ -1,9 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://bl2gxjli2esux"]
+[gd_scene load_steps=7 format=3 uid="uid://bl2gxjli2esux"]
 
 [ext_resource type="PackedScene" uid="uid://bnq4myqaup0wu" path="res://assets/character_rigged_02.glb" id="1_g3v4r"]
-[ext_resource type="Texture2D" uid="uid://t0bpwoy0ll1" path="res://assets/character_rigged_02_texture_character_nb.png" id="2_bl88d"]
 [ext_resource type="Shader" path="res://assets/shaders/outline_mesh_02.gdshader" id="3_8igyw"]
-[ext_resource type="Texture2D" uid="uid://7eqbqn6t1ih1" path="res://assets/texture_character_emissive.png" id="3_cvt13"]
+[ext_resource type="Texture2D" uid="uid://d07dwmwyq1sdw" path="res://assets/texture_character_nb.png" id="3_pt0pr"]
+
+[sub_resource type="Gradient" id="Gradient_1jhw4"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.25, 0.25, 0.25, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4t481"]
+gradient = SubResource("Gradient_1jhw4")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wqh3d"]
 render_priority = 0
@@ -14,15 +20,15 @@ shader_parameter/roughness = null
 shader_parameter/metallic_texture_channel = null
 shader_parameter/specular = null
 shader_parameter/metallic = null
-shader_parameter/emission = null
-shader_parameter/emission_energy = null
+shader_parameter/emission = Color(0, 0, 0, 1)
+shader_parameter/emission_energy = 0.5
 shader_parameter/uv1_scale = Vector3(1, 1, 1)
 shader_parameter/uv1_offset = null
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = null
 shader_parameter/outline_width = 1.0
-shader_parameter/texture_albedo = ExtResource("2_bl88d")
-shader_parameter/texture_emission = ExtResource("3_cvt13")
+shader_parameter/texture_albedo = ExtResource("3_pt0pr")
+shader_parameter/texture_emission = SubResource("GradientTexture1D_4t481")
 
 [node name="character_rigged_02" instance=ExtResource("1_g3v4r")]
 

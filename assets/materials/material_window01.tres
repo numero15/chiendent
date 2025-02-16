@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b6a2pe4im03bl"]
+
+[ext_resource type="Texture2D" uid="uid://dxjpqanl401md" path="res://assets/textures/window05.png" id="1_bovbm"]
+
+[resource]
+albedo_texture = ExtResource("1_bovbm")
+uv1_scale = Vector3(0.33, 0.33, 0.33)
+distance_fade_max_distance = 1.0

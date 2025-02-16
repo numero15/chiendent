@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=84 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -12,6 +12,8 @@
 [ext_resource type="Script" path="res://trail.gd" id="8_lv3q6"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="8_mroog"]
 [ext_resource type="Texture2D" uid="uid://ico2en2gui8l" path="res://assets/particle_textures/ripple_04.png" id="9_hel8y"]
+[ext_resource type="Script" path="res://entites/player/special.gd" id="11_b7mur"]
+[ext_resource type="Texture2D" uid="uid://ptt1en6cbafa" path="res://assets/progressBar.png" id="11_fv8gq"]
 [ext_resource type="Script" path="res://entites/player/ActionArea.gd" id="12_icmrs"]
 [ext_resource type="Shader" path="res://assets/shaders/outlines_2.gdshader" id="12_tqejy"]
 
@@ -28,7 +30,6 @@ alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 cull_mode = 2
 shading_mode = 0
-albedo_color = Color(0.760784, 1, 0.772549, 1)
 albedo_texture = ExtResource("7_c2kou")
 
 [sub_resource type="Curve" id="Curve_eekel"]
@@ -45,13 +46,13 @@ gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveTexture_m5fkd")
 
 [sub_resource type="QuadMesh" id="QuadMesh_dx5ba"]
-size = Vector2(-2.5, 0.5)
-center_offset = Vector3(0.8, 0, 0)
+size = Vector2(-1.2, 0.3)
+center_offset = Vector3(0.4, 0, 0)
 orientation = 1
 
 [sub_resource type="Gradient" id="Gradient_exqdo"]
 offsets = PackedFloat32Array(0, 0.602459, 1)
-colors = PackedColorArray(0.772549, 1, 0.690196, 1, 0.772549, 1, 0.690196, 1, 0.760784, 1, 0.772549, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_bbami"]
 gradient = SubResource("Gradient_exqdo")
@@ -63,7 +64,7 @@ vertex_color_use_as_albedo = true
 albedo_texture = SubResource("GradientTexture1D_bbami")
 
 [sub_resource type="Curve" id="Curve_5mk6v"]
-_data = [Vector2(0, 1), 0.0, 0.0502674, 0, 0, Vector2(1, 0), -3.37272, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0502674, 0, 0, Vector2(1, 0), -0.0921269, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lbelg"]
@@ -72,10 +73,9 @@ alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 cull_mode = 2
 disable_ambient_light = true
-albedo_color = Color(0.509804, 1, 0.329412, 1)
 albedo_texture = ExtResource("8_a8rmi")
 emission_enabled = true
-emission = Color(0.717647, 1, 0.690196, 1)
+emission = Color(1, 1, 1, 1)
 disable_receive_shadows = true
 billboard_mode = 3
 billboard_keep_scale = true
@@ -117,7 +117,6 @@ transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
-albedo_color = Color(0.631373, 1, 0.741176, 1)
 albedo_texture = ExtResource("9_hel8y")
 disable_receive_shadows = true
 
@@ -135,6 +134,33 @@ scale_curve = SubResource("CurveTexture_2goc4")
 [sub_resource type="QuadMesh" id="QuadMesh_k0ivi"]
 size = Vector2(2.5, 2.5)
 orientation = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f2wnf"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 1)
+border_width_left = 6
+border_width_right = 6
+border_width_bottom = 4
+border_color = Color(0.215686, 0.215686, 0.215686, 1)
+
+[sub_resource type="Gradient" id="Gradient_na7bv"]
+colors = PackedColorArray(0.215686, 0.215686, 0.215686, 1, 0.215686, 0.215686, 0.215686, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gt2d5"]
+gradient = SubResource("Gradient_na7bv")
+width = 150
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fao2c"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 1)
+border_width_top = 2
+border_color = Color(0.215686, 0.215686, 0.215686, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yl3ij"]
+viewport_path = NodePath("head/Combo/SubViewportCombo")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_wodmq"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 50.0
+dof_blur_far_transition = 30.0
 
 [sub_resource type="BoxMesh" id="BoxMesh_44t01"]
 flip_faces = true
@@ -167,23 +193,23 @@ shader_parameter/depth_limit = 500.0
 shader_parameter/gradient = SubResource("GradientTexture1D_xk12h")
 
 [sub_resource type="Gradient" id="Gradient_kej54"]
-offsets = PackedFloat32Array(0.0368852, 0.151639, 0.954918, 1)
+offsets = PackedFloat32Array(0.308824, 0.433824, 0.954918, 1)
 colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.18, 0.18, 0.18, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_xqewx"]
 gradient = SubResource("Gradient_kej54")
 
 [sub_resource type="Gradient" id="Gradient_jgh4a"]
-offsets = PackedFloat32Array(0.356557, 0.979508)
-colors = PackedColorArray(0.0824166, 0.0529, 0.23, 1, 0.75, 0.255, 0.26325, 1)
+offsets = PackedFloat32Array(0, 0.110294, 0.411765)
+colors = PackedColorArray(0.0105, 0.133525, 0.21, 1, 0.42471, 0.2106, 0.54, 1, 1, 0.5, 0.591667, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_1nh4g"]
 gradient = SubResource("Gradient_jgh4a")
 
 [sub_resource type="Gradient" id="Gradient_ieuom"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.209016, 0.434426, 0.840164)
-colors = PackedColorArray(1, 0.9195, 0.79, 1, 0.556863, 0.490196, 0.729412, 1, 0.87, 0.4263, 0.433695, 1, 0.7332, 0.771113, 0.94, 1)
+offsets = PackedFloat32Array(0.0735294, 0.198529, 0.507353)
+colors = PackedColorArray(1, 0.819608, 0.529412, 1, 1, 0.48, 0.922, 1, 1, 0.63, 0.636167, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rmmxn"]
 gradient = SubResource("Gradient_ieuom")
@@ -191,12 +217,12 @@ gradient = SubResource("Gradient_ieuom")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t74sj"]
 render_priority = 0
 shader = ExtResource("12_tqejy")
-shader_parameter/outlineColor = Color(0.168627, 0.0784314, 0.137255, 0)
+shader_parameter/outlineColor = Color(0.19, 0.19, 0.19, 1)
 shader_parameter/depth_threshold = 0.025
 shader_parameter/normal_threshold = 0.5
 shader_parameter/normal_smoothing = 0.25
 shader_parameter/max_thickness = 1.3
-shader_parameter/min_thickness = 0.5
+shader_parameter/min_thickness = 1.3
 shader_parameter/max_distance = 75.0
 shader_parameter/min_distance = 2.0
 shader_parameter/grazing_fresnel_power = 5.0
@@ -316,7 +342,7 @@ node_connections = [&"Blend2", 0, &"Animation 2", &"Blend2", 1, &"Animation", &"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
 collision_layer = 2
 script = ExtResource("1_gujcv")
-maxSpeed = 10.0
+maxSpeed = 7.0
 boostSpeed = 20.0
 gravity_strength = 2.5
 
@@ -486,11 +512,11 @@ draw_pass_1 = SubResource("QuadMesh_dx5ba")
 
 [node name="Trail3D" type="MeshInstance3D" parent="head/Trail/Node3D"]
 transform = Transform3D(1, 1.49012e-08, 1.49012e-08, 2.38419e-07, 1, 0, 5.96046e-08, -5.06639e-07, 1, 0, 0, 0)
-visible = false
 material_override = SubResource("StandardMaterial3D_g0x8m")
 cast_shadow = 0
 skeleton = NodePath("../../..")
 script = ExtResource("8_lv3q6")
+lifetime = 0.2
 base_width = 0.11
 width_profile = SubResource("Curve_5mk6v")
 
@@ -517,7 +543,110 @@ local_coords = true
 process_material = SubResource("ParticleProcessMaterial_ett24")
 draw_pass_1 = SubResource("QuadMesh_k0ivi")
 
+[node name="ParticlesTrick" type="GPUParticles3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.718315, 0)
+material_override = SubResource("StandardMaterial3D_xkf1v")
+cast_shadow = 0
+emitting = false
+amount = 2
+lifetime = 0.15
+one_shot = true
+preprocess = 0.02
+explosiveness = 0.3
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_ett24")
+draw_pass_1 = SubResource("QuadMesh_k0ivi")
+
+[node name="Special" type="Sprite3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.20661, 1.082, 0)
+cast_shadow = 0
+pixel_size = 0.005
+billboard = 1
+alpha_cut = 1
+script = ExtResource("11_b7mur")
+
+[node name="SubViewportSpecial" type="SubViewport" parent="head/Special"]
+transparent_bg = true
+mesh_lod_threshold = 0.0
+size = Vector2i(270, 60)
+
+[node name="Control" type="Control" parent="head/Special/SubViewportSpecial"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="head/Special/SubViewportSpecial/Control"]
+layout_mode = 0
+offset_left = 106.19
+offset_right = 251.19
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_f2wnf")
+text = "SPECIAL [100%]"
+
+[node name="ProgressBar" type="TextureProgressBar" parent="head/Special/SubViewportSpecial/Control"]
+custom_minimum_size = Vector2(250, 12)
+layout_mode = 0
+offset_top = 34.0
+offset_right = 200.0
+offset_bottom = 42.0
+value = 50.0
+fill_mode = 1
+nine_patch_stretch = true
+texture_under = SubResource("GradientTexture1D_gt2d5")
+texture_progress = ExtResource("11_fv8gq")
+
+[node name="HSeparator" type="HSeparator" parent="head/Special/SubViewportSpecial/Control"]
+visible = false
+layout_mode = 0
+offset_left = 206.0
+offset_right = 270.0
+offset_bottom = 28.0
+theme_override_styles/separator = SubResource("StyleBoxFlat_fao2c")
+
+[node name="Timer" type="Timer" parent="head/Special"]
+one_shot = true
+
+[node name="Combo" type="Sprite3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.056, 0.817, 0)
+cast_shadow = 0
+pixel_size = 0.005
+billboard = 1
+alpha_cut = 1
+texture = SubResource("ViewportTexture_yl3ij")
+
+[node name="SubViewportCombo" type="SubViewport" parent="head/Combo"]
+transparent_bg = true
+mesh_lod_threshold = 0.0
+size = Vector2i(270, 50)
+
+[node name="Control" type="Control" parent="head/Combo/SubViewportCombo"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="head/Combo/SubViewportCombo/Control"]
+layout_mode = 0
+offset_left = 70.0
+offset_right = 215.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_f2wnf")
+text = "COMBO [x1]"
+
+[node name="HSeparator" type="HSeparator" parent="head/Combo/SubViewportCombo/Control"]
+visible = false
+layout_mode = 0
+offset_right = 64.0
+offset_bottom = 28.0
+theme_override_styles/separator = SubResource("StyleBoxFlat_fao2c")
+
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("position_node")]
+attributes = SubResource("CameraAttributesPractical_wodmq")
 current = true
 script = ExtResource("8_mroog")
 position_node = NodePath("../head/SpringArm3D/CameraPlaceHolder")
@@ -550,15 +679,21 @@ anim_player = NodePath("../head/character_rigged/AnimationPlayer")
 parameters/Blend2/blend_amount = 0.0
 "parameters/Blend2 2/blend_amount" = 1.0
 
+[node name="TimerTrick" type="Timer" parent="."]
+one_shot = true
+
 [node name="TimerAnim" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
 
+[connection signal="boostChanged" from="." to="head/Special" method="_on_player_boost_changed"]
 [connection signal="change_state" from="States/Move" to="States" method="change_state"]
 [connection signal="change_state" from="States/Air" to="States" method="change_state"]
 [connection signal="change_state" from="States/Grind" to="States" method="change_state"]
 [connection signal="body_entered" from="head/checkerGrind" to="States/Move" method="_on_checker_grind_body_entered"]
+[connection signal="timeout" from="head/Special/Timer" to="head/Special" method="_on_timer_timeout"]
 [connection signal="timeout" from="ActionArea/Timer" to="ActionArea" method="_on_timer_timeout"]
+[connection signal="timeout" from="TimerTrick" to="." method="_on_timer_trick_timeout"]
 [connection signal="timeout" from="TimerAnim" to="States/Air" method="_on_timer_anim_timeout"]
 
 [editable path="head/character_rigged"]

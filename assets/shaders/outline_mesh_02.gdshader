@@ -45,7 +45,7 @@ void fragment() {
 	SPECULAR = specular;
 	vec3 emission_tex = texture(texture_emission,base_uv).rgb;
 	EMISSION = (emission.rgb+emission_tex)*emission_energy;
-	
+
 	float basic_fresnel = fresnel(outline_width, NORMAL, VIEW);
 	basic_fresnel = step(0.5, basic_fresnel); //0.5 magic number seems to give the most intuitive control
 	//ALBEDO = albedo.rgb * albedo_tex.rgb - basic_fresnel;

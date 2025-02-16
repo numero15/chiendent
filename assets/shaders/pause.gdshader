@@ -14,7 +14,7 @@ void fragment() {
  vec2 uv = UV;
  vec2 samplePosition = UV/.8;
  float whiteNoise = 9999.0;
- 
+
  // дрожание строк влево-вправо line jittering
  samplePosition.x = samplePosition.x+(rand(vec2(TIME,UV.y))-0.5)/3.0;
 
@@ -34,11 +34,11 @@ void fragment() {
      // белый цвет white color
      texColor = vec4(1);
  }
- 
+
  vec2 screen = SCREEN_UV;
  screen.x = screen.x+(rand(vec2(TIME,SCREEN_UV.y))-0.5)/64.0;
  screen.y = screen.y+(rand(vec2(TIME))-0.5)/64.0;
- 
+
  COLOR.rgb = textureLod(SCREEN_TEXTURE,screen,0.0).rgb;
  COLOR.rgb = mix(COLOR.rgb, texColor.rgb, texColor.a);
 }

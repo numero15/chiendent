@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dsuwfsk4jp6t5"]
+[gd_scene load_steps=36 format=3 uid="uid://dsuwfsk4jp6t5"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_piqpb"]
 [ext_resource type="Shader" path="res://assets/shaders/sky.gdshader" id="2_gha10"]
@@ -12,6 +12,12 @@
 [ext_resource type="Script" path="res://InGameUI.gd" id="17_myw0y"]
 [ext_resource type="Texture2D" uid="uid://c1d0iauntvgpm" path="res://assets/boost_bar_under.png" id="18_7w6is"]
 [ext_resource type="Texture2D" uid="uid://gf7aqd1urq87" path="res://assets/boost_bar_progress.png" id="19_cfcm0"]
+
+[sub_resource type="Gradient" id="Gradient_jdi1p"]
+colors = PackedColorArray(0, 0.0538334, 0.17, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7ffde"]
+gradient = SubResource("Gradient_jdi1p")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_45r5y"]
 frequency = 0.0067
@@ -61,23 +67,28 @@ sky = SubResource("Sky_fgx8b")
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.0
-ambient_light_energy = 0.1
-tonemap_mode = 2
-tonemap_exposure = 0.35
-tonemap_white = 0.7
+ambient_light_energy = 0.15
+tonemap_mode = 3
+tonemap_exposure = 0.3
+tonemap_white = 0.8
 ssao_intensity = 7.85
-glow_strength = 0.57
-glow_bloom = 0.28
-glow_blend_mode = 1
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 0.96
+glow_bloom = 0.45
 adjustment_enabled = true
 adjustment_brightness = 1.1
-adjustment_contrast = 1.2
-adjustment_saturation = 1.45
+adjustment_contrast = 1.1
+adjustment_saturation = 1.4
+adjustment_color_correction = SubResource("GradientTexture1D_7ffde")
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tn3y5"]
 dof_blur_far_distance = 20.0
 dof_blur_far_transition = 200.0
 dof_blur_amount = 0.05
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yig8q"]
+viewport_path = NodePath("head/Combo/SubViewportCombo")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_scb6e"]
 shader = ExtResource("5_kn070")
@@ -151,8 +162,10 @@ environment = SubResource("Environment_olw86")
 camera_attributes = SubResource("CameraAttributesPractical_tn3y5")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 8.61806, 5.82749)
+transform = Transform3D(1, 0, 0, 0, 0.550481, 0.834848, 0, -0.834848, 0.550481, 0, 8.61806, 5.82749)
 shadow_enabled = true
+shadow_opacity = 0.8
+shadow_blur = 0.0
 
 [node name="LevelContainer" type="Node3D" parent="."]
 
@@ -174,6 +187,9 @@ bones/6/rotation = Quaternion(-0.141409, 4.73134e-09, -3.16123e-08, 0.989951)
 
 [node name="Trail" parent="Player/head" index="8"]
 transform = Transform3D(-1, 6.44594e-07, 2.21344e-06, 6.06202e-08, 0.967136, -0.25426, -2.3046e-06, -0.25426, -0.967136, -4.2809e-08, 1.27719, 0.016886)
+
+[node name="Combo" parent="Player/head" index="13"]
+texture = SubResource("ViewportTexture_yig8q")
 
 [node name="AnimationTree" parent="Player" index="5"]
 parameters/Blend2/blend_amount = 0
@@ -259,10 +275,6 @@ process_material = SubResource("ParticleProcessMaterial_oe6y5")
 draw_pass_1 = SubResource("RibbonTrailMesh_005wj")
 script = ExtResource("12_a886i")
 origin_node = NodePath("../Player")
-
-[connection signal="change_state" from="Player/States/Move" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Air" to="Player/States" method="change_state"]
-[connection signal="change_state" from="Player/States/Grind" to="Player/States" method="change_state"]
 
 [editable path="Player"]
 [editable path="Player/head/character_rigged"]

@@ -5,6 +5,7 @@ var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
 @export var maxSpeed := 20.0
+@export var drift_multiplier_speed : float  = 2.5
 @export var boostSpeed := 40.0
 @export var gravity_strength :float= .5
 @export var jump_strength :float= 20
@@ -17,9 +18,11 @@ var affected_by_gravity: bool = true
 @onready var particlesGrind = get_node("head/ParticlesGrind")
 @onready var particlesBoost = get_node("head/Trail/Node3D/ParticlesBoost")
 @onready var particlesJump = get_node("head/ParticlesJump")
+@onready var particlesTrick = get_node("head/ParticlesTrick")
 @onready var animationTree = get_node("AnimationTree")
 @onready var camera = get_node("Camera3D")
 @onready var timerAnim = get_node("TimerAnim")
+@onready var timerTrick = get_node("TimerTrick")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -40,7 +43,9 @@ var maxBoost: float = 30
 var curBoost : float = 30
 var isBoost = false
 
-signal boostChanged
+var trickCount : int = 0
+
+signal boostChanged(value, max)
 
 
 
@@ -69,7 +74,7 @@ func _physics_process(delta):
 		curBoost += delta*20
 		if curBoost > maxBoost :
 			curBoost = maxBoost
-		boostChanged.emit()
+		boostChanged.emit(curBoost, maxBoost)
 		
 	#rotate camera with stick
 	if Settings.pad:
@@ -183,7 +188,7 @@ func get_dir() -> Vector3:
 		if Input.get_action_strength("move_backward") >0.8 :
 			curSpeed = lerp(curSpeed,0.0,.08)
 			
-		elif _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
+		elif _v.dot(Vector2(0,-1))>-.5 and  _v.length()>.8 :
 			curSpeed = lerp(curSpeed,maxSpeed,.01)
 		
 		else :
@@ -203,7 +208,7 @@ func check_boost(delta):
 	if Input.is_action_pressed("ui_boost") and curBoost > 0:
 		curSpeed = lerp(curSpeed,boostSpeed,.2)
 		curBoost -= delta*50
-		boostChanged.emit()
+		boostChanged.emit(curBoost, maxBoost)
 		isBoost = true
 		particlesBoost.emitting = true
 		camera.fov = lerpf(camera.fov,110,.2)
@@ -214,3 +219,20 @@ func check_boost(delta):
 		camera.fov = lerpf(camera.fov,75,.01)
 		
 	if curBoost<0 : curBoost = 0
+	
+	
+func check_trick():
+	if Input.is_action_pressed("ui_trick") :
+		
+		if timerTrick.time_left < .2 :
+			trickCount += 1
+			particlesTrick.emitting = true;
+		elif  timerTrick.time_left > .2 :
+			trickCount = 0
+		if timerTrick.is_stopped() :
+			timerTrick.start();
+			trickCount += 1
+			particlesTrick.emitting = true;
+
+func _on_timer_trick_timeout() -> void:
+	trickCount = 0

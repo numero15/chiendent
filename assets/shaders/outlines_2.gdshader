@@ -1,6 +1,5 @@
 shader_type spatial;
 render_mode unshaded, blend_mix, depth_draw_never, depth_test_disabled;
-
 /*
 	AUTHOR: Hannah "EMBYR" Crawford
 	ENGINE_VERSION: 4.0.3
@@ -33,7 +32,7 @@ render_mode unshaded, blend_mix, depth_draw_never, depth_test_disabled;
 //#define NAIVE_NORMAL_RECONSTRUCTION
 
 group_uniforms outline;
-uniform vec4 outlineColor: source_color = vec4(0.0, 0.0, 0.0, 0.78);
+uniform vec4 outlineColor: source_color /*= vec4(0.0, 0.0, 0.0, 0.78)*/;
 uniform float depth_threshold = 0.025;
 uniform float normal_threshold : hint_range(0.0, 1.5) = 0.5;
 uniform float normal_smoothing : hint_range(0.0, 1.0) = 0.25;

@@ -15,8 +15,8 @@ func _ready():
 	countGraphitti = 0
 	graphittiLabel.text = str(countGraphitti)+"/"+str(allGraphitti)
 
-func update():
-	boostGauge.value = player.curBoost / player.maxBoost * boostGauge.max_value
+func update(value, max):
+	boostGauge.value = value / max * boostGauge.max_value
 	
 func upadteBillboardCount():
 	countGraphitti+=1
