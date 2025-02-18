@@ -21,8 +21,6 @@ func _physics_process(delta):
 	
 	owner.vel = owner.curSpeed * owner.get_dir()
 	owner.check_boost(delta)
-	#temporary, this needs to be limitated to manual 
-	owner.check_trick()
 	owner.checkRays()
 	owner.jumpVectors = Vector3.ZERO
 	owner.velocity = owner.vel + owner.jumpVectors
@@ -50,14 +48,21 @@ func _physics_process(delta):
 		change_state.emit($"../Air", {jump = owner.avgNormal})
 		
 	if Settings.pad:
-		var multiplier = 1.5
+		var multiplier = 1.2
 		
-		if Input.is_action_pressed("ui_drift"):
+		if Input.is_action_pressed("ui_drift") and owner.curBoost>0:
+			owner.boostChanged.emit(owner.curBoost, owner.maxBoost)
 			multiplier = drift_multiplier_turn
+			owner.curBoost -= delta*5
+			if owner.curBoost<0 : owner.curBoost = 0
+			if owner.check_trick():
+				#TODO change the way the custom max speed is set
+				owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed*2,.5)
 		
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
 			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * multiplier
 			owner.character.rotation.y += _r
+			
 			
 			var i : float = clamp(_r*30,-.5,.5) + .5
 			var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
@@ -82,4 +87,5 @@ func _input(event: InputEvent) -> void:
 		#owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z,0.0,.1)
 
 func _on_checker_grind_body_entered(body):
-	change_state.emit($"../Grind",{_body = body})
+	pass
+	#change_state.emit($"../Grind",{_body = body})

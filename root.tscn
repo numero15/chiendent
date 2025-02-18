@@ -614,11 +614,12 @@ gravity_strength = 1.0
 transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0, 0)
 
 [node name="Skeleton3D" parent="Player/head/character_rigged/rig_game" index="0"]
-bones/4/rotation = Quaternion(0.30103, 1.1368e-07, 1.07657e-07, 0.953615)
-bones/6/rotation = Quaternion(0.047037, 3.04538e-14, 1.12145e-08, 0.998893)
+bones/4/rotation = Quaternion(0.260911, 1.1508e-07, 9.33093e-08, 0.965363)
+bones/5/rotation = Quaternion(-0.245386, -1.15565e-07, -8.77568e-08, 0.969425)
+bones/6/rotation = Quaternion(-0.141409, 4.73134e-09, -3.16123e-08, 0.989951)
 
 [node name="Trail" parent="Player/head" index="8"]
-transform = Transform3D(1, -5.32907e-14, 2.38419e-07, 6.06205e-08, 0.967136, -0.25426, -2.30584e-07, 0.25426, 0.967136, -7.82152e-14, 1.43229, -0.0168861)
+transform = Transform3D(-1, 6.44594e-07, 2.21344e-06, 6.06202e-08, 0.967136, -0.25426, -2.3046e-06, -0.25426, -0.967136, -4.2809e-08, 1.27719, 0.016886)
 
 [node name="Special" parent="Player/head" index="12"]
 texture = SubResource("ViewportTexture_rd01d")

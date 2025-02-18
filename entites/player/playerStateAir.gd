@@ -14,7 +14,9 @@ func enter_state(_msg := {}) -> void:
 		owner.avgNormal =  _msg["jump"].normalized()
 		owner.jumpVec =  owner.avgNormal * owner.jump_strength
 		owner.gravity =  owner.avgNormal * -owner.gravity_strength
-		owner.jumpVectors += owner.jumpVec
+		#I replaced += by = ti fix jump from grind bug but it may fuck something else, I don't know what I do
+		owner.jumpVectors = owner.jumpVec
+		print(owner.jumpVec.length())
 		
 		owner.affected_by_gravity = false
 		
@@ -31,7 +33,7 @@ func enter_state(_msg := {}) -> void:
 	
 func _physics_process(delta):
 	owner.check_boost(delta)
-	owner.checkRays(true)
+	owner.checkRays(true)	
 	if owner.jumpVectors.length() < (owner.jumpVectors + owner.gravity).length():
 	#if owner.jumpVectors.dot(owner.jumpVectors + owner.gravity) <0 :
 		owner.affected_by_gravity = true
@@ -51,21 +53,20 @@ func _physics_process(delta):
 	
 	owner.move()
 	
-	if Input.is_action_just_pressed("ui_boost"):
-		print("trick")
-		#owner.characterMesh.
-	
 	if owner.is_on_floor():
 		if owner.checkerGroundJump.get_collision_normal().dot(owner.global_transform.basis.y) > .5:
-			##owner.particlesJump.global_transform = owner.global_transform
-			#print('land')
 			owner.particlesJump.emitting = true;
-			owner.checkerGrind.set_deferred("monitoring", false)
+			owner.checkerGrind.set_deferred("monitoring", false)		
 			change_state.emit($"../Move")
 			
 	if Settings.pad:
-		owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS
-		
+		#owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS
+		#this is copy pasted from the move state, maybe it should be moved to player
+		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
+			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 1.5
+			owner.character.rotation.y += _r
+			
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion  and !Settings.pad:
 		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
@@ -75,3 +76,8 @@ func _input(event: InputEvent) -> void:
 func _on_timer_anim_timeout():
 	owner.timerAnim.stop()
 	owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_fall")
+
+
+func _on_checker_grind_body_entered(body: Node3D) -> void:
+	if owner.timerCoolDownGrind.is_stopped() :
+		change_state.emit($"../Grind",{_body = body})

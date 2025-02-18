@@ -23,6 +23,7 @@ var affected_by_gravity: bool = true
 @onready var camera = get_node("Camera3D")
 @onready var timerAnim = get_node("TimerAnim")
 @onready var timerTrick = get_node("TimerTrick")
+@onready var timerCoolDownGrind : Timer = get_node("TimerCoolDownGrind")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -70,8 +71,8 @@ func _physics_process(delta):
 	
 	
 	
-	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost"):
-		curBoost += delta*20
+	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost") and !Input.is_action_pressed("ui_drift") :
+		curBoost += delta*2
 		if curBoost > maxBoost :
 			curBoost = maxBoost
 		boostChanged.emit(curBoost, maxBoost)
@@ -207,7 +208,7 @@ func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
 func check_boost(delta):
 	if Input.is_action_pressed("ui_boost") and curBoost > 0:
 		curSpeed = lerp(curSpeed,boostSpeed,.2)
-		curBoost -= delta*50
+		curBoost -= delta*30
 		boostChanged.emit(curBoost, maxBoost)
 		isBoost = true
 		particlesBoost.emitting = true
@@ -221,18 +222,31 @@ func check_boost(delta):
 	if curBoost<0 : curBoost = 0
 	
 	
-func check_trick():
-	if Input.is_action_pressed("ui_trick") :
+func check_trick() -> bool:
+	if Input.is_action_just_pressed("ui_trick") :
 		
-		if timerTrick.time_left < .2 :
-			trickCount += 1
-			particlesTrick.emitting = true;
+		if timerTrick.is_stopped() :
+			trick()
+			return true
+		elif timerTrick.time_left < .2 :
+			trick()
+			return true
 		elif  timerTrick.time_left > .2 :
 			trickCount = 0
-		if timerTrick.is_stopped() :
-			timerTrick.start();
-			trickCount += 1
-			particlesTrick.emitting = true;
+			return false
+		else :
+			return false
+		
+	else :
+		return false
 
+func trick() :
+	trickCount += 1
+	curBoost += 2
+	timerTrick.stop()
+	timerTrick.start()
+	if curBoost>maxBoost: curBoost = maxBoost
+	particlesTrick.emitting = true;
+	
 func _on_timer_trick_timeout() -> void:
 	trickCount = 0

@@ -47,23 +47,30 @@ func enter_state(_msg := {}) -> void:
 	var vel_nor : Vector3 = owner.velocity.normalized()
 	if curve_forward.dot(vel_nor) > 0 :
 		direction = 1
+		owner.character.rotation.y = 90
 	else :
 		direction = -1
+		#WHYYY ?
+		owner.character.rotation.y = 45
 	
 	#reset sprite rotation to make it automatically follow curve
-	owner.character.rotation.y = 90
+	#owner.character.rotation.y = 90
+	
 
 	
 func _physics_process(delta):
 	owner.check_boost(delta)
-	if Input.is_action_pressed("ui_up") and !Input.is_action_pressed("ui_down") and owner.curSpeed<owner.maxSpeed:
-		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.05)		
+	#accelerate deprecated
+	#if Input.is_action_pressed("ui_up") and !Input.is_action_pressed("ui_down") and owner.curSpeed<owner.maxSpeed:
+	if owner. check_trick() :
+		#TODO change the way the custom max speed is set
+		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed*2.5,.3)
 	#brake
 	elif Input.is_action_pressed("ui_down"):
 		owner.curSpeed = lerp(owner.curSpeed,0.0,.08)
 	#decelerate
 	else :
-		owner.curSpeed = lerp(owner.curSpeed,0.0,.03)
+		owner.curSpeed = lerp(owner.curSpeed,0.0,.002)
 	
 	var  prev_progress_ratio : float
 	var  prev_offset : float
@@ -75,9 +82,11 @@ func _physics_process(delta):
 	#prevent looping if path is open
 	if !loop:
 		if direction == 1 && progress_ratio < prev_progress_ratio :
+			owner.timerCoolDownGrind.start();
 			change_state.emit($"../Air")
 			return
 		if direction == -1 && progress_ratio > prev_progress_ratio :
+			owner.timerCoolDownGrind.start();
 			change_state.emit($"../Air")
 			return
 	
@@ -88,6 +97,7 @@ func _physics_process(delta):
 		#owner.curSpeed = 5
 	
 	if Input.is_action_just_pressed("ui_jump"):
+		owner.timerCoolDownGrind.start();
 		change_state.emit($"../Air", {jump = curve.sample_baked_up_vector(offset, true)})
 		owner.checkerGrind.set_deferred("monitoring", false)
 	
