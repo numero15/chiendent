@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=84 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -16,7 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://ptt1en6cbafa" path="res://assets/progressBar.png" id="11_fv8gq"]
 [ext_resource type="Script" path="res://entites/player/ActionArea.gd" id="12_icmrs"]
 [ext_resource type="Shader" path="res://assets/shaders/outlines_2.gdshader" id="12_tqejy"]
-[ext_resource type="Shader" path="res://assets/shaders/outlines_3.gdshader" id="16_jnpqx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oofw1"]
 radius = 0.4
@@ -235,23 +234,6 @@ shader_parameter/depth_limit = 500.0
 shader_parameter/gradient_light = SubResource("GradientTexture1D_rmmxn")
 shader_parameter/gradient_dark = SubResource("GradientTexture1D_1nh4g")
 shader_parameter/gradient_cutoff = SubResource("GradientTexture1D_xqewx")
-
-[sub_resource type="BoxMesh" id="BoxMesh_vlrca"]
-flip_faces = true
-size = Vector3(2, 2, 2)
-
-[sub_resource type="Gradient" id="Gradient_5iekg"]
-colors = PackedColorArray(0.85, 0.0708333, 0, 1, 0.24, 0.518667, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_u86ha"]
-gradient = SubResource("Gradient_5iekg")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xohsb"]
-render_priority = 0
-shader = ExtResource("16_jnpqx")
-shader_parameter/fog_intensity = 0.622
-shader_parameter/fog_amount = 0.622
-shader_parameter/gradient = SubResource("GradientTexture1D_u86ha")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_agdtd"]
 radius = 1.5
@@ -678,11 +660,6 @@ surface_material_override/0 = SubResource("ShaderMaterial_i86so")
 visible = false
 mesh = SubResource("BoxMesh_44t01")
 surface_material_override/0 = SubResource("ShaderMaterial_t74sj")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
-visible = false
-mesh = SubResource("BoxMesh_vlrca")
-surface_material_override/0 = SubResource("ShaderMaterial_xohsb")
 
 [node name="ActionArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04155, 0)

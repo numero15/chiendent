@@ -760,14 +760,13 @@ transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 
 script = ExtResource("12_u1cne")
 block_data = SubResource("Resource_fjw2j")
 
-[node name="UI" type="Control" parent="." node_paths=PackedStringArray("player", "boostGauge")]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("player")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("17_had5m")
 player = NodePath("../Player")
-boostGauge = NodePath("MarginContainer/TextureProgressBar")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 layout_mode = 0

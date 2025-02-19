@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dsuwfsk4jp6t5"]
+[gd_scene load_steps=34 format=3 uid="uid://dsuwfsk4jp6t5"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_piqpb"]
 [ext_resource type="Shader" path="res://assets/shaders/sky.gdshader" id="2_gha10"]
@@ -10,8 +10,6 @@
 [ext_resource type="Script" path="res://scripts/Pause.gd" id="10_7oapq"]
 [ext_resource type="Script" path="res://entites/ParticlesGravity.gd" id="12_a886i"]
 [ext_resource type="Script" path="res://InGameUI.gd" id="17_myw0y"]
-[ext_resource type="Texture2D" uid="uid://c1d0iauntvgpm" path="res://assets/boost_bar_under.png" id="18_7w6is"]
-[ext_resource type="Texture2D" uid="uid://gf7aqd1urq87" path="res://assets/boost_bar_progress.png" id="19_cfcm0"]
 
 [sub_resource type="Gradient" id="Gradient_jdi1p"]
 colors = PackedColorArray(0, 0.0538334, 0.17, 1, 1, 1, 1, 1)
@@ -181,64 +179,18 @@ gravity_strength = 1.0
 transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0, 0)
 
 [node name="Skeleton3D" parent="Player/head/character_rigged/rig_game" index="0"]
-bones/0/position = Vector3(-7.99361e-15, 1.08836, -0.0684983)
-bones/0/rotation = Quaternion(0.168207, 1.17511e-07, 2.00519e-08, 0.985752)
-bones/1/rotation = Quaternion(0.159394, 1.93431e-14, 3.80024e-08, 0.987215)
-bones/2/position = Vector3(-1.84297e-14, 0.0310132, 1.95578e-08)
-bones/2/rotation = Quaternion(-0.370593, -7.53904e-08, -5.82751e-08, 0.928796)
-bones/3/position = Vector3(-2.81808e-15, 0.176695, 1.49012e-08)
-bones/3/rotation = Quaternion(0.178145, 7.98717e-08, 2.8013e-08, 0.984004)
 bones/4/rotation = Quaternion(0.260911, 1.1508e-07, 9.33093e-08, 0.965363)
 bones/5/rotation = Quaternion(-0.245386, -1.15565e-07, -8.77568e-08, 0.969425)
 bones/6/rotation = Quaternion(-0.141409, 4.73134e-09, -3.16123e-08, 0.989951)
-bones/8/position = Vector3(0.00299919, 0.217144, -0.0115659)
-bones/8/rotation = Quaternion(-0.418734, 0.544509, -0.166445, 0.707438)
-bones/9/position = Vector3(-1.27542e-07, 0.109569, -2.95377e-08)
-bones/9/rotation = Quaternion(-5.64749e-08, 0.120389, 1.96734e-08, 0.992727)
-bones/10/position = Vector3(2.09876e-08, 0.109569, -5.03495e-09)
-bones/10/rotation = Quaternion(0.403973, 0.12039, -0.0537256, 0.905221)
-bones/11/position = Vector3(-2.51304e-08, 0.137727, 3.34069e-08)
-bones/11/rotation = Quaternion(-1.34914e-07, 0.0338175, -1.09294e-07, 0.999428)
-bones/12/position = Vector3(1.54671e-07, 0.137727, -8.23009e-08)
-bones/12/rotation = Quaternion(0.162174, 0.028016, -0.187299, 0.968418)
-bones/14/position = Vector3(-0.00299917, 0.217144, -0.0115656)
-bones/14/rotation = Quaternion(-0.418734, -0.544509, 0.166444, 0.707438)
-bones/15/position = Vector3(-6.52177e-08, 0.109569, -1.07718e-07)
-bones/15/rotation = Quaternion(1.74e-08, -0.120389, -1.02626e-07, 0.992727)
-bones/16/position = Vector3(4.13559e-08, 0.109569, 1.52796e-08)
-bones/16/rotation = Quaternion(0.403975, -0.12039, 0.053726, 0.905221)
-bones/17/position = Vector3(-2.13694e-08, 0.137727, -3.29023e-09)
-bones/17/rotation = Quaternion(-4.2293e-08, -0.0338174, -7.89239e-08, 0.999428)
-bones/18/position = Vector3(-2.44241e-08, 0.137727, -4.92892e-08)
-bones/18/rotation = Quaternion(0.162173, -0.0280157, 0.1873, 0.968418)
-bones/23/rotation = Quaternion(0.900595, 0.027323, -0.319472, 0.293462)
-bones/24/position = Vector3(-1.91673e-09, 0.210188, 6.49898e-09)
-bones/24/rotation = Quaternion(3.01575e-09, 0.0945653, 1.55213e-08, 0.995519)
-bones/25/position = Vector3(-9.23681e-09, 0.210188, -1.53086e-08)
-bones/25/rotation = Quaternion(0.196765, 0.0945651, -0.0190706, 0.975693)
-bones/26/position = Vector3(-3.58127e-08, 0.271395, 8.20029e-09)
-bones/26/rotation = Quaternion(8.53001e-09, -0.165131, -4.68919e-09, 0.986272)
-bones/27/position = Vector3(1.88038e-09, 0.271395, 4.07329e-09)
-bones/27/rotation = Quaternion(-0.543671, 0.113999, 0.08614, 0.827047)
-bones/28/position = Vector3(3.73497e-08, 0.23811, 2.25502e-08)
-bones/28/rotation = Quaternion(3.93465e-06, 0.968948, -0.247266, -1.26953e-06)
-bones/29/rotation = Quaternion(0.900595, -0.0273227, 0.319473, 0.293462)
-bones/30/position = Vector3(-1.32143e-08, 0.210188, 8.00464e-08)
-bones/30/rotation = Quaternion(-6.89541e-08, -0.0945656, 2.09996e-08, 0.995519)
-bones/31/position = Vector3(-7.34575e-09, 0.210188, 6.69388e-09)
-bones/31/rotation = Quaternion(0.196765, -0.0945655, 0.0190707, 0.975693)
-bones/32/position = Vector3(-1.37434e-08, 0.271395, 7.96398e-09)
-bones/32/rotation = Quaternion(4.9264e-08, 0.165131, -2.39462e-08, 0.986272)
-bones/33/position = Vector3(-1.96648e-08, 0.271395, 8.51128e-09)
-bones/33/rotation = Quaternion(-0.543671, -0.113999, -0.08614, 0.827047)
-bones/34/position = Vector3(6.90409e-09, 0.23811, -3.81555e-08)
-bones/34/rotation = Quaternion(-3.85319e-06, 0.968948, -0.247265, 1.20413e-06)
 
 [node name="Trail" parent="Player/head" index="8"]
 transform = Transform3D(-1, 6.44594e-07, 2.21344e-06, 6.06202e-08, 0.967136, -0.25426, -2.3046e-06, -0.25426, -0.967136, -4.2809e-08, 1.27719, 0.016886)
 
 [node name="Combo" parent="Player/head" index="13"]
 texture = SubResource("ViewportTexture_yig8q")
+
+[node name="Outlines2" parent="Player/Camera3D" index="1"]
+visible = true
 
 [node name="AnimationTree" parent="Player" index="5"]
 parameters/Blend2/blend_amount = 0
@@ -281,14 +233,14 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.329412)
 
-[node name="UI" type="Control" parent="." node_paths=PackedStringArray("player", "boostGauge", "level", "graphittiLabel")]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("player", "level", "graphittiLabel")]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("17_myw0y")
 player = NodePath("../Player")
-boostGauge = NodePath("MarginContainer/VBoxContainer/TextureProgressBar")
 level = NodePath("../LevelContainer")
 graphittiLabel = NodePath("MarginContainer/VBoxContainer/GraphittiLabel")
 
@@ -301,12 +253,6 @@ theme_override_constants/margin_top = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer"]
 layout_mode = 2
-
-[node name="TextureProgressBar" type="TextureProgressBar" parent="UI/MarginContainer/VBoxContainer"]
-layout_mode = 2
-value = 100.0
-texture_under = ExtResource("18_7w6is")
-texture_progress = ExtResource("19_cfcm0")
 
 [node name="GraphittiLabel" type="Label" parent="UI/MarginContainer/VBoxContainer"]
 layout_mode = 2

@@ -3,26 +3,26 @@ render_mode unshaded, blend_mix, depth_draw_never, depth_test_disabled;
 /*
 	AUTHOR: Hannah "EMBYR" Crawford
 	ENGINE_VERSION: 4.0.3
-	
+
 	HOW TO USE:
 		1. Create a MeshInstance3D node and place it in your scene.
 		2. Set it's size to 2x2.
 		3. Enable the "Flip Faces" option.
 		4. Create a new shader material with this shader.
 		5. Assign the material to the MeshInstance3D
-	
+
 	LIMITATIONS:
 		Does not work well with TAA enabled.
-	
+
 	MOBILE_NOTES:
 		The mobile renderer does not have access to the normal_roughness texture
 		so we must rely on techniques to reconstruct this information from the
 		depth buffer.
-		
+
 		If you require support on mobile please uncomment the SUPPORT_MOBILE line
 		below. I have done my best to match the appearance between the two modes
 		however, mobile does not take into account smooth-shaded faces.
-		
+
 		The high-quality reconstruction method used on mobile is rather heavy on
 		texture samples. If you would like to use the lower-quality recontruction
 		method for better performance, please uncomment the NAIVE_NORMAL_RECONSTRUCTION
@@ -127,14 +127,14 @@ varying flat mat4 model_view_matrix;
 #endif// !SUPPORT_MOBILE
 
 struct UVNeighbors {
-	vec2 center; 
+	vec2 center;
 	vec2 left;     vec2 right;     vec2 up;          vec2 down;
 	vec2 top_left; vec2 top_right; vec2 bottom_left; vec2 bottom_right;
 };
 
 struct NeighborDepthSamples {
-	float c_d; 
-	float l_d;  float r_d;  float u_d;  float d_d; 
+	float c_d;
+	float l_d;  float r_d;  float u_d;  float d_d;
 	float tl_d; float tr_d; float bl_d; float br_d;
 };
 
@@ -193,16 +193,16 @@ float getGrazingAngleModulation(vec3 pixel_normal, vec3 view) {
 }
 
 float detectEdgesDepth(NeighborDepthSamples depth_samples, vec3 pixel_normal, vec3 view) {
-	float n_total = 
-		depth_samples.l_d + 
-		depth_samples.r_d + 
-		depth_samples.u_d + 
-		depth_samples.d_d + 
-		depth_samples.tl_d + 
-		depth_samples.tr_d + 
-		depth_samples.bl_d + 
+	float n_total =
+		depth_samples.l_d +
+		depth_samples.r_d +
+		depth_samples.u_d +
+		depth_samples.d_d +
+		depth_samples.tl_d +
+		depth_samples.tr_d +
+		depth_samples.bl_d +
 		depth_samples.br_d;
-	
+
 	float t = depth_threshold * getGrazingAngleModulation(pixel_normal, view);
 	return step(t, n_total - (depth_samples.c_d * 8.0));
 }
@@ -228,17 +228,17 @@ vec3 reconstructWorldNormal(sampler2D depth_tex, mat4 model_view, mat4 inv_proj,
     float b1 = texture(depth_tex, screen_uv - vec2(0,1) * e).r;
     float t1 = texture(depth_tex, screen_uv + vec2(0,1) * e).r;
     float t2 = texture(depth_tex, screen_uv + vec2(0,2) * e).r;
-    
+
     float dl = abs(l1 * l2 / (2.0 * l2 - l1) - c0);
     float dr = abs(r1 * r2 / (2.0 * r2 - r1) - c0);
     float db = abs(b1 * b2 / (2.0 * b2 - b1) - c0);
     float dt = abs(t1 * t2 / (2.0 * t2 - t1) - c0);
-    
+
     vec3 ce = reconstructWorldPosition(c0, model_view, inv_proj, screen_uv, world, inv_cam);
 
-    vec3 dpdx = (dl<dr) ?  ce-reconstructWorldPosition(l1, model_view, inv_proj, screen_uv - vec2(1,0) * e, world, inv_cam) : 
+    vec3 dpdx = (dl<dr) ?  ce-reconstructWorldPosition(l1, model_view, inv_proj, screen_uv - vec2(1,0) * e, world, inv_cam) :
                           -ce+reconstructWorldPosition(r1, model_view, inv_proj, screen_uv + vec2(1,0) * e, world, inv_cam) ;
-    vec3 dpdy = (db<dt) ?  ce-reconstructWorldPosition(b1, model_view, inv_proj, screen_uv - vec2(0,1) * e, world, inv_cam) : 
+    vec3 dpdy = (db<dt) ?  ce-reconstructWorldPosition(b1, model_view, inv_proj, screen_uv - vec2(0,1) * e, world, inv_cam) :
                           -ce+reconstructWorldPosition(t1, model_view, inv_proj, screen_uv + vec2(0,1) * e, world, inv_cam) ;
 
     return normalize(cross(dpdx,dpdy));
@@ -259,19 +259,19 @@ float detectEdgesNormalReconstructed(UVNeighbors uvs, sampler2D depth_tex, mat4 
 	vec3 n_tr = reconstructWorldNormal(depth_tex, model_view, inv_proj, uvs.top_right,    world, inv_cam, viewport_size);
 	vec3 n_bl = reconstructWorldNormal(depth_tex, model_view, inv_proj, uvs.bottom_left,  world, inv_cam, viewport_size);
 	vec3 n_br = reconstructWorldNormal(depth_tex, model_view, inv_proj, uvs.bottom_right, world, inv_cam, viewport_size);
-	
+
 	vec3 normalFiniteDifference0 = n_tr - n_bl;
 	vec3 normalFiniteDifference1 = n_tl - n_br;
 	vec3 normalFiniteDifference2 = n_l - n_r;
 	vec3 normalFiniteDifference3 = n_u - n_d;
-	
+
 	float edgeNormal = sqrt(
-		dot(normalFiniteDifference0, normalFiniteDifference0) + 
-		dot(normalFiniteDifference1, normalFiniteDifference1) + 
-		dot(normalFiniteDifference2, normalFiniteDifference2) + 
+		dot(normalFiniteDifference0, normalFiniteDifference0) +
+		dot(normalFiniteDifference1, normalFiniteDifference1) +
+		dot(normalFiniteDifference2, normalFiniteDifference2) +
 		dot(normalFiniteDifference3, normalFiniteDifference3)
 	) * 0.5;
-	
+
 	return smoothstep(normal_threshold - normal_smoothing, normal_threshold + normal_smoothing, edgeNormal);
 }
 #else
@@ -284,26 +284,26 @@ float detectEdgesNormal(UVNeighbors uvs, sampler2D normTex, vec3 camDirWorld){
 	vec3 n_tr = texture(normTex, uvs.top_right).xyz;
 	vec3 n_bl = texture(normTex, uvs.bottom_left).xyz;
 	vec3 n_br = texture(normTex, uvs.bottom_right).xyz;
-	
+
 	vec3 normalFiniteDifference0 = n_tr - n_bl;
 	vec3 normalFiniteDifference1 = n_tl - n_br;
 	vec3 normalFiniteDifference2 = n_l - n_r;
 	vec3 normalFiniteDifference3 = n_u - n_d;
-	
+
 	float edgeNormal = sqrt(
-		dot(normalFiniteDifference0, normalFiniteDifference0) + 
-		dot(normalFiniteDifference1, normalFiniteDifference1) + 
-		dot(normalFiniteDifference2, normalFiniteDifference2) + 
+		dot(normalFiniteDifference0, normalFiniteDifference0) +
+		dot(normalFiniteDifference1, normalFiniteDifference1) +
+		dot(normalFiniteDifference2, normalFiniteDifference2) +
 		dot(normalFiniteDifference3, normalFiniteDifference3)
 	);
-	
+
 	return smoothstep(normal_threshold - normal_smoothing, normal_threshold + normal_smoothing, edgeNormal);
 }
 #endif//SUPPORT_MOBILE
 
 void vertex() {
 	POSITION = vec4(VERTEX, 1.0);
-	
+
 #ifdef SUPPORT_MOBILE
     model_view_matrix = INV_VIEW_MATRIX * mat4(VIEW_MATRIX[0],VIEW_MATRIX[1],VIEW_MATRIX[2],VIEW_MATRIX[3]);;
 #endif
@@ -311,48 +311,48 @@ void vertex() {
 
 void fragment() {
 	float aspect = float(VIEWPORT_SIZE.y) / float(VIEWPORT_SIZE.x);
-	
+
 	UVNeighbors n = getNeighbors(SCREEN_UV, max_thickness, aspect);
 	NeighborDepthSamples depth_samples = getLinearDepthSamples(n, DEPTH_TEXTURE, INV_PROJECTION_MATRIX);
-	
+
 	float min_d = getMinimumDepth(depth_samples);
 	float thickness = clamp(remap(min_d, min_distance, max_distance, max_thickness, min_thickness), min_thickness, max_thickness);
 	float fade_a = clamp(remap(min_d, min_distance, max_distance, 1.0, 0.0), 0.0, 1.0);
-	
+
 	n = getNeighbors(SCREEN_UV, thickness, aspect);
 	depth_samples = getLinearDepthSamples(n, DEPTH_TEXTURE, INV_PROJECTION_MATRIX);
-	
+
 #ifndef SUPPORT_MOBILE
 	vec3 pixel_normal = texture(NORMR_TEXTURE, SCREEN_UV).xyz;
 #else
 	vec3 pixel_normal = reconstructWorldNormal(DEPTH_TEXTURE, model_view_matrix, INV_PROJECTION_MATRIX, SCREEN_UV, MODEL_MATRIX, INV_VIEW_MATRIX, VIEWPORT_SIZE.xy);
 #endif
-	
+
 	float depthEdges = detectEdgesDepth(depth_samples, pixel_normal, VIEW);
-	
+
 #ifndef SUPPORT_MOBILE
 	float normEdges = min(detectEdgesNormal(n, NORMR_TEXTURE, CAMERA_DIRECTION_WORLD), 1.0);
 #else
 	float normEdges = min(detectEdgesNormalReconstructed(n, DEPTH_TEXTURE, model_view_matrix, INV_PROJECTION_MATRIX, SCREEN_UV, MODEL_MATRIX, INV_VIEW_MATRIX, VIEWPORT_SIZE.xy), 1.0);
 #endif
-	
+
 	/*ALBEDO.rgb = outlineColor.rgb;
 	ALPHA = max(depthEdges, normEdges) * outlineColor.a * fade_a;*/
-	
+
 	vec3 temp_ALBEDO = outlineColor.rgb;
 	float temp_ALPHA = max(depthEdges, normEdges) * outlineColor.a * fade_a;
-	
+
 	/* gradient*/
 	vec4 original = texture(SCREEN_TEXTURE, SCREEN_UV);
-	
+
 	float depth = texture(DEPTH_TEXTURE, SCREEN_UV).x;
 	vec3 ndc=vec3(SCREEN_UV * 2.0 - 1.0, depth);
 	vec4 view = INV_PROJECTION_MATRIX* vec4(ndc, 1.0);
 	view.xyz /= view.w;
 	depth = -view.z;
-	
+
 	float fog = depth * fog_amount;
-	
+
 	vec4 fog_color_light = texture(gradient_light, vec2(fog, 0.0));
 	vec4 fog_color_dark = texture(gradient_dark, vec2(fog, 0.0));
 	float gray_value = 0.299 * original.r + 0.587 * original.g + 0.114 * original.b;
@@ -371,13 +371,13 @@ void fragment() {
 			//gradient_ALBEDO = 1.0 - (1.0 - original.rgb) * (1.0 - fog_color.rgb);
 			//possibles : multiply, darken, lighten, overlay, screen
 			//gradient_ALBEDO = screen(original.rgb,fog_color.rgb);
-			
+
 			//gradient_ALBEDO = fog_color.rgb;
 		//else
 			//gradient_ALBEDO = original.rgb;
 		gradient_ALBEDO = screen(original.rgb,fog_color.rgb);
-		
-		
+
+
 		// find saturation
 		float _sat = 0.0;
 		float _min;
@@ -386,7 +386,7 @@ void fragment() {
 		float _max;
 		_max = max(original.r, original.g);
 		_max = max(_max, original.b);
-		
+
 		if (_max == 0.0)
 			 _sat = 0.0;
 		float _lum = _max - _min;
@@ -396,21 +396,15 @@ void fragment() {
 		if (_lum > .5){
 			_sat = (_max - _min) / (2.0 - _max - _min);
 		}
-		
+
 		gradient_ALBEDO = mix(gradient_ALBEDO,original.rgb, _sat);
-		
-		
+
+
 		ALBEDO.rgb = gradient_ALBEDO;
 		//ALBEDO.rgb = mix(gradient_ALBEDO, temp_ALBEDO, temp_ALPHA);
 	}
 	else
 		//ALBEDO.rgb = fog_color.rgb;
 		ALBEDO.rgb = original.rgb;
-		
+
 }
-
-
-
-
-
-
