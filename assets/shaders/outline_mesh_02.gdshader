@@ -30,17 +30,18 @@ varying float velocity_mask;
 
 void vertex() {
 	UV=UV*uv1_scale.xy+uv1_offset.xy;
-	
+
 	// smear :
 	// a parameter determining magnitude of the displacement
 	vec3 current_position = MODEL_MATRIX[3].xyz;
 	vec3 lag_position = lag_transform[3].xyz;
 	vec3 velocity = current_position - lag_position;
-	float t = pow(texture(smear_noise, UV * 5.0).x, 6.5) * 2.0;	
+	vec2 _UV = UV + vec2(TIME/50.0,0.0);
+	float t = pow(texture(smear_noise, _UV * 5.0).x, 6.5) * 2.0;
 	velocity_mask = smoothstep(0.0,1.0,-dot(normalize(velocity), NORMAL));
 	t *= velocity_mask;
 	// linearly interpolate between the current transform and the laggy transform in world space
-	MODELVIEW_MATRIX = MODEL_MATRIX + (lag_transform - MODEL_MATRIX)*t;	
+	MODELVIEW_MATRIX = MODEL_MATRIX + (lag_transform - MODEL_MATRIX)*t;
 	// puts it into view space
 	MODELVIEW_MATRIX = VIEW_MATRIX * MODELVIEW_MATRIX;
 }

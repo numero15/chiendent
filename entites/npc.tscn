@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://hogl3kclkqle"]
+
+[ext_resource type="Script" path="res://entites/NPC/NPC.gd" id="1_d8kie"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bu2eg"]
+radius = 0.1
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ucjl4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lck53"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qjfmg"]
+height = 3.0
+radius = 2.5
+
+[node name="NPC" type="CharacterBody3D"]
+collision_layer = 16
+collision_mask = 3
+script = ExtResource("1_d8kie")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.91068e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, -0.0772048, 1, 0.0770821)
+mesh = SubResource("CapsuleMesh_bu2eg")
+skeleton = NodePath("../MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_ucjl4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_lck53")
+
+[node name="TimerScared" type="Timer" parent="."]
+one_shot = true
+
+[node name="TimerDirection" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("CylinderShape3D_qjfmg")
+
+[connection signal="timeout" from="TimerScared" to="." method="_on_timer_scared_timeout"]
+[connection signal="timeout" from="TimerDirection" to="." method="set_direction"]
+[connection signal="body_entered" from="Area3D" to="." method="player_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dsuwfsk4jp6t5"]
+[gd_scene load_steps=35 format=3 uid="uid://dsuwfsk4jp6t5"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_piqpb"]
 [ext_resource type="Shader" path="res://assets/shaders/sky.gdshader" id="2_gha10"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bqkitc0c8l62y" path="res://assets/shaders/vignette_02.png" id="6_rls4s"]
 [ext_resource type="Script" path="res://scripts/Pause.gd" id="10_7oapq"]
 [ext_resource type="Script" path="res://entites/ParticlesGravity.gd" id="12_a886i"]
+[ext_resource type="PackedScene" uid="uid://hogl3kclkqle" path="res://entites/npc.tscn" id="12_q5br5"]
 [ext_resource type="Script" path="res://InGameUI.gd" id="17_myw0y"]
 
 [sub_resource type="Gradient" id="Gradient_jdi1p"]
@@ -170,7 +171,7 @@ shadow_blur = 0.0
 [node name="Node3D" parent="LevelContainer" instance=ExtResource("2_wwc2b")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("screen_lines", "distortion") instance=ExtResource("4_0ha35")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09335, -3.456)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09335, -7.09989)
 screen_lines = NodePath("../SpeedLines")
 distortion = NodePath("../Distortion")
 gravity_strength = 1.0
@@ -184,7 +185,7 @@ bones/5/rotation = Quaternion(-0.245386, -1.15565e-07, -8.77568e-08, 0.969425)
 bones/6/rotation = Quaternion(-0.141409, 4.73134e-09, -3.16123e-08, 0.989951)
 
 [node name="Trail" parent="Player/head" index="8"]
-transform = Transform3D(-1, 6.44594e-07, 2.21344e-06, 6.06202e-08, 0.967136, -0.25426, -2.3046e-06, -0.25426, -0.967136, -4.2809e-08, 1.27719, 0.016886)
+transform = Transform3D(-1, 6.44594e-07, 2.21344e-06, 6.06202e-08, 0.967136, -0.25426, -2.3046e-06, -0.25426, -0.967136, -4.2809e-08, 1.27719, 0.0168858)
 
 [node name="Combo" parent="Player/head" index="13"]
 texture = SubResource("ViewportTexture_yig8q")
@@ -206,6 +207,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SpeedLines" type="ColorRect" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_v75db")
 anchors_preset = 15
 anchor_right = 1.0
@@ -270,6 +272,12 @@ process_material = SubResource("ParticleProcessMaterial_oe6y5")
 draw_pass_1 = SubResource("RibbonTrailMesh_005wj")
 script = ExtResource("12_a886i")
 origin_node = NodePath("../Player")
+
+[node name="NPC" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35695, 3.50137)
+
+[node name="Camera3DTop" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0)
 
 [editable path="Player"]
 [editable path="Player/head/character_rigged"]

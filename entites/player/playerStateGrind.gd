@@ -83,11 +83,11 @@ func _physics_process(delta):
 	if !loop:
 		if direction == 1 && progress_ratio < prev_progress_ratio :
 			owner.timerCoolDownGrind.start();
-			change_state.emit($"../Air")
+			change_state.emit($"../Air", {align = curve.sample_baked_up_vector(offset, true)})
 			return
 		if direction == -1 && progress_ratio > prev_progress_ratio :
 			owner.timerCoolDownGrind.start();
-			change_state.emit($"../Air")
+			change_state.emit($"../Air", {align = curve.sample_baked_up_vector(offset, true)})
 			return
 	
 

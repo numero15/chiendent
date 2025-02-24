@@ -147,6 +147,7 @@ ui_trick={
 3d_physics/layer_2="player"
 3d_physics/layer_3="action"
 3d_physics/layer_4="pushables"
+3d_physics/layer_5="npc"
 
 [rendering]
 

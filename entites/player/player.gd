@@ -16,6 +16,7 @@ var affected_by_gravity: bool = true
 @onready var checkerGround = get_node("head/RayCastGround")
 @onready var checkerGroundJump = get_node("head/RayCastGroundJump")
 @onready var particlesGrind = get_node("head/ParticlesGrind")
+@onready var trail = get_node("head/Trail")
 @onready var particlesBoost = get_node("head/Trail/Node3D/ParticlesBoost")
 @onready var particlesJump = get_node("head/ParticlesJump")
 @onready var particlesTrick = get_node("head/ParticlesTrick")
@@ -57,7 +58,7 @@ func _ready() -> void:
 	
 func _physics_process(delta):
 	
-	screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/18)
+	#screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/25)
 	
 	if curSpeed-1 <= maxSpeed :
 		distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 + 0.3 )
@@ -67,9 +68,7 @@ func _physics_process(delta):
 	else :
 		distortion.material.set("shader_parameter/aberration_amount", curSpeed/20.0 )
 		distortion.material.set("shader_parameter/coeff", curSpeed/75)
-		distortion.material.set("shader_parameter/blur_power", curSpeed/800)
-	
-	
+		distortion.material.set("shader_parameter/blur_power", curSpeed/800)	
 	
 	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost") and !Input.is_action_pressed("ui_drift") :
 		curBoost += delta*2
@@ -143,6 +142,18 @@ func checkRays(air : bool = false) -> void:
 func move():
 	up_direction = avgNormal.normalized()
 	move_and_slide()
+	
+	#push back physical objects
+	var push_force = 5
+	for i in get_slide_collision_count():
+		var c := get_slide_collision(i)		
+		if c.get_collider() is RigidBody3D:
+			var push_dir = -c.get_normal() + Vector3(0,.7,0)
+			push_dir = push_dir.normalized()
+			c.get_collider().apply_central_impulse(push_dir * push_force)
+			c.get_collider().angular_velocity = push_dir * 10
+			
+			
 	#empèche de monter un angle à 90°	
 	#if !_isWall and $head/RayCastGround.is_colliding():
 	if !isWall() or affected_by_gravity :
@@ -207,6 +218,7 @@ func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
 	
 func check_boost(delta):
 	if Input.is_action_pressed("ui_boost") and curBoost > 0:
+		trail.visible = true
 		curSpeed = lerp(curSpeed,boostSpeed,.2)
 		curBoost -= delta*30
 		boostChanged.emit(curBoost, maxBoost)
@@ -215,6 +227,7 @@ func check_boost(delta):
 		camera.fov = lerpf(camera.fov,110,.2)
 		#camera.fov = 95
 	else :
+		trail.visible = false
 		isBoost = false
 		particlesBoost.emitting = false
 		camera.fov = lerpf(camera.fov,75,.01)

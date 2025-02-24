@@ -46,8 +46,8 @@ gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveTexture_m5fkd")
 
 [sub_resource type="QuadMesh" id="QuadMesh_dx5ba"]
-size = Vector2(-1.2, 0.3)
-center_offset = Vector3(0.4, 0, 0)
+size = Vector2(0.5, 0.15)
+center_offset = Vector3(-0.3, 0, 0)
 orientation = 1
 
 [sub_resource type="Gradient" id="Gradient_exqdo"]
@@ -341,6 +341,7 @@ node_connections = [&"Blend2", 0, &"Animation 2", &"Blend2", 1, &"Animation", &"
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
 collision_layer = 2
+collision_mask = 9
 script = ExtResource("1_gujcv")
 maxSpeed = 7.0
 boostSpeed = 20.0
@@ -611,6 +612,7 @@ one_shot = true
 
 [node name="Combo" type="Sprite3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.056, 0.817, 0)
+visible = false
 cast_shadow = 0
 pixel_size = 0.005
 billboard = 1
@@ -681,7 +683,7 @@ parameters/Blend2/blend_amount = 0.0
 "parameters/Blend2 2/blend_amount" = 1.0
 
 [node name="TimerCoolDownGrind" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.1
 one_shot = true
 
 [node name="TimerTrick" type="Timer" parent="."]

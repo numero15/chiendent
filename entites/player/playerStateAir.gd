@@ -16,14 +16,20 @@ func enter_state(_msg := {}) -> void:
 		owner.gravity =  owner.avgNormal * -owner.gravity_strength
 		#I replaced += by = ti fix jump from grind bug but it may fuck something else, I don't know what I do
 		owner.jumpVectors = owner.jumpVec
-		print(owner.jumpVec.length())
+
 		
 		owner.affected_by_gravity = false
 		
 		if owner.animationTree:
 			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_jump")
-		
+	
 	else :
+		if  _msg.has("align"):
+			#owner.vel = owner.curSpeed * owner.get_dir()
+			owner.avgNormal =  _msg["align"].normalized()
+			#owner.jumpVec =  owner.avgNormal * owner.jump_strength
+			#owner.gravity =  owner.avgNormal * -owner.gravity_strength
+			
 		owner.checkerGrind.set_deferred("monitoring", true)
 		owner.affected_by_gravity = true
 		if owner.animationTree:
@@ -64,7 +70,7 @@ func _physics_process(delta):
 		#this is copy pasted from the move state, maybe it should be moved to player
 		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
-			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 1.5
+			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 2
 			owner.character.rotation.y += _r
 			
 func _input(event: InputEvent) -> void:
