@@ -4,7 +4,9 @@ extends CharacterBody3D
 var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
-@export var maxSpeed := 20.0
+@export var maxSpeedMove := 20.0
+@export var maxSpeedManual := 30.0
+@export var minSpeedGrind := 2.0
 @export var drift_multiplier_speed : float  = 2.5
 @export var boostSpeed := 40.0
 @export var gravity_strength :float= .5
@@ -25,6 +27,17 @@ var affected_by_gravity: bool = true
 @onready var timerAnim = get_node("TimerAnim")
 @onready var timerTrick = get_node("TimerTrick")
 @onready var timerCoolDownGrind : Timer = get_node("TimerCoolDownGrind")
+@onready var timerEffectAirTrick : Timer = get_node("TimerEffectAirTrick")
+@onready var timerResetCamera : Timer = get_node("TimerResetCamera")
+@onready var SFXTrick : AudioStreamPlayer = get_node("AudioTrickFX")
+@onready var SFXTrickMiss : AudioStreamPlayer = get_node("AudioTrickFXMiss")
+@onready var SFXStartGrind : AudioStreamPlayer = get_node("AudioFXStartGrind")
+@onready var SFXStartBoost : AudioStreamPlayer = get_node("AudioFXStartBoost")
+@onready var SFXVoiceTrick : AudioStreamPlayer = get_node("AudioFXVoiceTrick")
+@onready var SFXFall : AudioStreamPlayer = get_node("AudioFXFall")
+@onready var SFXVoiceJump : AudioStreamPlayer = get_node("AudioFXVoiceJump")
+@onready var SFXFootstep : AudioStreamPlayer = get_node("AudioFootstep")
+@onready var timerFootstep = get_node("TimerFootstep")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -33,10 +46,13 @@ var MOUSE_SENS := 0.003
 var STICK_SENS := 0.03
 var KEYBOARD_SENS := 0.1
 
+var maxSpeed
 var curSpeed := 0.0
 var vel := Vector3.ZERO
 var jumpVectors := Vector3.ZERO
 var bodyOn : StaticBody3D
+var default_camera_rotation : Vector3
+var tweenCamera : Tween
 
 #var movement_dir : Vector3
 var avgNor := Vector3.ZERO
@@ -55,10 +71,14 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	animationTree["parameters/Blend2/blend_amount"]=1
 	animationTree["parameters/Blend2 2/blend_amount"]=1
+	maxSpeed = maxSpeedMove
+	
+	default_camera_rotation = $head/SpringArm3D.rotation
+	tweenCamera = get_tree().create_tween()
 	
 func _physics_process(delta):
 	
-	#screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/25)
+	screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/25)
 	
 	if curSpeed-1 <= maxSpeed :
 		distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 + 0.3 )
@@ -66,9 +86,11 @@ func _physics_process(delta):
 		distortion.material.set("shader_parameter/blur_power", 0)		
 		
 	else :
-		distortion.material.set("shader_parameter/aberration_amount", curSpeed/20.0 )
-		distortion.material.set("shader_parameter/coeff", curSpeed/75)
-		distortion.material.set("shader_parameter/blur_power", curSpeed/800)	
+		#distortion.material.set("shader_parameter/aberration_amount", curSpeed/20.0 )
+		#distortion.material.set("shader_parameter/coeff", curSpeed/75)
+		#distortion.material.set("shader_parameter/blur_power", curSpeed/800)	
+		distortion.material.set("shader_parameter/aberration_amount", curSpeed/5.0 )
+		distortion.material.set("shader_parameter/coeff", curSpeed/30)
 	
 	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost") and !Input.is_action_pressed("ui_drift") :
 		curBoost += delta*2
@@ -81,11 +103,19 @@ func _physics_process(delta):
 		rotate_camera_x((Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up")) * STICK_SENS)
 		rotate_camera_y((Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")) * STICK_SENS)
 		
+		if abs(Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up"))>.01 or abs(Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")) >.01 :
+			timerResetCamera.stop()
+			tweenCamera.stop()
+		elif timerResetCamera.is_stopped() :
+			timerResetCamera.start()
+		
 		if Input.is_action_pressed("reset_camera") :
 			var tween = get_tree().create_tween()
-			tween.tween_property($head/SpringArm3D, "rotation", Vector3(0,0,0), .2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			tween.tween_property($head/SpringArm3D, "rotation", default_camera_rotation , .2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 			#$head/SpringArm3D.rotation.x = 0
 			#$head/SpringArm3D.rotation.y = 0
+			
+		
 
 func _input(event: InputEvent) -> void:
 	#mouse control
@@ -132,7 +162,6 @@ func checkRays(air : bool = false) -> void:
 		else :
 			avgNor = Vector3.UP
 			coef_lerp = 0.02
-		#avgNormal = avgNormal.lerp(avgNor, .025)
 		avgNormal = avgNormal.lerp(avgNor, coef_lerp)
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
@@ -217,6 +246,9 @@ func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
 	
 	
 func check_boost(delta):
+	if Input.is_action_just_pressed("ui_boost") and curBoost > 0:
+		SFXStartBoost.play()
+		
 	if Input.is_action_pressed("ui_boost") and curBoost > 0:
 		trail.visible = true
 		curSpeed = lerp(curSpeed,boostSpeed,.2)
@@ -245,6 +277,7 @@ func check_trick() -> bool:
 			trick()
 			return true
 		elif  timerTrick.time_left > .2 :
+			SFXTrickMiss.play()
 			trickCount = 0
 			return false
 		else :
@@ -255,11 +288,18 @@ func check_trick() -> bool:
 
 func trick() :
 	trickCount += 1
-	curBoost += 2
+	curBoost += 1
 	timerTrick.stop()
 	timerTrick.start()
 	if curBoost>maxBoost: curBoost = maxBoost
 	particlesTrick.emitting = true;
+	SFXTrick.play()
+	SFXVoiceTrick.play()
 	
 func _on_timer_trick_timeout() -> void:
 	trickCount = 0
+
+
+func _on_timer_camera_replace_timeout() -> void:
+	tweenCamera = get_tree().create_tween()
+	tweenCamera.tween_property($head/SpringArm3D, "rotation", default_camera_rotation , 3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)

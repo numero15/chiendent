@@ -26,6 +26,13 @@ func _physics_process(delta):
 	owner.velocity = owner.vel + owner.jumpVectors
 	owner.move()
 	
+
+	if owner.velocity.length()>1 and owner.timerFootstep.is_stopped() :
+		owner.timerFootstep.start()
+	if owner.velocity.length()<=1:
+		owner.timerFootstep.stop()
+
+	
 	if Input.is_action_pressed("ui_down") && owner.curSpeed >3:
 		owner.particlesGrind.emitting = true;
 		owner.particlesGrind.show();
@@ -34,30 +41,29 @@ func _physics_process(delta):
 		owner.particlesGrind.hide();
 	
 	var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	if Input.is_action_pressed("ui_up") or (_v.normalized().dot(Vector2(0,-1))>-.5 and  _v.length()>0.8):
+	if Input.is_action_just_pressed("ui_up") or (_v.normalized().dot(Vector2(0,-1))>-.5 and  _v.length()>0.8):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
 	else :		
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_idle")
 		
-	if not owner.is_on_floor():
-		change_state.emit($"../Air")
+	if Input.is_action_just_pressed("ui_down"):
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_brake")
 	
-
-	if Input.is_action_just_pressed("ui_jump"):
-		#owner.particlesJump.emitting = true;
-		change_state.emit($"../Air", {jump = owner.avgNormal})
-		
+	
 	if Settings.pad:
 		var multiplier = 1.2
-		
+		owner.maxSpeed = owner.maxSpeedMove	
 		if Input.is_action_pressed("ui_drift") and owner.curBoost>0:
+			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_drift")
 			owner.boostChanged.emit(owner.curBoost, owner.maxBoost)
 			multiplier = drift_multiplier_turn
 			owner.curBoost -= delta*5
 			if owner.curBoost<0 : owner.curBoost = 0
+			owner.maxSpeed = owner.maxSpeedManual
 			if owner.check_trick():
+				owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_drift_trick")
 				#TODO change the way the custom max speed is set
-				owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed*2,.5)
+				owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.5)
 		
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
 			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * multiplier
@@ -67,6 +73,17 @@ func _physics_process(delta):
 			var i : float = clamp(_r*30,-.5,.5) + .5
 			var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
 			owner.animationTree["parameters/Blend2/blend_amount"]= lerpf(j,i,.05)
+			
+			
+	if not owner.is_on_floor():
+		owner.timerFootstep.stop()
+		change_state.emit($"../Air")
+	
+
+	if Input.is_action_just_pressed("ui_jump"):
+		#owner.particlesJump.emitting = true;
+		owner.timerFootstep.stop()
+		change_state.emit($"../Air", {jump = owner.avgNormal})
 		
 		
 		
@@ -89,3 +106,7 @@ func _input(event: InputEvent) -> void:
 func _on_checker_grind_body_entered(body):
 	pass
 	#change_state.emit($"../Grind",{_body = body})
+
+
+func _on_timer_footstep_timeout() -> void:
+	owner.SFXFootstep.play()

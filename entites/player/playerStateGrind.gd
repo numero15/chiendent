@@ -9,11 +9,24 @@ var pathFollow : PathFollow3D
 var direction : int = 1
 var loop : bool = false;
 var progress_ratio : float = 0.0;
+var cur_trick = -1
+var rng = RandomNumberGenerator.new()
 
 func enter_state(_msg := {}) -> void:
 	print('grind')
 	if !_msg.has("_body"):
 		change_state.emit($"../Move")
+		
+	owner.SFXStartGrind.play()
+	
+	if owner.animationTree:
+		owner.timerAnim.stop()
+		
+		var new_trick = rng.randi_range(1,3)
+		while cur_trick == new_trick :
+			new_trick = rng.randi_range(1,3)
+		cur_trick = new_trick
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_grind_"+str(new_trick))
 		
 	owner.particlesGrind.emitting = true;
 	owner.particlesGrind.show();
@@ -62,15 +75,22 @@ func _physics_process(delta):
 	owner.check_boost(delta)
 	#accelerate deprecated
 	#if Input.is_action_pressed("ui_up") and !Input.is_action_pressed("ui_down") and owner.curSpeed<owner.maxSpeed:
-	if owner. check_trick() :
+	owner.maxSpeed = owner.maxSpeedMove
+	if owner.check_trick() :
+		var new_trick = rng.randi_range(1,3)
+		while cur_trick == new_trick :
+			new_trick = rng.randi_range(1,3)
+		cur_trick = new_trick
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_grind_transition_"+str(new_trick))
 		#TODO change the way the custom max speed is set
-		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed*2.5,.3)
+		owner.maxSpeed = owner.maxSpeedManual
+		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.3)
 	#brake
 	elif Input.is_action_pressed("ui_down"):
-		owner.curSpeed = lerp(owner.curSpeed,0.0,.08)
+		owner.curSpeed = lerp(owner.curSpeed,owner.minSpeedGrind,.08)
 	#decelerate
 	else :
-		owner.curSpeed = lerp(owner.curSpeed,0.0,.002)
+		owner.curSpeed = lerp(owner.curSpeed,owner.minSpeedGrind,.002)
 	
 	var  prev_progress_ratio : float
 	var  prev_offset : float

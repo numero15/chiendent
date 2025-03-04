@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dgaao7giprch0"
+path="res://.godot/imported/FOLEYFeet_CleanConcrete_Boots_Scuffs 07.wav-f394737446b4b03e5afb64c3c67b0338.sample"
+
+[deps]
+
+source_file="res://assets/audio/FOLEYFeet_CleanConcrete_Boots_Scuffs 07.wav"
+dest_files=["res://.godot/imported/FOLEYFeet_CleanConcrete_Boots_Scuffs 07.wav-f394737446b4b03e5afb64c3c67b0338.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

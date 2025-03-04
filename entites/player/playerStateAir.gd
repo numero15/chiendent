@@ -7,7 +7,10 @@ func enter_state(_msg := {}) -> void:
 	print('air')
 	
 	if _msg.has("jump"):
-		owner.checkerGrind.set_deferred("monitoring", false)
+		owner.SFXVoiceJump.play()
+		#change this to detect grind only on fall
+		#owner.checkerGrind.set_deferred("monitoring", false)
+		owner.checkerGrind.set_deferred("monitoring", true)
 		#apply a small boost on jump
 		owner.curSpeed +=5
 		owner.vel = owner.curSpeed * owner.get_dir()
@@ -39,7 +42,7 @@ func enter_state(_msg := {}) -> void:
 	
 func _physics_process(delta):
 	owner.check_boost(delta)
-	owner.checkRays(true)	
+	owner.checkRays(true)
 	if owner.jumpVectors.length() < (owner.jumpVectors + owner.gravity).length():
 	#if owner.jumpVectors.dot(owner.jumpVectors + owner.gravity) <0 :
 		owner.affected_by_gravity = true
@@ -49,28 +52,40 @@ func _physics_process(delta):
 			owner.timerAnim.wait_time = 0.5
 			owner.timerAnim.start()
 		
-	if !owner.isBoost:
+	if owner.isBoost or !owner.timerEffectAirTrick.is_stopped():
+		owner.velocity = owner.curSpeed * owner.get_dir()*1  + owner.jumpVectors/4
+		
+	else:
 		owner.jumpVectors += owner.gravity
 		owner.velocity = owner.curSpeed * owner.get_dir()*1 + owner.jumpVectors
 	
 	#prevent jump from going to hight when boost
-	else:
-		owner.velocity = owner.curSpeed * owner.get_dir()*1  + owner.jumpVectors/4
+	
+
+	
+	if owner.check_trick() :
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_air_trick")
+		owner.curSpeed = owner.boostSpeed
+		owner.timerEffectAirTrick.start()
 	
 	owner.move()
 	
 	if owner.is_on_floor():
-		if owner.checkerGroundJump.get_collision_normal().dot(owner.global_transform.basis.y) > .5:
+		#prevent leaving air while cooldown grind is running, might not be bullet proof
+		if owner.checkerGroundJump.get_collision_normal().dot(owner.global_transform.basis.y) > .5 and owner.timerCoolDownGrind.is_stopped():
 			owner.particlesJump.emitting = true;
-			owner.checkerGrind.set_deferred("monitoring", false)		
+			owner.checkerGrind.set_deferred("monitoring", false)
+			owner.timerEffectAirTrick.stop()
 			change_state.emit($"../Move")
+			owner.SFXFall.play()
 			
 	if Settings.pad:
 		#owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS
 		#this is copy pasted from the move state, maybe it should be moved to player
 		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
-			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 2
+			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 1.5
+		
 			owner.character.rotation.y += _r
 			
 func _input(event: InputEvent) -> void:
@@ -86,4 +101,5 @@ func _on_timer_anim_timeout():
 
 func _on_checker_grind_body_entered(body: Node3D) -> void:
 	if owner.timerCoolDownGrind.is_stopped() :
+		owner.timerEffectAirTrick.stop()
 		change_state.emit($"../Grind",{_body = body})
