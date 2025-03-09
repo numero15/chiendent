@@ -17,11 +17,14 @@ var affected_by_gravity: bool = true
 @onready var characterMesh = get_node("head/character_rigged")
 @onready var checkerGround = get_node("head/RayCastGround")
 @onready var checkerGroundJump = get_node("head/RayCastGroundJump")
-@onready var particlesGrind = get_node("head/ParticlesGrind")
+@onready var particlesGrind = get_node("head/BoneAttachmentFoot/ParticlesGrind")
+@onready var particlesGrind2 = get_node("head/BoneAttachmentFoot2/ParticlesGrind")
+
 @onready var trail = get_node("head/Trail")
 @onready var particlesBoost = get_node("head/Trail/Node3D/ParticlesBoost")
 @onready var particlesJump = get_node("head/ParticlesJump")
 @onready var particlesTrick = get_node("head/ParticlesTrick")
+@onready var particlesDust = get_node("head/ParticlesDust")
 @onready var animationTree = get_node("AnimationTree")
 @onready var camera = get_node("Camera3D")
 @onready var timerAnim = get_node("TimerAnim")
@@ -38,6 +41,7 @@ var affected_by_gravity: bool = true
 @onready var SFXVoiceJump : AudioStreamPlayer = get_node("AudioFXVoiceJump")
 @onready var SFXFootstep : AudioStreamPlayer = get_node("AudioFootstep")
 @onready var timerFootstep = get_node("TimerFootstep")
+@onready var timerJumpRevertGrav = get_node("TimerJumpRevertGrav")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -161,7 +165,8 @@ func checkRays(air : bool = false) -> void:
 				#coef_lerp = 0.04
 		else :
 			avgNor = Vector3.UP
-			coef_lerp = 0.02
+			#coef_lerp = 0.02
+			coef_lerp = 0.08
 		avgNormal = avgNormal.lerp(avgNor, coef_lerp)
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength

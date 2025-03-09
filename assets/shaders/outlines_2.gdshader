@@ -379,6 +379,7 @@ void fragment() {
 
 
 		// find saturation
+		//this part broke lights
 		float _sat = 0.0;
 		float _min;
 		_min = min(original.r, original.g);
@@ -397,7 +398,7 @@ void fragment() {
 			_sat = (_max - _min) / (2.0 - _max - _min);
 		}
 
-		gradient_ALBEDO = mix(gradient_ALBEDO,original.rgb, _sat);
+		//gradient_ALBEDO = mix(gradient_ALBEDO,original.rgb, _sat);
 
 
 		ALBEDO.rgb = gradient_ALBEDO;

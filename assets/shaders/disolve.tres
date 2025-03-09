@@ -41,14 +41,13 @@ noise = SubResource("FastNoiseLite_cfmno")
 texture = SubResource("NoiseTexture2D_hn5xc")
 
 [sub_resource type="Gradient" id="Gradient_8j0i2"]
-offsets = PackedFloat32Array(0, 0.985019)
-colors = PackedColorArray(0.4, 0.4, 0.4, 1, 1, 1, 1, 1)
+colors = PackedColorArray(0.281187, 0.281187, 0.281187, 1, 1, 1, 1, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_diiqt"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hbdwm"]
 gradient = SubResource("Gradient_8j0i2")
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_safqk"]
-texture = SubResource("GradientTexture1D_diiqt")
+texture = SubResource("GradientTexture1D_hbdwm")
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_5xomk"]
 input_name = "color"
@@ -109,6 +108,7 @@ void fragment() {
 }
 "
 modes/diffuse = 3
+nodes/fragment/0/position = Vector2(500, 60)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_scuej")
 nodes/fragment/2/position = Vector2(-717.642, 120)
 nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_t2ffj")
@@ -129,4 +129,4 @@ nodes/fragment/13/node = SubResource("VisualShaderNodeTexture_f2rta")
 nodes/fragment/13/position = Vector2(-660, 760)
 nodes/fragment/14/node = SubResource("VisualShaderNodeFloatConstant_v00nh")
 nodes/fragment/14/position = Vector2(-20, 320)
-nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 4, 0, 0, 1, 8, 0, 0, 0, 10, 0, 8, 0, 9, 0, 10, 0, 12, 0, 11, 0, 11, 0, 13, 0, 13, 1, 0, 19, 14, 0, 0, 3)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 2, 4, 0, 0, 1, 10, 0, 8, 0, 9, 0, 10, 0, 12, 0, 11, 0, 11, 0, 13, 0, 13, 1, 0, 19, 14, 0, 0, 3, 8, 0, 0, 0)

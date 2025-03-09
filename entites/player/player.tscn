@@ -1,4 +1,4 @@
-[gd_scene load_steps=150 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=173 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -53,7 +53,7 @@ radius = 0.4
 height = 1.80203
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_emis8"]
-points = PackedVector3Array(-0.5, -0.5, 0, -1.5, -0.5, -2, 1.5, -0.5, -2, 1.5, -2, -2, -1.5, -2, -2, -0.5, -2, 0, 0.5, -2, 0, 0.5, -0.5, 0)
+points = PackedVector3Array(-0.5, -0.5, 0, -1.5, -0.5, -1.5, 1.5, -0.5, -1.5, 1.5, -2, -1.5, -1.5, -2, -1.5, -0.5, -2, 0, 0.5, -2, 0, 0.5, -0.5, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xmb4"]
 transparency = 2
@@ -98,6 +98,39 @@ albedo_texture = SubResource("GradientTexture1D_bbami")
 _data = [Vector2(0, 1), 0.0, 0.0502674, 0, 0, Vector2(1, 0), -0.0921269, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qm74m"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+use_particle_trails = true
+
+[sub_resource type="Gradient" id="Gradient_u1kil"]
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.883333, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_t7dbj"]
+gradient = SubResource("Gradient_u1kil")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sem8p"]
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+direction = Vector3(0, 1, 0)
+spread = 28.0
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, -200, 0)
+radial_accel_min = -2.23517e-06
+radial_accel_max = -2.23517e-06
+color_initial_ramp = SubResource("GradientTexture1D_t7dbj")
+
+[sub_resource type="Curve" id="Curve_pv8wb"]
+_data = [Vector2(0, 0), 0.0, 2.11494, 1, 1, Vector2(0.472826, 1), 2.11494, -1.89691, 1, 1, Vector2(1, 0), -1.89691, 0.0, 1, 0]
+point_count = 3
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_1ugj6"]
+radius = 0.05
+cap_top = false
+cap_bottom = false
+curve = SubResource("Curve_pv8wb")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lbelg"]
 transparency = 2
 alpha_scissor_threshold = 0.5
@@ -105,7 +138,6 @@ alpha_antialiasing_mode = 0
 cull_mode = 2
 shading_mode = 0
 disable_ambient_light = true
-albedo_color = Color(0.988235, 0.87451, 0, 1)
 albedo_texture = ExtResource("8_a8rmi")
 disable_receive_shadows = true
 billboard_mode = 3
@@ -114,28 +146,134 @@ particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
+[sub_resource type="Gradient" id="Gradient_bdtc5"]
+offsets = PackedFloat32Array(0.290323, 1)
+colors = PackedColorArray(0.9, 0.195, 0, 1, 1, 0.966667, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_sl1m2"]
+gradient = SubResource("Gradient_bdtc5")
+
 [sub_resource type="Curve" id="Curve_71v82"]
-_data = [Vector2(0.00865801, 0.538462), 0.0, 0.0, 0, 0, Vector2(0.497836, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.538462), -1.52308, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.52308, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_5mkh3"]
 curve = SubResource("Curve_71v82")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cfbq8"]
+particle_flag_rotate_y = true
 emission_shape_scale = Vector3(0.1, 0.1, 0.1)
 emission_shape = 1
 emission_sphere_radius = 1.0
-angle_min = -120.0
-angle_max = 120.0
+angle_min = -90.0
+angle_max = 90.0
+direction = Vector3(0, 0, 1)
+spread = 0.0
 angular_velocity_min = -500.0
 angular_velocity_max = 500.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_curve = SubResource("CurveTexture_5mkh3")
+color_initial_ramp = SubResource("GradientTexture1D_sl1m2")
 
 [sub_resource type="QuadMesh" id="QuadMesh_i34xo"]
-size = Vector2(0.3, 0.6)
+size = Vector2(1.2, 1)
 center_offset = Vector3(0, 0.3, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0coqa"]
+shading_mode = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_wpcu7"]
+radius = 0.15
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jue4h"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+cull_mode = 2
+shading_mode = 0
+disable_ambient_light = true
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("8_a8rmi")
+disable_receive_shadows = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="CurveTexture" id="CurveTexture_f86wo"]
+curve = SubResource("Curve_71v82")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rpw6b"]
+particle_flag_rotate_y = true
+emission_shape_scale = Vector3(0.1, 0.1, 0.1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_min = -90.0
+angle_max = 90.0
+direction = Vector3(0, 0, 1)
+spread = 0.0
+angular_velocity_min = -500.0
+angular_velocity_max = 500.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_curve = SubResource("CurveTexture_f86wo")
+
+[sub_resource type="QuadMesh" id="QuadMesh_4r162"]
+size = Vector2(1, 0.5)
+center_offset = Vector3(0, 0.3, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6g0s1"]
+diffuse_mode = 3
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.873298, 0.873298, 0.873298, 1)
+roughness = 0.0
+emission_enabled = true
+emission = Color(1, 0.875, 0.7, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="Gradient" id="Gradient_qyaah"]
+offsets = PackedFloat32Array(0.185484, 0.572581)
+colors = PackedColorArray(0.98, 0.408333, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6lht3"]
+gradient = SubResource("Gradient_qyaah")
+
+[sub_resource type="Curve" id="Curve_6vahk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.302632, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_q2mfr"]
+curve = SubResource("Curve_6vahk")
+
+[sub_resource type="Curve" id="Curve_pyjr5"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.582418), -1.11355, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_y600r"]
+curve = SubResource("Curve_pyjr5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0x8b8"]
+emission_shape_scale = Vector3(0.3, 0.1, 0.1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 0, -1)
+spread = 20.0
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.2
+scale_curve = SubResource("CurveTexture_y600r")
+color_ramp = SubResource("GradientTexture1D_6lht3")
+emission_curve = SubResource("CurveTexture_q2mfr")
+
+[sub_resource type="SphereMesh" id="SphereMesh_dq8cn"]
+radius = 0.3
+height = 0.6
+radial_segments = 6
+rings = 3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xkf1v"]
 transparency = 2
@@ -469,7 +607,7 @@ transitions = ["BAKED_idle", "BAKED_jump", SubResource("AnimationNodeStateMachin
 graph_offset = Vector2(65, -24)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_vukso"]
-graph_offset = Vector2(-175, -130)
+graph_offset = Vector2(-328, -63)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_ejxcu")
 nodes/Animation/position = Vector2(-180, 340)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_p16qk")
@@ -559,7 +697,7 @@ shape = SubResource("CapsuleShape3D_oofw1")
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="head/checkerGrind"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00208211, 1.71692, -0.137243)
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0.00208211, 1.71692, -0.137243)
 shape = SubResource("ConvexPolygonShape3D_emis8")
 
 [node name="ForwardMarker" type="Marker3D" parent="head"]
@@ -670,7 +808,7 @@ transform = Transform3D(1, 0, 0, 0, 1, -2.98023e-08, 0, 2.98023e-08, 1, 0, 0, 0)
 target_position = Vector3(0, -7, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.24696, 0)
+transform = Transform3D(1, 0, 0, 0, 0.939692, 0.34202, 0, -0.34202, 0.939692, 0, 1.24696, 0)
 spring_length = 3.0
 
 [node name="CameraPlaceHolder" type="Marker3D" parent="head/SpringArm3D"]
@@ -700,7 +838,7 @@ transform = Transform3D(0.353553, 0.612372, 0.707107, -0.866025, 0.5, 0, -0.3535
 target_position = Vector3(1, 0, 0)
 
 [node name="Trail" type="BoneAttachment3D" parent="head"]
-transform = Transform3D(1, 6.03961e-14, 2.38418e-07, 6.47576e-08, 0.962406, -0.271613, -2.29456e-07, 0.271613, 0.962406, -8.83571e-15, 0.96614, 0.0180205)
+transform = Transform3D(1, 6.21725e-14, 2.38419e-07, 6.47576e-08, 0.962406, -0.271613, -2.29456e-07, 0.271613, 0.962406, -8.83571e-15, 0.96614, 0.0180205)
 bone_name = "DEF-spine.003"
 bone_idx = 3
 use_external_skeleton = true
@@ -728,15 +866,81 @@ lifetime = 0.2
 base_width = 0.11
 width_profile = SubResource("Curve_5mk6v")
 
-[node name="ParticlesGrind" type="GPUParticles3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00461602, -0.0692704)
+[node name="ParticlesSparks" type="GPUParticles3D" parent="head"]
+transform = Transform3D(-1, 7.24588e-08, -4.89128e-08, 0, 0.559497, 0.828833, 8.74228e-08, 0.828833, -0.559497, 0, 0, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_qm74m")
+cast_shadow = 0
+amount = 25
+lifetime = 0.1
+trail_enabled = true
+trail_lifetime = 0.05
+process_material = SubResource("ParticleProcessMaterial_sem8p")
+draw_pass_1 = SubResource("TubeTrailMesh_1ugj6")
+
+[node name="BoneAttachmentFoot" type="BoneAttachment3D" parent="head"]
+transform = Transform3D(0.994784, -0.0521728, -0.0876422, -0.101995, -0.508895, -0.854764, -3.8892e-06, 0.859245, -0.511562, -0.222314, -0.156277, -0.0264383)
+bone_name = "DEF-foot.R"
+bone_idx = 33
+use_external_skeleton = true
+external_skeleton = NodePath("../character_rigged/rig_game/Skeleton3D")
+
+[node name="ParticlesGrind" type="GPUParticles3D" parent="head/BoneAttachmentFoot"]
+transform = Transform3D(1, -4.88399e-10, -4.31403e-08, -2.09882e-08, 1, 0, -3.79134e-08, 0, 1, 0.00654915, 0.071282, 0.331902)
+visible = false
 material_override = SubResource("StandardMaterial3D_lbelg")
 cast_shadow = 0
-amount = 100
-lifetime = 0.1
+amount = 20
+lifetime = 0.3
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_cfbq8")
 draw_pass_1 = SubResource("QuadMesh_i34xo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head/BoneAttachmentFoot/ParticlesGrind"]
+material_override = SubResource("StandardMaterial3D_0coqa")
+mesh = SubResource("SphereMesh_wpcu7")
+
+[node name="BoneAttachmentFoot2" type="BoneAttachment3D" parent="head"]
+transform = Transform3D(0.994785, 0.0521732, 0.0876414, 0.101995, -0.508896, -0.854764, 4.50015e-06, 0.859245, -0.511564, 0.222314, -0.156277, -0.0264385)
+bone_name = "DEF-foot.L"
+bone_idx = 27
+use_external_skeleton = true
+external_skeleton = NodePath("../character_rigged/rig_game/Skeleton3D")
+
+[node name="ParticlesGrind" type="GPUParticles3D" parent="head/BoneAttachmentFoot2"]
+transform = Transform3D(1, -4.88399e-10, -4.31403e-08, -2.09882e-08, 1, 0, -3.79134e-08, 0, 1, 0.00654915, 0.071282, 0.331902)
+visible = false
+material_override = SubResource("StandardMaterial3D_lbelg")
+cast_shadow = 0
+amount = 20
+lifetime = 0.3
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_cfbq8")
+draw_pass_1 = SubResource("QuadMesh_i34xo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head/BoneAttachmentFoot2/ParticlesGrind"]
+material_override = SubResource("StandardMaterial3D_0coqa")
+mesh = SubResource("SphereMesh_wpcu7")
+
+[node name="ParticlesGrind2" type="GPUParticles3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00461602, 0.0807642)
+visible = false
+material_override = SubResource("StandardMaterial3D_jue4h")
+cast_shadow = 0
+amount = 20
+lifetime = 0.1
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_rpw6b")
+draw_pass_1 = SubResource("QuadMesh_4r162")
+
+[node name="ParticlesDust" type="GPUParticles3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.139063, 0.233077)
+material_override = SubResource("StandardMaterial3D_6g0s1")
+emitting = false
+amount = 20
+lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_0x8b8")
+draw_pass_1 = SubResource("SphereMesh_dq8cn")
 
 [node name="ParticlesJump" type="GPUParticles3D" parent="head"]
 material_override = SubResource("StandardMaterial3D_xkf1v")
@@ -792,7 +996,7 @@ offset_bottom = 30.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_f2wnf")
-text = "SPECIAL [100%]"
+text = "KINETIC  [100%]"
 
 [node name="ProgressBar" type="TextureProgressBar" parent="head/Special/SubViewportSpecial/Control"]
 custom_minimum_size = Vector2(250, 12)
@@ -894,7 +1098,7 @@ wait_time = 0.4
 one_shot = true
 
 [node name="TimerCoolDownGrind" type="Timer" parent="."]
-wait_time = 0.3
+wait_time = 0.1
 one_shot = true
 
 [node name="TimerTrick" type="Timer" parent="."]
@@ -911,6 +1115,10 @@ one_shot = true
 
 [node name="TimerFootstep" type="Timer" parent="."]
 wait_time = 0.6
+
+[node name="TimerJumpRevertGrav" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
 
 [node name="AudioFXFall" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_pmb2k")
@@ -950,9 +1158,11 @@ autoplay = true
 [connection signal="body_entered" from="head/checkerGrind" to="States/Air" method="_on_checker_grind_body_entered"]
 [connection signal="timeout" from="head/Special/Timer" to="head/Special" method="_on_timer_timeout"]
 [connection signal="timeout" from="ActionArea/Timer" to="ActionArea" method="_on_timer_timeout"]
+[connection signal="timeout" from="TimerEffectAirTrick" to="States/Air" method="_on_timer_effect_air_trick_timeout"]
 [connection signal="timeout" from="TimerTrick" to="." method="_on_timer_trick_timeout"]
 [connection signal="timeout" from="TimerAnim" to="States/Air" method="_on_timer_anim_timeout"]
 [connection signal="timeout" from="TimerResetCamera" to="." method="_on_timer_camera_replace_timeout"]
 [connection signal="timeout" from="TimerFootstep" to="States/Move" method="_on_timer_footstep_timeout"]
+[connection signal="timeout" from="TimerJumpRevertGrav" to="States/Air" method="_on_timer_jump_revert_grav_timeout"]
 
 [editable path="head/character_rigged"]

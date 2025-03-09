@@ -12,7 +12,7 @@ func _ready() -> void:
 func _on_player_boost_changed(value, max) -> void:
 	visible = true
 	specialGauge.value = value/ max * specialGauge.max_value
-	specialLabel.text = " SPECIAL [" + String.num(value/ max * specialGauge.max_value,0)  + " %]"
+	specialLabel.text = " KINETIC [" + String.num(value/ max * specialGauge.max_value,0)  + " %]"
 	if value == max:
 		t.start()
 

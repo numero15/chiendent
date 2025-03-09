@@ -13,6 +13,7 @@ var cur_trick = -1
 var rng = RandomNumberGenerator.new()
 
 func enter_state(_msg := {}) -> void:
+	owner.particlesDust.emitting = false;
 	print('grind')
 	if !_msg.has("_body"):
 		change_state.emit($"../Move")
@@ -30,8 +31,8 @@ func enter_state(_msg := {}) -> void:
 		
 	owner.particlesGrind.emitting = true;
 	owner.particlesGrind.show();
-	#owner.particlesGrind2.emitting = true;
-	#owner.particlesGrind2.show();
+	owner.particlesGrind2.emitting = true;
+	owner.particlesGrind2.show();
 	owner.checkerGrind.set_deferred("monitoring", false)
 	set_physics_process(true)
 	path = _msg["_body"].get_parent_node_3d()
@@ -126,7 +127,9 @@ func exit_state() -> void:
 	set_process_input(false)
 	pathFollow.queue_free()
 	owner.particlesGrind.emitting = false;
+	owner.particlesGrind2.emitting = false;
 	owner.particlesGrind.hide();
+	owner.particlesGrind2.hide();
 	#owner.particlesGrind2.emitting = false;
 	#owner.particlesGrind2.hide();
 	

@@ -1,6 +1,6 @@
 extends StateFSM
 
-var drift_multiplier_turn : float  = 2.5
+var drift_multiplier_turn : float  = 1.8#2.5
 
 func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
@@ -9,7 +9,10 @@ func enter_state(_msg := {}) -> void:
 	
 	print('move')
 	if owner.animationTree:
-		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
+		if Input.is_action_pressed("ui_drift") and owner.curBoost>0:
+			owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_drift")
+		else :
+			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
 		owner.timerAnim.stop()
 
 		
@@ -51,20 +54,24 @@ func _physics_process(delta):
 	
 	
 	if Settings.pad:
-		var multiplier = 1.2
+		#var multiplier = 1.2
+		var multiplier = .85
 		owner.maxSpeed = owner.maxSpeedMove	
 		if Input.is_action_pressed("ui_drift") and owner.curBoost>0:
 			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_drift")
+			owner.particlesDust.emitting = true;
 			owner.boostChanged.emit(owner.curBoost, owner.maxBoost)
 			multiplier = drift_multiplier_turn
 			owner.curBoost -= delta*5
 			if owner.curBoost<0 : owner.curBoost = 0
 			owner.maxSpeed = owner.maxSpeedManual
 			if owner.check_trick():
-				owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_drift_trick")
+				owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_drift_trick")
 				#TODO change the way the custom max speed is set
 				owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.5)
-		
+		else :
+			owner.particlesDust.emitting = false;
+			
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
 			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * multiplier
 			owner.character.rotation.y += _r
@@ -110,3 +117,5 @@ func _on_checker_grind_body_entered(body):
 
 func _on_timer_footstep_timeout() -> void:
 	owner.SFXFootstep.play()
+	
+	

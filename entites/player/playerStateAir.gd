@@ -1,6 +1,7 @@
 extends StateFSM
 
 func enter_state(_msg := {}) -> void:
+	owner.particlesDust.emitting = false;
 	set_physics_process(true)
 	set_process_input(true)
 	owner.characterMesh.rotation.z = 0
@@ -43,10 +44,12 @@ func enter_state(_msg := {}) -> void:
 func _physics_process(delta):
 	owner.check_boost(delta)
 	owner.checkRays(true)
-	if owner.jumpVectors.length() < (owner.jumpVectors + owner.gravity).length():
+	
+	if owner.jumpVectors.length() < (owner.jumpVectors + owner.gravity).length() and owner.timerJumpRevertGrav.is_stopped():
 	#if owner.jumpVectors.dot(owner.jumpVectors + owner.gravity) <0 :
-		owner.affected_by_gravity = true
+		#owner.affected_by_gravity = true
 		owner.checkerGrind.set_deferred("monitoring", true)
+		owner.timerJumpRevertGrav.start()		
 		#owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_fall")
 		if owner.timerAnim.is_stopped() :
 			owner.timerAnim.wait_time = 0.5
@@ -64,7 +67,7 @@ func _physics_process(delta):
 
 	
 	if owner.check_trick() :
-		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_air_trick")
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_air_trick")
 		owner.curSpeed = owner.boostSpeed
 		owner.timerEffectAirTrick.start()
 	
@@ -103,3 +106,11 @@ func _on_checker_grind_body_entered(body: Node3D) -> void:
 	if owner.timerCoolDownGrind.is_stopped() :
 		owner.timerEffectAirTrick.stop()
 		change_state.emit($"../Grind",{_body = body})
+
+
+func _on_timer_jump_revert_grav_timeout() -> void:
+	owner.affected_by_gravity = true
+
+
+func _on_timer_effect_air_trick_timeout() -> void:
+	pass
