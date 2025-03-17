@@ -53,7 +53,7 @@ func _physics_process(delta):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_brake")
 	
 	
-	if Settings.pad:
+	if ConfigFileHandler.pad:
 		#var multiplier = 1.2
 		var multiplier = .85
 		owner.maxSpeed = owner.maxSpeedMove	
@@ -95,7 +95,7 @@ func _physics_process(delta):
 		
 		
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and !Settings.pad:
+	if event is InputEventMouseMotion and !ConfigFileHandler.pad:
 		
 		
 		#UGGGGLY

@@ -1,0 +1,93 @@
+[gd_scene load_steps=3 format=3 uid="uid://cc3s4wnntvqa3"]
+
+[ext_resource type="Script" path="res://ui/settings/settings_screen.gd" id="1_bcx0c"]
+[ext_resource type="PackedScene" uid="uid://bgf6qp85c07h0" path="res://ui/settings/setting.tscn" id="3_r8xbi"]
+
+[node name="SettingsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bcx0c")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = -344.0
+offset_top = -242.0
+offset_right = 384.0
+offset_bottom = 282.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Volume" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="0"]
+text = "volume"
+
+[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="2"]
+visible = false
+
+[node name="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="3"]
+visible = true
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CameraX" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="0"]
+text = "camera invert X"
+
+[node name="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="1"]
+visible = true
+
+[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="2"]
+visible = false
+
+[node name="CameraY" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="0"]
+text = "camera invert Y"
+
+[node name="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="1"]
+visible = true
+
+[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="2"]
+visible = false
+
+[node name="Fullscreen" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="0"]
+text = "fullscreen"
+
+[node name="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="1"]
+visible = true
+
+[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="2"]
+visible = false
+
+[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer/CheckBox" to="." method="_on_invertX_toggled"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer/CheckBox" to="." method="_on_invertY_toggled"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer/CheckBox" to="." method="_on_fullscreen_toggled"]
+
+[editable path="PanelContainer/MarginContainer/VBoxContainer/Volume"]
+[editable path="PanelContainer/MarginContainer/VBoxContainer/CameraX"]
+[editable path="PanelContainer/MarginContainer/VBoxContainer/CameraY"]
+[editable path="PanelContainer/MarginContainer/VBoxContainer/Fullscreen"]

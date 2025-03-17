@@ -82,7 +82,7 @@ func _physics_process(delta):
 			change_state.emit($"../Move")
 			owner.SFXFall.play()
 			
-	if Settings.pad:
+	if ConfigFileHandler.pad:
 		#owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS
 		#this is copy pasted from the move state, maybe it should be moved to player
 		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
@@ -92,7 +92,7 @@ func _physics_process(delta):
 			owner.character.rotation.y += _r
 			
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion  and !Settings.pad:
+	if event is InputEventMouseMotion  and !ConfigFileHandler.pad:
 		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 
 

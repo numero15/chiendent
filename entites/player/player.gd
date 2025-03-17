@@ -50,6 +50,7 @@ var MOUSE_SENS := 0.003
 var STICK_SENS := 0.03
 var KEYBOARD_SENS := 0.1
 
+
 var maxSpeed
 var curSpeed := 0.0
 var vel := Vector3.ZERO
@@ -67,6 +68,8 @@ var isBoost = false
 
 var trickCount : int = 0
 
+var control_settings
+
 signal boostChanged(value, max)
 
 
@@ -79,6 +82,8 @@ func _ready() -> void:
 	
 	default_camera_rotation = $head/SpringArm3D.rotation
 	tweenCamera = get_tree().create_tween()
+	
+	control_settings = ConfigFileHandler.load_control_settings()
 	
 func _physics_process(delta):
 	
@@ -103,9 +108,21 @@ func _physics_process(delta):
 		boostChanged.emit(curBoost, maxBoost)
 		
 	#rotate camera with stick
-	if Settings.pad:
-		rotate_camera_x((Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up")) * STICK_SENS)
-		rotate_camera_y((Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")) * STICK_SENS)
+	if ConfigFileHandler.pad:
+		var rotX
+		var rotY
+		if control_settings.invertY :
+			rotY  = Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up")
+		else :
+			rotY  = Input.get_action_strength("rotate_camera_up") - Input.get_action_strength("rotate_camera_down")
+		rotate_camera_x(rotY * STICK_SENS)
+		
+		if control_settings.invertX :
+			rotX = Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")
+		else :
+			rotX = Input.get_action_strength("rotate_camera_left") - Input.get_action_strength("rotate_camera_right")			
+			
+		rotate_camera_y(rotX * STICK_SENS)
 		
 		if abs(Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up"))>.01 or abs(Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")) >.01 :
 			timerResetCamera.stop()
@@ -123,7 +140,7 @@ func _physics_process(delta):
 
 func _input(event: InputEvent) -> void:
 	#mouse control
-	if event is InputEventMouseMotion and !Settings.pad:
+	if event is InputEventMouseMotion and !ConfigFileHandler.pad:
 		rotate_camera_x(-event.relative.y * MOUSE_SENS)
 
 func rotate_camera_x(_x:float =0):
@@ -218,7 +235,7 @@ func get_dir() -> Vector3:
 	if curSpeed>maxSpeed:
 		curSpeed = lerp(curSpeed,maxSpeed,.03)
 		
-	if !Settings.pad : 
+	if !ConfigFileHandler.pad : 
 		if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
 			curSpeed = lerp(curSpeed,maxSpeed,.01)
 		#brake
@@ -228,7 +245,7 @@ func get_dir() -> Vector3:
 		else :
 			curSpeed = lerp(curSpeed,0.0,.03)
 	
-	if Settings.pad : 
+	if ConfigFileHandler.pad : 
 		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 		
 		if Input.get_action_strength("move_backward") >0.8 :
