@@ -607,7 +607,6 @@ transitions = ["BAKED_idle", "BAKED_jump", SubResource("AnimationNodeStateMachin
 graph_offset = Vector2(65, -24)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_vukso"]
-graph_offset = Vector2(-328, -63)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_ejxcu")
 nodes/Animation/position = Vector2(-180, 340)
 "nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_p16qk")
@@ -1117,7 +1116,7 @@ one_shot = true
 wait_time = 0.6
 
 [node name="TimerJumpRevertGrav" type="Timer" parent="."]
-wait_time = 0.6
+wait_time = 0.3
 one_shot = true
 
 [node name="AudioFXFall" type="AudioStreamPlayer" parent="."]

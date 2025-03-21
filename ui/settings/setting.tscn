@@ -14,10 +14,10 @@ focusTheme = ExtResource("5_x41xk")
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 offset_right = 698.0
-offset_bottom = 25.0
+offset_bottom = 31.0
 
 [node name="Label" type="Label" parent="HBoxContainer"]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 text = "text"
 vertical_alignment = 1
@@ -27,11 +27,20 @@ visible = false
 layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+visible = false
 layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "1080"
+popup/item_1/text = "1920"
+popup/item_1/id = 1
 
 [node name="HSlider" type="HSlider" parent="HBoxContainer"]
 visible = false
-custom_minimum_size = Vector2(200, 0)
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 4
 
@@ -39,5 +48,7 @@ size_flags_vertical = 4
 [connection signal="focus_exited" from="HBoxContainer/CheckBox" to="." method="_on_setter_focus_exited"]
 [connection signal="focus_entered" from="HBoxContainer/CheckButton" to="." method="_on_setter_focus_entered"]
 [connection signal="focus_exited" from="HBoxContainer/CheckButton" to="." method="_on_setter_focus_exited"]
+[connection signal="focus_entered" from="HBoxContainer/OptionButton" to="." method="_on_setter_focus_entered"]
+[connection signal="focus_exited" from="HBoxContainer/OptionButton" to="." method="_on_setter_focus_exited"]
 [connection signal="focus_entered" from="HBoxContainer/HSlider" to="." method="_on_setter_focus_entered"]
 [connection signal="focus_exited" from="HBoxContainer/HSlider" to="." method="_on_setter_focus_exited"]

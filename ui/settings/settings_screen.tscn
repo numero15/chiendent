@@ -1,93 +1,212 @@
-[gd_scene load_steps=3 format=3 uid="uid://cc3s4wnntvqa3"]
+[gd_scene load_steps=6 format=3 uid="uid://cc3s4wnntvqa3"]
 
 [ext_resource type="Script" path="res://ui/settings/settings_screen.gd" id="1_bcx0c"]
+[ext_resource type="Theme" uid="uid://dppgtoyaq4ox" path="res://ui/base_theme.tres" id="2_01lsw"]
+[ext_resource type="Theme" uid="uid://8dhkrpna8up5" path="res://ui/title_theme.tres" id="3_5x6tg"]
+[ext_resource type="Script" path="res://ui/settings/grab_focus.gd" id="3_db2af"]
 [ext_resource type="PackedScene" uid="uid://bgf6qp85c07h0" path="res://ui/settings/setting.tscn" id="3_r8xbi"]
 
 [node name="SettingsScreen" type="Control"]
 layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_bcx0c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_right = 357.0
+offset_bottom = 457.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_bcx0c")
+theme_override_constants/separation = 9
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 0
-offset_left = -344.0
-offset_top = -242.0
-offset_right = 384.0
-offset_bottom = 282.0
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="Controls" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
+theme = ExtResource("2_01lsw")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="Volume" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Controls"]
 layout_mode = 2
 
-[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="0"]
-text = "volume"
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Controls/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
 
-[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="2"]
-visible = false
+[node name="Title" type="Label" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_5x6tg")
+text = "CONTROLS"
 
-[node name="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="3"]
-visible = true
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer/Title"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 10.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="CameraX" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
 layout_mode = 2
 
-[node name="CameraX" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
-layout_mode = 2
-
-[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="0"]
+[node name="Label" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="0"]
 text = "camera invert X"
 
-[node name="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="1"]
+[node name="CheckBox" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="1"]
 visible = true
 
-[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="2"]
+[node name="OptionButton" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="3"]
 visible = false
 
-[node name="CameraY" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+[node name="CameraY" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
 layout_mode = 2
 
-[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="0"]
+[node name="Label" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="0"]
 text = "camera invert Y"
 
-[node name="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="1"]
+[node name="CheckBox" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="1"]
 visible = true
 
-[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="2"]
+[node name="OptionButton" parent="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="3"]
 visible = false
 
-[node name="Fullscreen" parent="PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+[node name="Video" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_01lsw")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Video"]
 layout_mode = 2
 
-[node name="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Video/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="VBoxContainer/Video/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_5x6tg")
+text = "VIDEO"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/Video/MarginContainer/VBoxContainer/Title"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 11.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fullscreen" parent="VBoxContainer/Video/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="0"]
 text = "fullscreen"
 
-[node name="CheckBox" parent="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="1"]
+[node name="CheckBox" parent="VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="1"]
 visible = true
 
-[node name="CheckButton" parent="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="2"]
+[node name="OptionButton" parent="VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="3"]
+visible = false
+selected = 0
+popup/item_0/text = "1080 x 720"
+popup/item_1/text = "1920 x 1080"
+
+[node name="Audio" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_01lsw")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Audio"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Audio/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_5x6tg")
+text = "AUDIO
+"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/Title"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 11.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Volume" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="0"]
+text = "volume"
+
+[node name="OptionButton" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="3"]
 visible = false
 
-[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer/CheckBox" to="." method="_on_invertX_toggled"]
-[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer/CheckBox" to="." method="_on_invertY_toggled"]
-[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer/CheckBox" to="." method="_on_fullscreen_toggled"]
+[node name="HSlider" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="4"]
+visible = true
+script = ExtResource("3_db2af")
 
-[editable path="PanelContainer/MarginContainer/VBoxContainer/Volume"]
-[editable path="PanelContainer/MarginContainer/VBoxContainer/CameraX"]
-[editable path="PanelContainer/MarginContainer/VBoxContainer/CameraY"]
-[editable path="PanelContainer/MarginContainer/VBoxContainer/Fullscreen"]
+[node name="VolumeMusic" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeMusic/HBoxContainer" index="0"]
+text = "volume music"
+
+[node name="OptionButton" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeMusic/HBoxContainer" index="3"]
+visible = false
+
+[node name="HSlider" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeMusic/HBoxContainer" index="4"]
+visible = true
+script = ExtResource("3_db2af")
+
+[node name="VolumeFX" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeFX/HBoxContainer" index="0"]
+text = "volume FX"
+
+[node name="OptionButton" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeFX/HBoxContainer" index="3"]
+visible = false
+
+[node name="HSlider" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeFX/HBoxContainer" index="4"]
+visible = true
+script = ExtResource("3_db2af")
+
+[node name="Mute" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer" instance=ExtResource("3_r8xbi")]
+layout_mode = 2
+
+[node name="Label" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/Mute/HBoxContainer" index="0"]
+text = "mute"
+
+[node name="CheckBox" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/Mute/HBoxContainer" index="1"]
+visible = true
+
+[node name="OptionButton" parent="VBoxContainer/Audio/MarginContainer/VBoxContainer/Mute/HBoxContainer" index="3"]
+visible = false
+selected = 0
+popup/item_0/text = "1080 x 720"
+popup/item_1/text = "1920 x 1080"
+
+[connection signal="toggled" from="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX/HBoxContainer/CheckBox" to="." method="_on_invertX_toggled"]
+[connection signal="toggled" from="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY/HBoxContainer/CheckBox" to="." method="_on_invertY_toggled"]
+[connection signal="toggled" from="VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer/CheckBox" to="." method="_on_fullscreen_toggled"]
+
+[editable path="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX"]
+[editable path="VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY"]
+[editable path="VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen"]
+[editable path="VBoxContainer/Audio/MarginContainer/VBoxContainer/Volume"]
+[editable path="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeMusic"]
+[editable path="VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeFX"]
+[editable path="VBoxContainer/Audio/MarginContainer/VBoxContainer/Mute"]

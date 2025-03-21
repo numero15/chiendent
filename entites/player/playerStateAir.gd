@@ -49,7 +49,8 @@ func _physics_process(delta):
 	#if owner.jumpVectors.dot(owner.jumpVectors + owner.gravity) <0 :
 		#owner.affected_by_gravity = true
 		owner.checkerGrind.set_deferred("monitoring", true)
-		owner.timerJumpRevertGrav.start()		
+		if owner.timerEffectAirTrick.is_stopped() :
+			owner.timerJumpRevertGrav.start()		
 		#owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_fall")
 		if owner.timerAnim.is_stopped() :
 			owner.timerAnim.wait_time = 0.5
@@ -70,6 +71,9 @@ func _physics_process(delta):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_air_trick")
 		owner.curSpeed = owner.boostSpeed
 		owner.timerEffectAirTrick.start()
+		owner.timerJumpRevertGrav.stop()
+		owner.timerAnim.stop()
+		
 	
 	owner.move()
 	
@@ -86,13 +90,18 @@ func _physics_process(delta):
 		#owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS
 		#this is copy pasted from the move state, maybe it should be moved to player
 		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+		var _v_key = Input.get_vector("move_left_key", "move_right_key", "move_forward_key", "move_backward_key")
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
 			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 1.5
 		
+		if _v_key.dot(Vector2(0,-1))>-.5 and  _v_key.length()>0 :
+			var _r = (Input.get_action_strength("move_left_key") - Input.get_action_strength("move_right_key")) * owner.STICK_SENS*1.2 * 1.5
 			owner.character.rotation.y += _r
 			
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion  and !ConfigFileHandler.pad:
+	#if event is InputEventMouseMotion  and !ConfigFileHandler.pad:
+	#keyboard control
+	if event is InputEventMouseMotion:
 		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 
 
@@ -113,4 +122,5 @@ func _on_timer_jump_revert_grav_timeout() -> void:
 
 
 func _on_timer_effect_air_trick_timeout() -> void:
-	pass
+	owner.timerJumpRevertGrav.start()
+	owner.timerAnim.start()

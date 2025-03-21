@@ -44,17 +44,21 @@ func _physics_process(delta):
 		owner.particlesGrind.hide();
 	
 	var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-	if Input.is_action_just_pressed("ui_up") or (_v.normalized().dot(Vector2(0,-1))>-.5 and  _v.length()>0.8):
+	var _v_key = Input.get_vector("move_left_key", "move_right_key", "move_forward_key", "move_backward_key")
+	#pad input
+	if (_v.normalized().dot(Vector2(0,-1))>-.5 and  _v.length()>0.8):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
-	else :		
+	#key input
+	elif (_v_key.normalized().dot(Vector2(0,-1))>-.5 and  _v_key.length()>0.8):
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
+	else :
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_idle")
 		
-	if Input.is_action_just_pressed("ui_down"):
+	if Input.is_action_just_pressed("move_backward") or Input.is_action_just_pressed("move_backward_key"):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_brake")
 	
 	
-	if ConfigFileHandler.pad:
-		#var multiplier = 1.2
+	if ConfigFileHandler.pad or !ConfigFileHandler.pad:
 		var multiplier = .85
 		owner.maxSpeed = owner.maxSpeedMove	
 		if Input.is_action_pressed("ui_drift") and owner.curBoost>0:
@@ -76,6 +80,10 @@ func _physics_process(delta):
 			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * multiplier
 			owner.character.rotation.y += _r
 			
+		if _v_key.dot(Vector2(0,-1))>-.5 and  _v_key.length()>0 :
+			var _r = (Input.get_action_strength("move_left_key") - Input.get_action_strength("move_right_key")) * owner.STICK_SENS*1.2 * multiplier
+			owner.character.rotation.y += _r
+			
 			
 			var i : float = clamp(_r*30,-.5,.5) + .5
 			var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
@@ -95,15 +103,14 @@ func _physics_process(delta):
 		
 		
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and !ConfigFileHandler.pad:
-		
+	#keyboard control
+	if event is InputEventMouseMotion:
 		
 		#UGGGGLY
 		var i : float = clamp(-event.relative.x/20,-.5,.5) + .5
 		var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
-		owner.animationTree["parameters/Blend2/blend_amount"]= lerpf(j,i,.05)
-		
-		owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
+		#owner.animationTree["parameters/Blend2/blend_amount"]= lerpf(j,i,.05)		
+		#owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 		
 		
 		#owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z, event.relative.x/1000*owner.curSpeed,.1)

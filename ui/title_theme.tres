@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://8dhkrpna8up5"]
+
+[ext_resource type="FontFile" uid="uid://crnb3wppbjym0" path="res://ui/assets/fonts/LemonMilkBold-gx2B3.otf" id="1_f8cx7"]
+
+[resource]
+Label/fonts/font = ExtResource("1_f8cx7")

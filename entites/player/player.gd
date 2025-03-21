@@ -46,7 +46,7 @@ var affected_by_gravity: bool = true
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
 var avgNormal : Vector3 = Vector3.UP
-var MOUSE_SENS := 0.003
+var MOUSE_SENS := 0.001
 var STICK_SENS := 0.03
 var KEYBOARD_SENS := 0.1
 
@@ -68,7 +68,7 @@ var isBoost = false
 
 var trickCount : int = 0
 
-var control_settings
+#var control_settings
 
 signal boostChanged(value, max)
 
@@ -83,10 +83,9 @@ func _ready() -> void:
 	default_camera_rotation = $head/SpringArm3D.rotation
 	tweenCamera = get_tree().create_tween()
 	
-	control_settings = ConfigFileHandler.load_control_settings()
+	#control_settings = ConfigFileHandler.load_control_settings()
 	
 func _physics_process(delta):
-	
 	screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/25)
 	
 	if curSpeed-1 <= maxSpeed :
@@ -111,24 +110,27 @@ func _physics_process(delta):
 	if ConfigFileHandler.pad:
 		var rotX
 		var rotY
-		if control_settings.invertY :
+		#maybe it is better not to check from the save file
+		if ConfigFileHandler.load_control_settings().invertY :
 			rotY  = Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up")
 		else :
 			rotY  = Input.get_action_strength("rotate_camera_up") - Input.get_action_strength("rotate_camera_down")
 		rotate_camera_x(rotY * STICK_SENS)
 		
-		if control_settings.invertX :
+		#maybe it is better not to check from the save file
+		if ConfigFileHandler.load_control_settings().invertX :
 			rotX = Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")
 		else :
 			rotX = Input.get_action_strength("rotate_camera_left") - Input.get_action_strength("rotate_camera_right")			
 			
 		rotate_camera_y(rotX * STICK_SENS)
 		
-		if abs(Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up"))>.01 or abs(Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")) >.01 :
-			timerResetCamera.stop()
-			tweenCamera.stop()
-		elif timerResetCamera.is_stopped() :
-			timerResetCamera.start()
+		#replace camera needs to be duplicated to work with keyboard
+		#if abs(Input.get_action_strength("rotate_camera_down") - Input.get_action_strength("rotate_camera_up"))>.01 or abs(Input.get_action_strength("rotate_camera_right") - Input.get_action_strength("rotate_camera_left")) >.01 :
+			#timerResetCamera.stop()
+			#tweenCamera.stop()
+		#elif timerResetCamera.is_stopped() :
+			#timerResetCamera.start()
 		
 		if Input.is_action_pressed("reset_camera") :
 			var tween = get_tree().create_tween()
@@ -139,11 +141,16 @@ func _physics_process(delta):
 		
 
 func _input(event: InputEvent) -> void:
+	pass
 	#mouse control
-	if event is InputEventMouseMotion and !ConfigFileHandler.pad:
-		rotate_camera_x(-event.relative.y * MOUSE_SENS)
+	#keyboard control
+	#if event is InputEventMouseMotion :
+		#rotate_camera_y(-event.relative.x * MOUSE_SENS)
+		#rotate_camera_x(-event.relative.y * MOUSE_SENS)
 
 func rotate_camera_x(_x:float =0):
+	if _x == 0 :
+		return
 	$head/SpringArm3D.rotation.x +=_x
 	if $head/SpringArm3D.rotation.x > 0.4 :
 		$head/SpringArm3D.rotation.x = 0.4
@@ -151,6 +158,8 @@ func rotate_camera_x(_x:float =0):
 		$head/SpringArm3D.rotation.x = -1.5
 
 func rotate_camera_y(_y:float =0):
+	if _y == 0 :
+		return
 	$head/SpringArm3D.rotation.y +=_y
 	if $head/SpringArm3D.rotation.y > 1.5 :
 		$head/SpringArm3D.rotation.y = 1.5
@@ -195,9 +204,9 @@ func move():
 	move_and_slide()
 	
 	#push back physical objects
-	var push_force = 5
+	var push_force = 2
 	for i in get_slide_collision_count():
-		var c := get_slide_collision(i)		
+		var c := get_slide_collision(i)
 		if c.get_collider() is RigidBody3D:
 			var push_dir = -c.get_normal() + Vector3(0,.7,0)
 			push_dir = push_dir.normalized()
@@ -234,26 +243,35 @@ func get_dir() -> Vector3:
 	
 	if curSpeed>maxSpeed:
 		curSpeed = lerp(curSpeed,maxSpeed,.03)
-		
-	if !ConfigFileHandler.pad : 
-		if Input.is_action_pressed("ui_up") && !Input.is_action_pressed("ui_down"):
-			curSpeed = lerp(curSpeed,maxSpeed,.01)
-		#brake
-		elif Input.is_action_pressed("ui_down"):
-			curSpeed = lerp(curSpeed,0.0,.08)
-		#decelerate
-		else :
-			curSpeed = lerp(curSpeed,0.0,.03)
 	
+	#keyboard input
+	#if !ConfigFileHandler.pad : 
+		##accelerate
+		#if Input.is_action_pressed("move_forward_key") && !Input.is_action_pressed("move_backward_key"):
+			#curSpeed = lerp(curSpeed,maxSpeed,.01)
+		##brake
+		#elif Input.is_action_pressed("move_backward_key"):
+			#curSpeed = lerp(curSpeed,0.0,.08)
+		##decelerate
+		#else :
+			#curSpeed = lerp(curSpeed,0.0,.03)
+	
+	#pad and keyboard input
 	if ConfigFileHandler.pad : 
+		var _v_key = Input.get_vector("move_left_key", "move_right_key", "move_forward_key", "move_backward_key")
 		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-		
-		if Input.get_action_strength("move_backward") >0.8 :
+
+		#brake
+		if Input.get_action_strength("move_backward") >0.8 or  Input.is_action_pressed("move_backward_key"):
 			curSpeed = lerp(curSpeed,0.0,.08)
 			
+		#accelerate
 		elif _v.dot(Vector2(0,-1))>-.5 and  _v.length()>.8 :
 			curSpeed = lerp(curSpeed,maxSpeed,.01)
-		
+		#accelerate
+		elif _v_key.dot(Vector2(0,-1))>-.5 and  _v_key.length()>.8 :
+			curSpeed = lerp(curSpeed,maxSpeed,.01)
+		#decelerate
 		else :
 			curSpeed = lerp(curSpeed,0.0,.03)
 		

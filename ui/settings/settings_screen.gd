@@ -1,8 +1,8 @@
 extends Control
 
-@onready var fullscreenCheckBox = $PanelContainer/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer/CheckBox
-@onready var invertXCheckBox = $PanelContainer/MarginContainer/VBoxContainer/CameraX/HBoxContainer/CheckBox
-@onready var invertYCheckBox = $PanelContainer/MarginContainer/VBoxContainer/CameraY/HBoxContainer/CheckBox
+@onready var fullscreenCheckBox = $VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer/CheckBox
+@onready var invertXCheckBox = $VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX/HBoxContainer/CheckBox
+@onready var invertYCheckBox = $VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY/HBoxContainer/CheckBox
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var video_setting = ConfigFileHandler.load_video_settings()
