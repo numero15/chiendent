@@ -460,7 +460,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_6njco")
 shape = SubResource("ConvexPolygonShape3D_2v714")
 
 [node name="MeshInstance3D27" type="MeshInstance3D" parent="Buildings"]
-transform = Transform3D(-1, 0, 2.08616e-07, 0, 1, 0, -2.08616e-07, 0, -1, -51.8406, 2, 54.1721)
+transform = Transform3D(-1, 0, 2.08616e-07, 0, 1, 0, -2.08616e-07, 0, -1, -52.0609, 2, 54.1721)
 mesh = SubResource("PrismMesh_m8a02")
 surface_material_override/0 = SubResource("ShaderMaterial_6njco")
 

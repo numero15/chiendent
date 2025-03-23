@@ -184,25 +184,23 @@ func checkRays(air : bool = false) -> void:
 			numOfRaysColliding += 1
 			avgNor += r.get_collision_normal()
 	if avgNor and (is_on_floor() or air) and $head/RayCastGround.is_colliding()  :
+		
 		if isWall() and numOfRaysColliding<=0:
 			return
 		avgNor /= numOfRaysColliding
-		if secure_normal(avgNor.normalized()):
+		#do not take care of new normals when in air maybe this needs to be tweaked to allow small angles
+		if secure_normal(avgNor.normalized()) and !air:
 			avgNormal = avgNor.normalized()
+
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
-	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
+	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas		
 		if $head/RayCastGroundJump.is_colliding() and !is_on_floor() and !is_on_wall():
-			#if $head/RayCastGroundJump.get_collision_normal().normalized().dot(global_transform.basis.y) > .8:
 			avgNor = $head/RayCastGroundJump.get_collision_normal().normalized()
 			coef_lerp = 0.08
 			
-			#else :
-				#avgNor = Vector3.UP
-				#coef_lerp = 0.04
 		else :
 			avgNor = Vector3.UP
-			#coef_lerp = 0.02
 			coef_lerp = 0.08
 			
 		if secure_normal(avgNormal.lerp(avgNor, coef_lerp)):
@@ -235,10 +233,10 @@ func move():
 			
 	#empèche de monter un angle à 90°	
 	#if !_isWall and $head/RayCastGround.is_colliding():
-	if !isWall() or affected_by_gravity :
+	
+	if !isWall() or affected_by_gravity  :
 		var _transform= align_with_up(global_transform,up_direction)
 		global_transform = global_transform.interpolate_with(_transform, .4)
-	
 
 func isWall()-> bool:
 	var _isWall : bool = false

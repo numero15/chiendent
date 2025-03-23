@@ -87,7 +87,6 @@ func _physics_process(delta):
 		
 	
 	owner.move()
-	
 	if owner.is_on_floor():
 		#prevent leaving air while cooldown grind is running, might not be bullet proof
 		if owner.checkerGroundJump.get_collision_normal().dot(owner.global_transform.basis.y) > .5 and owner.timerCoolDownGrind.is_stopped():
