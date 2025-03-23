@@ -19,6 +19,7 @@ func enter_state(_msg := {}) -> void:
 		change_state.emit($"../Move")
 		
 	owner.SFXStartGrind.play()
+	owner.maxSpeed = owner.maxSpeedGrind
 	
 	if owner.animationTree:
 		owner.timerAnim.stop()
@@ -76,15 +77,15 @@ func _physics_process(delta):
 	owner.check_boost(delta)
 	#accelerate deprecated
 	#if Input.is_action_pressed("ui_up") and !Input.is_action_pressed("ui_down") and owner.curSpeed<owner.maxSpeed:
-	owner.maxSpeed = owner.maxSpeedMove
+	#owner.maxSpeed = owner.maxSpeedMove
 	if owner.check_trick() :
 		var new_trick = rng.randi_range(1,3)
 		while cur_trick == new_trick :
 			new_trick = rng.randi_range(1,3)
 		cur_trick = new_trick
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_grind_transition_"+str(new_trick))
-		#TODO change the way the custom max speed is set
-		owner.maxSpeed = owner.maxSpeedManual
+		
+		#owner.maxSpeed = owner.maxSpeedManual
 		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.3)
 	#brake
 	elif Input.is_action_pressed("ui_down"):
@@ -94,9 +95,9 @@ func _physics_process(delta):
 		owner.curSpeed = lerp(owner.curSpeed,owner.minSpeedGrind,.002)
 	
 	var  prev_progress_ratio : float
-	var  prev_offset : float
+	#var  prev_offset : float
 	prev_progress_ratio = progress_ratio
-	prev_offset = offset
+	#prev_offset = offset
 	offset += owner.curSpeed*delta*direction
 	pathFollow.progress = offset
 	progress_ratio = pathFollow.progress_ratio

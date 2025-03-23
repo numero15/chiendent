@@ -13,7 +13,7 @@ func _ready() -> void:
 	saturation = world.environment.adjustment_saturation
 	contrast = world.environment.adjustment_contrast
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("pause_input"):
 		pauseMenu()
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=173 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=172 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -77,7 +77,7 @@ gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("CurveTexture_m5fkd")
 
 [sub_resource type="QuadMesh" id="QuadMesh_dx5ba"]
-size = Vector2(0.5, 0.15)
+size = Vector2(1.5, 0.25)
 center_offset = Vector3(-0.3, 0, 0)
 orientation = 1
 
@@ -317,9 +317,6 @@ bg_color = Color(0.215686, 0.215686, 0.215686, 1)
 border_width_top = 2
 border_color = Color(0.215686, 0.215686, 0.215686, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_yl3ij"]
-viewport_path = NodePath("head/Combo/SubViewportCombo")
-
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_wodmq"]
 dof_blur_far_distance = 50.0
 dof_blur_far_transition = 30.0
@@ -355,23 +352,23 @@ shader_parameter/depth_limit = 500.0
 shader_parameter/gradient = SubResource("GradientTexture1D_xk12h")
 
 [sub_resource type="Gradient" id="Gradient_kej54"]
-offsets = PackedFloat32Array(0.308824, 0.433824, 0.954918, 1)
+offsets = PackedFloat32Array(0.173913, 0.329193, 0.954918, 1)
 colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.18, 0.18, 0.18, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_xqewx"]
 gradient = SubResource("Gradient_kej54")
 
 [sub_resource type="Gradient" id="Gradient_jgh4a"]
-offsets = PackedFloat32Array(0, 0.110294, 0.411765)
-colors = PackedColorArray(0.0105, 0.133525, 0.21, 1, 0.42471, 0.2106, 0.54, 1, 1, 0.5, 0.591667, 1)
+offsets = PackedFloat32Array(0, 0.354037, 0.602484, 0.838509, 0.981366)
+colors = PackedColorArray(0.00799999, 0.0798666, 0.4, 1, 0.32, 0.0302933, 0.00959999, 1, 0.42471, 0.2106, 0.54, 1, 1, 0.5, 0.591667, 1, 0.5, 1, 0.9, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_1nh4g"]
 gradient = SubResource("Gradient_jgh4a")
 
 [sub_resource type="Gradient" id="Gradient_ieuom"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0.0735294, 0.198529, 0.507353)
-colors = PackedColorArray(1, 0.819608, 0.529412, 1, 1, 0.48, 0.922, 1, 1, 0.63, 0.636167, 1)
+offsets = PackedFloat32Array(0, 0.242236, 0.583851, 0.84472, 0.993789)
+colors = PackedColorArray(1, 0.804167, 0.53, 1, 1, 0.63, 0.636167, 1, 1, 0.48, 0.922, 1, 1, 0.48, 0.922, 1, 1, 0.804167, 0.53, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rmmxn"]
 gradient = SubResource("Gradient_ieuom")
@@ -668,10 +665,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_gujcv")
-maxSpeedMove = 7.0
-maxSpeedManual = 11.0
-boostSpeed = 15.0
-gravity_strength = 2.5
 
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("state")]
 script = ExtResource("2_lbal6")
@@ -693,6 +686,7 @@ shape = SubResource("CapsuleShape3D_oofw1")
 [node name="head" type="Node3D" parent="."]
 
 [node name="checkerGrind" type="Area3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="head/checkerGrind"]
@@ -807,8 +801,8 @@ transform = Transform3D(1, 0, 0, 0, 1, -2.98023e-08, 0, 2.98023e-08, 1, 0, 0, 0)
 target_position = Vector3(0, -7, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 0.939692, 0.34202, 0, -0.34202, 0.939692, 0, 1.24696, 0)
-spring_length = 3.0
+transform = Transform3D(1, 0, 0, 0, 0.996194, 0.0871557, 0, -0.0871557, 0.996194, 0, 1.5, 0)
+spring_length = 4.0
 
 [node name="CameraPlaceHolder" type="Marker3D" parent="head/SpringArm3D"]
 
@@ -849,7 +843,7 @@ transform = Transform3D(1, 1.49012e-08, 2.98023e-08, -1.3411e-07, 1, 1.49012e-07
 [node name="ParticlesBoost" type="GPUParticles3D" parent="head/Trail/Node3D"]
 transform = Transform3D(1, 3.84483e-07, 4.30117e-07, -2.82114e-07, -0.32443, 0.945912, 5.03229e-07, -0.945912, -0.32443, 0.0194679, -0.0612864, -0.0827051)
 material_override = SubResource("StandardMaterial3D_7xmb4")
-amount = 12
+amount = 18
 lifetime = 0.2
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_y388q")
@@ -1020,43 +1014,6 @@ theme_override_styles/separator = SubResource("StyleBoxFlat_fao2c")
 [node name="Timer" type="Timer" parent="head/Special"]
 one_shot = true
 
-[node name="Combo" type="Sprite3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.056, 0.817, 0)
-visible = false
-cast_shadow = 0
-pixel_size = 0.005
-billboard = 1
-alpha_cut = 1
-texture = SubResource("ViewportTexture_yl3ij")
-
-[node name="SubViewportCombo" type="SubViewport" parent="head/Combo"]
-transparent_bg = true
-mesh_lod_threshold = 0.0
-size = Vector2i(270, 50)
-
-[node name="Control" type="Control" parent="head/Combo/SubViewportCombo"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="head/Combo/SubViewportCombo/Control"]
-layout_mode = 0
-offset_left = 70.0
-offset_right = 215.0
-offset_bottom = 30.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxFlat_f2wnf")
-text = "COMBO [x1]"
-
-[node name="HSeparator" type="HSeparator" parent="head/Combo/SubViewportCombo/Control"]
-visible = false
-layout_mode = 0
-offset_right = 64.0
-offset_bottom = 28.0
-theme_override_styles/separator = SubResource("StyleBoxFlat_fao2c")
-
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("position_node")]
 attributes = SubResource("CameraAttributesPractical_wodmq")
 current = true
@@ -1092,6 +1049,10 @@ anim_player = NodePath("../head/character_rigged/AnimationPlayer")
 parameters/Blend2/blend_amount = 0.0
 "parameters/Blend2 2/blend_amount" = 1.0
 
+[node name="TimerAirMinDuration" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
 [node name="TimerEffectAirTrick" type="Timer" parent="."]
 wait_time = 0.4
 one_shot = true
@@ -1116,7 +1077,7 @@ one_shot = true
 wait_time = 0.6
 
 [node name="TimerJumpRevertGrav" type="Timer" parent="."]
-wait_time = 0.3
+wait_time = 0.2
 one_shot = true
 
 [node name="AudioFXFall" type="AudioStreamPlayer" parent="."]

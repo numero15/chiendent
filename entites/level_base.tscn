@@ -1,8 +1,8 @@
-[gd_scene load_steps=36 format=3 uid="uid://dsuwfsk4jp6t5"]
+[gd_scene load_steps=35 format=3 uid="uid://dsuwfsk4jp6t5"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_piqpb"]
 [ext_resource type="Shader" path="res://assets/shaders/sky.gdshader" id="2_gha10"]
-[ext_resource type="PackedScene" uid="uid://d0ban3xdesr1u" path="res://entites/levels/test_01.tscn" id="2_wwc2b"]
+[ext_resource type="PackedScene" uid="uid://bnwli54rmfaj2" path="res://entites/levels/test_02.tscn" id="3_nbm8r"]
 [ext_resource type="PackedScene" uid="uid://bpogwtwx10igk" path="res://entites/player/player.tscn" id="4_0ha35"]
 [ext_resource type="Shader" path="res://assets/shaders/SpeedLines.gdshader" id="5_gbiu2"]
 [ext_resource type="Shader" path="res://assets/shaders/FishEye.gdshader" id="5_kn070"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://InGameUI.gd" id="17_myw0y"]
 
 [sub_resource type="Gradient" id="Gradient_jdi1p"]
+offsets = PackedFloat32Array(0.0462428, 1)
 colors = PackedColorArray(0, 0.0538334, 0.17, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_7ffde"]
@@ -42,14 +43,14 @@ shader_parameter/shadow_sample = 4
 shader_parameter/clouds_density = 0.3
 shader_parameter/clouds_scale = 1.0
 shader_parameter/clouds_smoothness = 0.1
-shader_parameter/clouds_light_color = Color(0.970833, 0.75, 1, 1)
+shader_parameter/clouds_light_color = Color(0.94, 0.94, 0.94, 1)
 shader_parameter/clouds_shadow_intensity = 0.5
 shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_skthr")
 shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_8w4h4")
 shader_parameter/high_clouds_density = 0.0
 shader_parameter/top_color = Color(1, 1, 1, 1)
-shader_parameter/bottom_color = Color(0.596078, 0.541176, 0.929412, 1)
-shader_parameter/sun_scatter = Color(0.792157, 0.611765, 1, 1)
+shader_parameter/bottom_color = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/sun_scatter = Color(0, 0, 0, 1)
 shader_parameter/astro_tint = Color(1, 1, 1, 1)
 shader_parameter/astro_scale = 10.0
 shader_parameter/astro_intensity = 1.0
@@ -70,14 +71,13 @@ ambient_light_sky_contribution = 0.0
 ambient_light_energy = 0.15
 tonemap_mode = 3
 tonemap_exposure = 0.3
-tonemap_white = 0.8
+tonemap_white = 0.7
 ssao_intensity = 7.85
 glow_enabled = true
 glow_normalized = true
 glow_intensity = 0.96
 glow_bloom = 0.45
 adjustment_enabled = true
-adjustment_brightness = 1.1
 adjustment_contrast = 1.1
 adjustment_saturation = 1.4
 adjustment_color_correction = SubResource("GradientTexture1D_7ffde")
@@ -86,9 +86,6 @@ adjustment_color_correction = SubResource("GradientTexture1D_7ffde")
 dof_blur_far_distance = 20.0
 dof_blur_far_transition = 200.0
 dof_blur_amount = 0.05
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_yig8q"]
-viewport_path = NodePath("head/Combo/SubViewportCombo")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_scb6e"]
 shader = ExtResource("5_kn070")
@@ -169,10 +166,10 @@ shadow_blur = 0.0
 
 [node name="LevelContainer" type="Node3D" parent="."]
 
-[node name="Node3D" parent="LevelContainer" instance=ExtResource("2_wwc2b")]
+[node name="test_02" parent="LevelContainer" instance=ExtResource("3_nbm8r")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("screen_lines", "distortion") instance=ExtResource("4_0ha35")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09335, -7.09989)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.1274, 25.4099, 59.6955)
 screen_lines = NodePath("../SpeedLines")
 distortion = NodePath("../Distortion")
 gravity_strength = 1.0
@@ -181,21 +178,69 @@ gravity_strength = 1.0
 transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0, 0)
 
 [node name="Skeleton3D" parent="Player/head/character_rigged/rig_game" index="0"]
+bones/0/position = Vector3(-1.11022e-14, 1.01118, -0.0812895)
+bones/0/rotation = Quaternion(0.258643, 1.15153e-07, 3.08326e-08, 0.965973)
+bones/1/rotation = Quaternion(0.159393, -2.71157e-15, 3.80022e-08, 0.987215)
+bones/2/position = Vector3(-1.60538e-14, 0.0310133, 8.26137e-08)
+bones/2/rotation = Quaternion(-0.409087, -7.23695e-08, -6.50894e-08, 0.912496)
+bones/3/position = Vector3(-3.01282e-15, 0.176695, -4.57806e-08)
+bones/3/rotation = Quaternion(0.136864, 7.85631e-08, 2.17763e-08, 0.99059)
 bones/4/rotation = Quaternion(0.30103, 1.1087e-07, 1.16557e-07, 0.953615)
 bones/5/rotation = Quaternion(-0.233135, 0.302489, -0.0765679, 0.921024)
 bones/6/rotation = Quaternion(0.078604, 0.282658, -0.189093, 0.937107)
+bones/7/position = Vector3(0.0182999, 0.160038, 0.100178)
+bones/7/rotation = Quaternion(0.660929, 0.340959, 0.461732, -0.48345)
+bones/8/rotation = Quaternion(-0.392727, 0.551529, -0.213863, 0.704162)
+bones/9/position = Vector3(-4.11832e-09, 0.108228, 4.35175e-08)
+bones/9/rotation = Quaternion(1.49196e-07, 0.155994, -2.00958e-07, 0.987758)
+bones/10/position = Vector3(3.20082e-08, 0.108228, -4.01051e-08)
+bones/10/rotation = Quaternion(0.546976, 0.155995, -0.104589, 0.815809)
+bones/11/position = Vector3(8.89813e-08, 0.136254, 9.92901e-09)
+bones/11/rotation = Quaternion(-2.3046e-07, -0.036613, -2.06176e-07, 0.99933)
+bones/12/position = Vector3(-2.39518e-08, 0.136254, -3.50065e-08)
+bones/12/rotation = Quaternion(-0.0323032, -0.042472, -0.145098, 0.987977)
+bones/13/position = Vector3(-0.0183, 0.160038, 0.100178)
+bones/13/rotation = Quaternion(0.660929, -0.340958, -0.461731, -0.48345)
+bones/14/rotation = Quaternion(-0.392727, -0.551529, 0.213863, 0.704162)
+bones/15/position = Vector3(-1.53781e-08, 0.108228, -3.83098e-08)
+bones/15/rotation = Quaternion(3.94922e-08, -0.155994, 1.42988e-07, 0.987758)
+bones/16/position = Vector3(-1.34594e-07, 0.108228, 1.08848e-08)
+bones/16/rotation = Quaternion(0.546976, -0.155995, 0.104589, 0.815809)
+bones/17/position = Vector3(1.99596e-09, 0.136254, 9.23323e-09)
+bones/17/rotation = Quaternion(-3.65462e-07, 0.036613, 1.8938e-07, 0.99933)
+bones/18/position = Vector3(2.31959e-08, 0.136254, 4.47608e-08)
+bones/18/rotation = Quaternion(-0.0323031, 0.042472, 0.145098, 0.987977)
+bones/23/rotation = Quaternion(0.828293, -0.136645, -0.262833, 0.475582)
+bones/24/position = Vector3(1.38139e-08, 0.20677, -6.43197e-08)
+bones/24/rotation = Quaternion(-5.87735e-08, 0.199937, -7.5335e-08, 0.979809)
+bones/25/position = Vector3(-2.39941e-08, 0.20677, -9.09204e-08)
+bones/25/rotation = Quaternion(0.435794, 0.199937, -0.0999384, 0.871849)
+bones/26/position = Vector3(-1.03049e-09, 0.267813, 1.38879e-08)
+bones/26/rotation = Quaternion(7.38261e-08, -0.211381, -2.30006e-08, 0.977404)
+bones/27/position = Vector3(-1.23837e-08, 0.267813, -5.06911e-08)
+bones/27/rotation = Quaternion(-0.64376, 0.0549143, 0.127436, 0.752541)
+bones/28/position = Vector3(2.37315e-08, 0.238208, -2.80072e-08)
+bones/28/rotation = Quaternion(2.60289e-06, 0.968875, -0.247551, -9.04567e-07)
+bones/29/rotation = Quaternion(0.828292, 0.136646, 0.262833, 0.475582)
+bones/30/position = Vector3(7.1205e-08, 0.20677, -1.13123e-08)
+bones/30/rotation = Quaternion(1.00237e-07, -0.199938, 3.61184e-08, 0.979809)
+bones/31/position = Vector3(-1.08736e-08, 0.20677, 6.8685e-09)
+bones/31/rotation = Quaternion(0.435794, -0.199938, 0.0999385, 0.871849)
+bones/32/position = Vector3(-4.79487e-09, 0.267813, 5.96768e-09)
+bones/32/rotation = Quaternion(-4.71876e-08, 0.211381, -1.22076e-08, 0.977404)
+bones/33/position = Vector3(1.30676e-08, 0.267813, 2.79324e-08)
+bones/33/rotation = Quaternion(-0.643761, -0.0549139, -0.127436, 0.75254)
+bones/34/position = Vector3(1.13995e-08, 0.238208, 2.0752e-08)
+bones/34/rotation = Quaternion(-2.47379e-06, 0.968875, -0.24755, 8.42618e-07)
 
 [node name="Trail" parent="Player/head" index="8"]
-transform = Transform3D(-1, 6.88589e-07, 2.20145e-06, 6.47576e-08, 0.962406, -0.271613, -2.30572e-06, -0.271613, -0.962406, 4.56852e-08, 1.34035, -0.0180206)
+transform = Transform3D(-1, 6.88589e-07, 2.20145e-06, 6.47576e-08, 0.962406, -0.271613, -2.30572e-06, -0.271613, -0.962406, 0, 1.34035, -0.0180206)
 
 [node name="BoneAttachmentFoot" parent="Player/head" index="10"]
-transform = Transform3D(-0.994784, 0.052175, 0.0876409, -0.101995, -0.508895, -0.854764, 1.36725e-06, -0.859245, 0.511562, 0.222314, 0.217931, 0.0264387)
+transform = Transform3D(-0.994784, 0.052175, 0.0876409, -0.101995, -0.508895, -0.854764, 1.36725e-06, -0.859245, 0.511562, 0.222313, 0.217932, 0.0264397)
 
 [node name="BoneAttachmentFoot2" parent="Player/head" index="11"]
-transform = Transform3D(-0.994785, -0.0521711, -0.0876427, 0.101995, -0.508896, -0.854764, -7.02211e-06, -0.859245, 0.511564, -0.222314, 0.217931, 0.0264378)
-
-[node name="Combo" parent="Player/head" index="17"]
-texture = SubResource("ViewportTexture_yig8q")
+transform = Transform3D(-0.994785, -0.0521711, -0.0876427, 0.101995, -0.508896, -0.854764, -7.02211e-06, -0.859245, 0.511564, -0.222313, 0.21793, 0.0264397)
 
 [node name="Outlines2" parent="Player/Camera3D" index="1"]
 visible = true
@@ -264,7 +309,7 @@ script = ExtResource("12_a886i")
 origin_node = NodePath("../Player")
 
 [node name="NPC" parent="." instance=ExtResource("12_q5br5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35695, 3.50137)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.35695, -4.49863)
 
 [node name="Camera3DTop" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0)

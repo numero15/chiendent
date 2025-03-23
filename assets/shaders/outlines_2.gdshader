@@ -397,8 +397,8 @@ void fragment() {
 		if (_lum > .5){
 			_sat = (_max - _min) / (2.0 - _max - _min);
 		}
-
-		//gradient_ALBEDO = mix(gradient_ALBEDO,original.rgb, _sat);
+		_sat = clamp(_sat, 0.0,1.0);
+		gradient_ALBEDO = mix(gradient_ALBEDO,original.rgb, _sat);
 
 
 		ALBEDO.rgb = gradient_ALBEDO;

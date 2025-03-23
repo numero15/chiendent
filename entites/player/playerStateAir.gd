@@ -5,6 +5,17 @@ func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
 	set_process_input(true)
 	owner.characterMesh.rotation.z = 0
+	owner.timerAirMinDuration.start()
+	owner.acceleration = owner.accelerationAir
+	
+	if owner.curSpeed > owner.maxSpeedAir :
+		owner.maxSpeed = owner.curSpeed
+	else :
+		owner.maxSpeed = owner.maxSpeedAir
+	#cap speed to the max grind --> the fasteest move mode
+	if owner.maxSpeed > owner.maxSpeedGrind :
+		owner.maxSpeed = owner.maxSpeedGrind
+		
 	print('air')
 	
 	if _msg.has("jump"):
@@ -80,23 +91,25 @@ func _physics_process(delta):
 	if owner.is_on_floor():
 		#prevent leaving air while cooldown grind is running, might not be bullet proof
 		if owner.checkerGroundJump.get_collision_normal().dot(owner.global_transform.basis.y) > .5 and owner.timerCoolDownGrind.is_stopped():
-			owner.particlesJump.emitting = true;
 			owner.checkerGrind.set_deferred("monitoring", false)
 			owner.timerEffectAirTrick.stop()
 			change_state.emit($"../Move")
-			owner.SFXFall.play()
+			if owner.timerAirMinDuration.is_stopped():
+				owner.SFXFall.play()
+				owner.particlesJump.emitting = true;
 			
-	if ConfigFileHandler.pad:
+	#if ConfigFileHandler.pad:
 		#owner.character.rotation.y +=(Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS
 		#this is copy pasted from the move state, maybe it should be moved to player
-		var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
-		var _v_key = Input.get_vector("move_left_key", "move_right_key", "move_forward_key", "move_backward_key")
-		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
-			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 1.5
+	var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var _v_key = Input.get_vector("move_left_key", "move_right_key", "move_forward_key", "move_backward_key")
+	if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
+		var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * 0.85 #1.5
+		owner.character.rotation.y += _r
 		
-		if _v_key.dot(Vector2(0,-1))>-.5 and  _v_key.length()>0 :
-			var _r = (Input.get_action_strength("move_left_key") - Input.get_action_strength("move_right_key")) * owner.STICK_SENS*1.2 * 1.5
-			owner.character.rotation.y += _r
+	if _v_key.dot(Vector2(0,-1))>-.5 and  _v_key.length()>0 :
+		var _r = (Input.get_action_strength("move_left_key") - Input.get_action_strength("move_right_key")) * owner.STICK_SENS*1.2 * 1.5
+		owner.character.rotation.y += _r
 			
 func _input(event: InputEvent) -> void:
 	#if event is InputEventMouseMotion  and !ConfigFileHandler.pad:

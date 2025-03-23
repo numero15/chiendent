@@ -60,15 +60,24 @@ func _physics_process(delta):
 	
 	if ConfigFileHandler.pad or !ConfigFileHandler.pad:
 		var multiplier = .85
-		owner.maxSpeed = owner.maxSpeedMove	
-		if Input.is_action_pressed("ui_drift") and owner.curBoost>0:
+		owner.maxSpeed = owner.maxSpeedMove
+		owner.acceleration = owner.accelerationMove
+		if Input.is_action_pressed("ui_drift") and owner.curBoost>0 and owner.curSpeed>4.0:
+			if owner.curSpeed > owner.maxSpeedManual :
+				owner.maxSpeed = owner.curSpeed
+			else :
+				owner.maxSpeed = owner.maxSpeedManual
+			#cap speed to the max grind --> the fasteest move mode
+			if owner.maxSpeed > owner.maxSpeedGrind :
+				owner.maxSpeed = owner.maxSpeedGrind
+				
 			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_drift")
 			owner.particlesDust.emitting = true;
 			owner.boostChanged.emit(owner.curBoost, owner.maxBoost)
 			multiplier = drift_multiplier_turn
 			owner.curBoost -= delta*5
 			if owner.curBoost<0 : owner.curBoost = 0
-			owner.maxSpeed = owner.maxSpeedManual
+			
 			if owner.check_trick():
 				owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_drift_trick")
 				#TODO change the way the custom max speed is set
@@ -105,10 +114,10 @@ func _physics_process(delta):
 func _input(event: InputEvent) -> void:
 	#keyboard control
 	if event is InputEventMouseMotion:
-		
+		pass
 		#UGGGGLY
-		var i : float = clamp(-event.relative.x/20,-.5,.5) + .5
-		var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
+		#var i : float = clamp(-event.relative.x/20,-.5,.5) + .5
+		#var j : float = owner.animationTree["parameters/Blend2/blend_amount"]
 		#owner.animationTree["parameters/Blend2/blend_amount"]= lerpf(j,i,.05)		
 		#owner.character.rotation.y += -event.relative.x * owner.MOUSE_SENS
 		
@@ -117,7 +126,7 @@ func _input(event: InputEvent) -> void:
 	#else :
 		#owner.characterMesh.rotation.z  = lerp(owner.characterMesh.rotation.z,0.0,.1)
 
-func _on_checker_grind_body_entered(body):
+func _on_checker_grind_body_entered(_body):
 	pass
 	#change_state.emit($"../Grind",{_body = body})
 

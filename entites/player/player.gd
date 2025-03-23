@@ -4,12 +4,17 @@ extends CharacterBody3D
 var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
-@export var maxSpeedMove := 20.0
-@export var maxSpeedManual := 30.0
+@export var maxSpeedMove := 7.0
+@export var accelerationMove := .01
+@export var maxSpeedManual := 10.0
+@export var maxSpeedGrind := 14.0
+@export var accelerationManual := .1
+@export var maxSpeedAir := 7.0
+@export var accelerationAir := .01
+@export var boostSpeed := 15.0
 @export var minSpeedGrind := 2.0
 @export var drift_multiplier_speed : float  = 2.5
-@export var boostSpeed := 40.0
-@export var gravity_strength :float= .5
+@export var gravity_strength :float= 2.5
 @export var jump_strength :float= 20
 
 @onready var checkerGrind = get_node("head/checkerGrind")
@@ -42,6 +47,7 @@ var affected_by_gravity: bool = true
 @onready var SFXFootstep : AudioStreamPlayer = get_node("AudioFootstep")
 @onready var timerFootstep = get_node("TimerFootstep")
 @onready var timerJumpRevertGrav = get_node("TimerJumpRevertGrav")
+@onready var timerAirMinDuration = get_node("TimerAirMinDuration")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -52,6 +58,7 @@ var KEYBOARD_SENS := 0.1
 
 
 var maxSpeed
+var acceleration : float
 var curSpeed := 0.0
 var vel := Vector3.ZERO
 var jumpVectors := Vector3.ZERO
@@ -81,11 +88,13 @@ func _ready() -> void:
 	maxSpeed = maxSpeedMove
 	
 	default_camera_rotation = $head/SpringArm3D.rotation
-	tweenCamera = get_tree().create_tween()
 	
+	acceleration = accelerationMove
+	#tweenCamera = get_tree().create_tween()	
 	#control_settings = ConfigFileHandler.load_control_settings()
 	
 func _physics_process(delta):
+
 	screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/25)
 	
 	if curSpeed-1 <= maxSpeed :
@@ -140,7 +149,7 @@ func _physics_process(delta):
 			
 		
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	pass
 	#mouse control
 	#keyboard control
@@ -174,10 +183,12 @@ func checkRays(air : bool = false) -> void:
 		if r.is_colliding():
 			numOfRaysColliding += 1
 			avgNor += r.get_collision_normal()
-	if avgNor and is_on_floor() and $head/RayCastGround.is_colliding()  :
-		if isWall() :return
+	if avgNor and (is_on_floor() or air) and $head/RayCastGround.is_colliding()  :
+		if isWall() and numOfRaysColliding<=0:
+			return
 		avgNor /= numOfRaysColliding
-		avgNormal = avgNor.normalized()
+		if secure_normal(avgNor.normalized()):
+			avgNormal = avgNor.normalized()
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
 	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas
@@ -193,12 +204,20 @@ func checkRays(air : bool = false) -> void:
 			avgNor = Vector3.UP
 			#coef_lerp = 0.02
 			coef_lerp = 0.08
-		avgNormal = avgNormal.lerp(avgNor, coef_lerp)
+			
+		if secure_normal(avgNormal.lerp(avgNor, coef_lerp)):
+			avgNormal = avgNormal.lerp(avgNor, coef_lerp)
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
 	else :
 		avgNor = Vector3.ZERO
-
+		
+func secure_normal(_avgNormal)-> bool :
+	if is_nan(_avgNormal.x) :
+		return false
+	else :
+		return true
+		
 func move():
 	up_direction = avgNormal.normalized()
 	move_and_slide()
@@ -243,19 +262,7 @@ func get_dir() -> Vector3:
 	
 	if curSpeed>maxSpeed:
 		curSpeed = lerp(curSpeed,maxSpeed,.03)
-	
-	#keyboard input
-	#if !ConfigFileHandler.pad : 
-		##accelerate
-		#if Input.is_action_pressed("move_forward_key") && !Input.is_action_pressed("move_backward_key"):
-			#curSpeed = lerp(curSpeed,maxSpeed,.01)
-		##brake
-		#elif Input.is_action_pressed("move_backward_key"):
-			#curSpeed = lerp(curSpeed,0.0,.08)
-		##decelerate
-		#else :
-			#curSpeed = lerp(curSpeed,0.0,.03)
-	
+		
 	#pad and keyboard input
 	if ConfigFileHandler.pad : 
 		var _v_key = Input.get_vector("move_left_key", "move_right_key", "move_forward_key", "move_backward_key")
@@ -267,10 +274,10 @@ func get_dir() -> Vector3:
 			
 		#accelerate
 		elif _v.dot(Vector2(0,-1))>-.5 and  _v.length()>.8 :
-			curSpeed = lerp(curSpeed,maxSpeed,.01)
+			curSpeed = lerp(curSpeed,maxSpeed,acceleration)
 		#accelerate
 		elif _v_key.dot(Vector2(0,-1))>-.5 and  _v_key.length()>.8 :
-			curSpeed = lerp(curSpeed,maxSpeed,.01)
+			curSpeed = lerp(curSpeed,maxSpeed,acceleration)
 		#decelerate
 		else :
 			curSpeed = lerp(curSpeed,0.0,.03)

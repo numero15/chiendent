@@ -4,7 +4,7 @@ extends Area3D
 @onready var particles = get_node("GPUParticles3D")
 signal billboardActivated
 
-func _on_area_entered(area):
+func _on_area_entered(_area):
 	graph.visible = true
 	particles.emitting = true
 	set_deferred("monitorable", false) 
