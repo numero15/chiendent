@@ -7,6 +7,11 @@ func enter_state(_msg := {}) -> void:
 	owner.characterMesh.rotation.z = 0
 	owner.timerAirMinDuration.start()
 	owner.acceleration = owner.accelerationAir
+	#do not apply min speed if play is alreadey slower --> allow to jump without moving
+	if owner.curSpeed >owner.minSpeedAir :
+		owner.minSpeed = owner.minSpeedAir
+	else :
+		owner.minSpeed = owner.curSpeed
 	
 	if owner.curSpeed > owner.maxSpeedAir :
 		owner.maxSpeed = owner.curSpeed
@@ -19,6 +24,7 @@ func enter_state(_msg := {}) -> void:
 	print('air')
 	
 	if _msg.has("jump"):
+		owner.is_falling = false
 		owner.SFXVoiceJump.play()
 		#change this to detect grind only on fall
 		#owner.checkerGrind.set_deferred("monitoring", false)
@@ -30,10 +36,8 @@ func enter_state(_msg := {}) -> void:
 		owner.jumpVec =  owner.avgNormal * owner.jump_strength
 		owner.gravity =  owner.avgNormal * -owner.gravity_strength
 		#I replaced += by = ti fix jump from grind bug but it may fuck something else, I don't know what I do
-		owner.jumpVectors = owner.jumpVec
-
-		
-		owner.affected_by_gravity = false
+		owner.jumpVectors = owner.jumpVec		
+		owner.affected_by_gravity = false		
 		
 		if owner.animationTree:
 			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_jump")
@@ -47,6 +51,7 @@ func enter_state(_msg := {}) -> void:
 			
 		owner.checkerGrind.set_deferred("monitoring", true)
 		owner.affected_by_gravity = true
+		owner.is_falling = true
 		if owner.animationTree:
 			#owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_fall")
 			owner.timerAnim.wait_time = 0.2
@@ -131,6 +136,7 @@ func _on_checker_grind_body_entered(body: Node3D) -> void:
 
 func _on_timer_jump_revert_grav_timeout() -> void:
 	owner.affected_by_gravity = true
+	owner.is_falling = true
 
 
 func _on_timer_effect_air_trick_timeout() -> void:

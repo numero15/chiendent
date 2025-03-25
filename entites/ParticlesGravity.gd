@@ -11,3 +11,10 @@ func _ready():
 func _process(_delta):
 	global_position = origin_node.global_position
 	pass
+
+func _notification(what):
+	match what:
+		NOTIFICATION_PAUSED:
+			interpolate = false
+		NOTIFICATION_UNPAUSED:
+			interpolate = true

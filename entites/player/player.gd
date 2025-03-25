@@ -5,16 +5,18 @@ var affected_by_gravity: bool = true
 @export var screen_lines: Node
 @export var distortion: Node
 @export var maxSpeedMove := 7.0
+@export var minSpeedMove := 0.0
 @export var accelerationMove := .01
 @export var maxSpeedManual := 10.0
-@export var maxSpeedGrind := 14.0
 @export var accelerationManual := .1
+@export var maxSpeedGrind := 14.0
+@export var minSpeedGrind := 2.0
 @export var maxSpeedAir := 7.0
+@export var minSpeedAir := 5.0
 @export var accelerationAir := .01
 @export var boostSpeed := 15.0
-@export var minSpeedGrind := 2.0
 @export var drift_multiplier_speed : float  = 2.5
-@export var gravity_strength :float= 2.5
+@export var gravity_strength :float= 1.0
 @export var jump_strength :float= 20
 
 @onready var checkerGrind = get_node("head/checkerGrind")
@@ -57,7 +59,9 @@ var STICK_SENS := 0.03
 var KEYBOARD_SENS := 0.1
 
 
-var maxSpeed
+var is_falling :bool = false
+var maxSpeed : float
+var minSpeed : float
 var acceleration : float
 var curSpeed := 0.0
 var vel := Vector3.ZERO
@@ -72,6 +76,7 @@ var avgNor := Vector3.ZERO
 var maxBoost: float = 30
 var curBoost : float = 30
 var isBoost = false
+var distortion_amout : float = 0
 
 var trickCount : int = 0
 
@@ -90,6 +95,7 @@ func _ready() -> void:
 	default_camera_rotation = $head/SpringArm3D.rotation
 	
 	acceleration = accelerationMove
+
 	#tweenCamera = get_tree().create_tween()	
 	#control_settings = ConfigFileHandler.load_control_settings()
 	
@@ -99,7 +105,8 @@ func _physics_process(delta):
 	
 	if curSpeed-1 <= maxSpeed :
 		distortion.material.set("shader_parameter/aberration_amount", curSpeed/40.0 + 0.3 )
-		distortion.material.set("shader_parameter/coeff", curSpeed/150)
+		distortion_amout = lerp(distortion_amout, curSpeed/150,.1)
+		distortion.material.set("shader_parameter/coeff", distortion_amout)
 		distortion.material.set("shader_parameter/blur_power", 0)		
 		
 	else :
@@ -107,7 +114,8 @@ func _physics_process(delta):
 		#distortion.material.set("shader_parameter/coeff", curSpeed/75)
 		#distortion.material.set("shader_parameter/blur_power", curSpeed/800)	
 		distortion.material.set("shader_parameter/aberration_amount", curSpeed/5.0 )
-		distortion.material.set("shader_parameter/coeff", curSpeed/30)
+		distortion_amout = lerp(distortion_amout, curSpeed/30,.1)
+		distortion.material.set("shader_parameter/coeff", distortion_amout)
 	
 	if curBoost<maxBoost and !Input.is_action_pressed("ui_boost") and !Input.is_action_pressed("ui_drift") :
 		curBoost += delta*2
@@ -191,7 +199,6 @@ func checkRays(air : bool = false) -> void:
 		#do not take care of new normals when in air maybe this needs to be tweaked to allow small angles
 		if secure_normal(avgNor.normalized()) and !air:
 			avgNormal = avgNor.normalized()
-
 		jumpVec = avgNormal * jump_strength
 		gravity = avgNormal * -gravity_strength
 	elif affected_by_gravity: # ajouter ces lignes pour que le perso tombe/saute avec la gravité vers le bas		
@@ -268,7 +275,7 @@ func get_dir() -> Vector3:
 
 		#brake
 		if Input.get_action_strength("move_backward") >0.8 or  Input.is_action_pressed("move_backward_key"):
-			curSpeed = lerp(curSpeed,0.0,.08)
+			curSpeed = lerp(curSpeed,minSpeed,.08)
 			
 		#accelerate
 		elif _v.dot(Vector2(0,-1))>-.5 and  _v.length()>.8 :
@@ -278,8 +285,7 @@ func get_dir() -> Vector3:
 			curSpeed = lerp(curSpeed,maxSpeed,acceleration)
 		#decelerate
 		else :
-			curSpeed = lerp(curSpeed,0.0,.03)
-		
+			curSpeed = lerp(curSpeed,minSpeed,.03)
 	return dir.normalized()
 	
 func align_with_up(_transform : Transform3D,_new_up:Vector3) -> Transform3D :
@@ -304,7 +310,7 @@ func check_boost(delta):
 		camera.fov = lerpf(camera.fov,110,.2)
 		#camera.fov = 95
 	else :
-		trail.visible = false
+		#trail.visible = false
 		isBoost = false
 		particlesBoost.emitting = false
 		camera.fov = lerpf(camera.fov,75,.01)
@@ -333,13 +339,20 @@ func check_trick() -> bool:
 
 func trick() :
 	trickCount += 1
-	curBoost += 1
+	curBoost += 2
 	timerTrick.stop()
 	timerTrick.start()
-	if curBoost>maxBoost: curBoost = maxBoost
+	var update_ui :bool = false
+	if curBoost < maxBoost :
+		update_ui = true
+	if curBoost>maxBoost:
+		curBoost = maxBoost
+	if update_ui :
+		boostChanged.emit(curBoost, maxBoost)
 	particlesTrick.emitting = true;
 	SFXTrick.play()
 	SFXVoiceTrick.play()
+	
 	
 func _on_timer_trick_timeout() -> void:
 	trickCount = 0

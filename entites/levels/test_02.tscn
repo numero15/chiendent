@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://bnwli54rmfaj2"]
+[gd_scene load_steps=59 format=3 uid="uid://bnwli54rmfaj2"]
 
 [ext_resource type="PackedScene" uid="uid://dgabxv03jv3hy" path="res://entites/billboard.tscn" id="1_024mk"]
 [ext_resource type="Script" path="res://entites/levels/buildings.gd" id="1_ism2f"]
@@ -99,9 +99,6 @@ points = PackedVector3Array(-10, -12.5, -18, 10, -12.5, -18, -10, -12.5, 18, -10
 
 [sub_resource type="BoxMesh" id="BoxMesh_hngj0"]
 size = Vector3(5, 3, 5)
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_kr7wu"]
-points = PackedVector3Array(-2.5, -1.5, -2.5, -2.5, 1.5, -2.5, 2.5, -1.5, -2.5, -2.5, -1.5, 2.5, -2.5, 1.5, 2.5, 2.5, 1.5, -2.5, 2.5, -1.5, 2.5, 2.5, 1.5, 2.5)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_do8mm"]
 points = PackedVector3Array(-2.5, -1.5, -2.5, -2.5, 1.5, -2.5, 2.5, -1.5, -2.5, -2.5, -1.5, 2.5, -2.5, 1.5, 2.5, 2.5, 1.5, -2.5, 2.5, -1.5, 2.5, 2.5, 1.5, 2.5)
@@ -350,17 +347,6 @@ surface_material_override/0 = SubResource("ShaderMaterial_6njco")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Buildings/MeshInstance3D18/MeshInstance3D18_col"]
 shape = SubResource("ConvexPolygonShape3D_7t5lv")
 
-[node name="MeshInstance3D22" type="MeshInstance3D" parent="Buildings"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.6006, 18.7152, 50.3334)
-mesh = SubResource("BoxMesh_hngj0")
-skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("ShaderMaterial_6njco")
-
-[node name="MeshInstance3D22_col" type="StaticBody3D" parent="Buildings/MeshInstance3D22"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Buildings/MeshInstance3D22/MeshInstance3D22_col"]
-shape = SubResource("ConvexPolygonShape3D_kr7wu")
-
 [node name="MeshInstance3D24" type="MeshInstance3D" parent="Buildings"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.6006, 17.4276, 33.991)
 mesh = SubResource("BoxMesh_hngj0")
@@ -373,7 +359,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_6njco")
 shape = SubResource("ConvexPolygonShape3D_do8mm")
 
 [node name="MeshInstance3D26" type="MeshInstance3D" parent="Buildings"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.6006, 15.2911, 40.8687)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.6006, 17.0537, 41.9626)
 mesh = SubResource("BoxMesh_hngj0")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_6njco")
@@ -384,7 +370,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_6njco")
 shape = SubResource("ConvexPolygonShape3D_uvga3")
 
 [node name="MeshInstance3D23" type="MeshInstance3D" parent="Buildings"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.6672, 21.9748, 60.3877)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.6672, 21.9748, 57.0157)
 mesh = SubResource("BoxMesh_hngj0")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("ShaderMaterial_6njco")

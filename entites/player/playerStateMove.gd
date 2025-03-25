@@ -6,6 +6,7 @@ func enter_state(_msg := {}) -> void:
 	set_physics_process(true)
 	set_process_input(true)
 	owner.affected_by_gravity = false
+	owner.minSpeed = owner.minSpeedMove
 	
 	print('move')
 	if owner.animationTree:
@@ -14,7 +15,9 @@ func enter_state(_msg := {}) -> void:
 		else :
 			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_push")
 		owner.timerAnim.stop()
-
+		
+	if Input.is_action_pressed("move_backward") or Input.is_action_pressed("move_backward_key"):
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_brake")
 		
 func _physics_process(delta):
 	
@@ -36,12 +39,16 @@ func _physics_process(delta):
 		owner.timerFootstep.stop()
 
 	
-	if Input.is_action_pressed("ui_down") && owner.curSpeed >3:
+	if Input.is_action_pressed("ui_down") && owner.curSpeed >1:
 		owner.particlesGrind.emitting = true;
 		owner.particlesGrind.show();
+		owner.particlesGrind2.emitting = true;
+		owner.particlesGrind2.show();
 	else :
 		owner.particlesGrind.emitting = false;
 		owner.particlesGrind.hide();
+		owner.particlesGrind2.emitting = false;
+		owner.particlesGrind2.hide();
 	
 	var _v = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var _v_key = Input.get_vector("move_left_key", "move_right_key", "move_forward_key", "move_backward_key")
@@ -55,7 +62,7 @@ func _physics_process(delta):
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_idle")
 		
 	if Input.is_action_just_pressed("move_backward") or Input.is_action_just_pressed("move_backward_key"):
-		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_brake")
+		owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_brake")
 	
 	
 	if ConfigFileHandler.pad or !ConfigFileHandler.pad:

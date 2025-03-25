@@ -1,4 +1,4 @@
-[gd_scene load_steps=172 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=173 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -7,11 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://ds5fbr0ibur8t" path="res://assets/character_rigged_03_grt.glb" id="6_hxj3o"]
 [ext_resource type="Script" path="res://entites/player/playerStateAir.gd" id="6_ji8i7"]
 [ext_resource type="Shader" path="res://assets/shaders/outlines.gdshader" id="7_45gid"]
-[ext_resource type="Texture2D" uid="uid://dqj10wwfdqwry" path="res://assets/boost_bar_progress_white.png" id="7_c2kou"]
+[ext_resource type="Texture2D" uid="uid://cnc8a8bbrpq7y" path="res://assets/particle_textures/lightning.png" id="7_ggdwn"]
 [ext_resource type="Texture2D" uid="uid://d1owdumaowg08" path="res://assets/particle_grind_Plan de travail 1.png" id="8_a8rmi"]
 [ext_resource type="Script" path="res://trail.gd" id="8_lv3q6"]
 [ext_resource type="Script" path="res://scripts/Camera3D.gd" id="8_mroog"]
 [ext_resource type="Texture2D" uid="uid://ico2en2gui8l" path="res://assets/particle_textures/ripple_04.png" id="9_hel8y"]
+[ext_resource type="Script" path="res://entites/player/particles_dust.gd" id="10_qfbij"]
 [ext_resource type="Script" path="res://entites/player/special.gd" id="11_b7mur"]
 [ext_resource type="Texture2D" uid="uid://ptt1en6cbafa" path="res://assets/progressBar.png" id="11_fv8gq"]
 [ext_resource type="Script" path="res://entites/player/ActionArea.gd" id="12_icmrs"]
@@ -53,7 +54,7 @@ radius = 0.4
 height = 1.80203
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_emis8"]
-points = PackedVector3Array(-0.5, -0.5, 0, -1.5, -0.5, -1.5, 1.5, -0.5, -1.5, 1.5, -2, -1.5, -1.5, -2, -1.5, -0.5, -2, 0, 0.5, -2, 0, 0.5, -0.5, 0)
+points = PackedVector3Array(-0.5, -0.5, 0, -1, -0.5, -1, 1, -0.5, -1, 1, -2, -1, -1, -2, -1, -0.5, -2, 0, 0.5, -2, 0, 0.5, -0.5, 0)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xmb4"]
 transparency = 2
@@ -61,7 +62,7 @@ alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 cull_mode = 2
 shading_mode = 0
-albedo_texture = ExtResource("7_c2kou")
+albedo_texture = ExtResource("7_ggdwn")
 
 [sub_resource type="Curve" id="Curve_eekel"]
 _data = [Vector2(0, 0.802716), 0.0, 0.0, 0, 0, Vector2(0.153846, 1), 0.0, 0.0, 0, 0, Vector2(0.307692, 0.408147), 0.0, 0.0, 0, 0, Vector2(0.407692, 0.750799), 0.0, 0.0, 0, 0, Vector2(0.573077, 0.397764), 0.0, 0.0, 0, 0, Vector2(0.796154, 0.636581), 0.0, 0.0, 0, 0, Vector2(0.984615, 0.32508), 0.0, 0.0, 0, 0]
@@ -82,21 +83,24 @@ center_offset = Vector3(-0.3, 0, 0)
 orientation = 1
 
 [sub_resource type="Gradient" id="Gradient_exqdo"]
-offsets = PackedFloat32Array(0, 0.602459, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.614907, 0.73913, 1)
+colors = PackedColorArray(0.68, 0.0793333, 0, 0, 0.68, 0.0793333, 0, 1, 0.68, 0.0793333, 0, 1, 1, 0.483333, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_bbami"]
 gradient = SubResource("Gradient_exqdo")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g0x8m"]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
 cull_mode = 2
 shading_mode = 0
 vertex_color_use_as_albedo = true
 albedo_texture = SubResource("GradientTexture1D_bbami")
 
 [sub_resource type="Curve" id="Curve_5mk6v"]
-_data = [Vector2(0, 1), 0.0, 0.0502674, 0, 0, Vector2(1, 0), -0.0921269, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 1), 0.0, 0.0502674, 0, 0, Vector2(0.183406, 0.351648), -1.21164, -1.21164, 0, 0, Vector2(1, 0), -0.0921269, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qm74m"]
 shading_mode = 0
@@ -359,16 +363,16 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.18, 0.18, 0.18, 
 gradient = SubResource("Gradient_kej54")
 
 [sub_resource type="Gradient" id="Gradient_jgh4a"]
-offsets = PackedFloat32Array(0, 0.354037, 0.602484, 0.838509, 0.981366)
-colors = PackedColorArray(0.00799999, 0.0798666, 0.4, 1, 0.32, 0.0302933, 0.00959999, 1, 0.42471, 0.2106, 0.54, 1, 1, 0.5, 0.591667, 1, 0.5, 1, 0.9, 1)
+offsets = PackedFloat32Array(0, 0.354037, 0.770186, 0.981366)
+colors = PackedColorArray(0.00799999, 0.0798666, 0.4, 1, 0.32, 0.0302933, 0.00959999, 1, 0.0936, 0.13508, 0.24, 1, 0.9, 0.153, 0.16545, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_1nh4g"]
 gradient = SubResource("Gradient_jgh4a")
 
 [sub_resource type="Gradient" id="Gradient_ieuom"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.242236, 0.583851, 0.84472, 0.993789)
-colors = PackedColorArray(1, 0.804167, 0.53, 1, 1, 0.63, 0.636167, 1, 1, 0.48, 0.922, 1, 1, 0.48, 0.922, 1, 1, 0.804167, 0.53, 1)
+offsets = PackedFloat32Array(0, 0.242236, 0.409938, 0.913043, 0.968944)
+colors = PackedColorArray(1, 0.804167, 0.53, 1, 1, 0.63, 0.636167, 1, 1, 0.48, 0.922, 1, 0.0992, 0.12128, 0.32, 1, 1, 0.690667, 0.36, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rmmxn"]
 gradient = SubResource("Gradient_ieuom")
@@ -665,6 +669,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_gujcv")
+gravity_strength = 0.25
+jump_strength = 8.0
 
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("state")]
 script = ExtResource("2_lbal6")
@@ -855,8 +861,9 @@ material_override = SubResource("StandardMaterial3D_g0x8m")
 cast_shadow = 0
 skeleton = NodePath("../../..")
 script = ExtResource("8_lv3q6")
-lifetime = 0.2
-base_width = 0.11
+segments = 30
+lifetime = 0.45
+base_width = 0.18
 width_profile = SubResource("Curve_5mk6v")
 
 [node name="ParticlesSparks" type="GPUParticles3D" parent="head"]
@@ -934,6 +941,7 @@ amount = 20
 lifetime = 0.4
 process_material = SubResource("ParticleProcessMaterial_0x8b8")
 draw_pass_1 = SubResource("SphereMesh_dq8cn")
+script = ExtResource("10_qfbij")
 
 [node name="ParticlesJump" type="GPUParticles3D" parent="head"]
 material_override = SubResource("StandardMaterial3D_xkf1v")
@@ -964,6 +972,7 @@ draw_pass_1 = SubResource("QuadMesh_k0ivi")
 
 [node name="Special" type="Sprite3D" parent="head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.20661, 1.082, 0)
+visible = false
 cast_shadow = 0
 pixel_size = 0.005
 billboard = 1
@@ -1015,6 +1024,8 @@ theme_override_styles/separator = SubResource("StyleBoxFlat_fao2c")
 one_shot = true
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("position_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53396, 0)
+top_level = true
 attributes = SubResource("CameraAttributesPractical_wodmq")
 current = true
 script = ExtResource("8_mroog")
@@ -1077,7 +1088,7 @@ one_shot = true
 wait_time = 0.6
 
 [node name="TimerJumpRevertGrav" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.4
 one_shot = true
 
 [node name="AudioFXFall" type="AudioStreamPlayer" parent="."]
