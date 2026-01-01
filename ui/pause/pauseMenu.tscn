@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cld111wpnlgaw"]
 
-[ext_resource type="Script" path="res://ui/pause/pause_menu.gd" id="1_m0q0x"]
+[ext_resource type="Script" uid="uid://b26rhhl0nsck6" path="res://ui/pause/pause_menu.gd" id="1_m0q0x"]
 [ext_resource type="PackedScene" uid="uid://cc3s4wnntvqa3" path="res://ui/settings/settings_screen.tscn" id="2_1e7by"]
 [ext_resource type="Theme" uid="uid://dppgtoyaq4ox" path="res://ui/base_theme.tres" id="2_bgc50"]
 [ext_resource type="FontFile" uid="uid://b01flwope34xi" path="res://ui/assets/fonts/outward-block.ttf" id="3_oxxj0"]
@@ -136,26 +136,68 @@ offset_right = 330.0
 offset_bottom = -204.0
 grow_vertical = 2
 
+[node name="HBoxContainer" parent="SettingsScreen/VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX" index="0"]
+layout_mode = 0
+
 [node name="CheckBox" parent="SettingsScreen/VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="1"]
 focus_neighbor_left = NodePath("../../../../../../../../MarginContainer/VBoxContainer/HBoxContainer3/Settings")
+
+[node name="OptionButton" parent="SettingsScreen/VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraX/HBoxContainer" index="3"]
+popup/item_0/id = 0
+
+[node name="HBoxContainer" parent="SettingsScreen/VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY" index="0"]
+layout_mode = 0
 
 [node name="CheckBox" parent="SettingsScreen/VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="1"]
 focus_neighbor_left = NodePath("../../../../../../../../MarginContainer/VBoxContainer/HBoxContainer3/Settings")
 
+[node name="OptionButton" parent="SettingsScreen/VBoxContainer/Controls/MarginContainer/VBoxContainer/CameraY/HBoxContainer" index="3"]
+popup/item_0/id = 0
+
+[node name="HBoxContainer" parent="SettingsScreen/VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen" index="0"]
+layout_mode = 0
+
 [node name="CheckBox" parent="SettingsScreen/VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="1"]
 focus_neighbor_left = NodePath("../../../../../../../../MarginContainer/VBoxContainer/HBoxContainer3/Settings")
+
+[node name="OptionButton" parent="SettingsScreen/VBoxContainer/Video/MarginContainer/VBoxContainer/Fullscreen/HBoxContainer" index="3"]
+popup/item_0/id = 0
+
+[node name="HBoxContainer" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/Volume" index="0"]
+layout_mode = 0
+
+[node name="OptionButton" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="3"]
+popup/item_0/id = 0
 
 [node name="HSlider" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/Volume/HBoxContainer" index="4"]
 focus_neighbor_left = NodePath("../../../../../../../../MarginContainer/VBoxContainer/HBoxContainer3/Settings")
 
+[node name="HBoxContainer" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeMusic" index="0"]
+layout_mode = 0
+
+[node name="OptionButton" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeMusic/HBoxContainer" index="3"]
+popup/item_0/id = 0
+
 [node name="HSlider" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeMusic/HBoxContainer" index="4"]
 focus_neighbor_left = NodePath("../../../../../../../../MarginContainer/VBoxContainer/HBoxContainer3/Settings")
+
+[node name="HBoxContainer" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeFX" index="0"]
+layout_mode = 0
+
+[node name="OptionButton" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeFX/HBoxContainer" index="3"]
+popup/item_0/id = 0
 
 [node name="HSlider" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/VolumeFX/HBoxContainer" index="4"]
 focus_neighbor_left = NodePath("../../../../../../../../MarginContainer/VBoxContainer/HBoxContainer3/Settings")
 
+[node name="HBoxContainer" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/Mute" index="0"]
+layout_mode = 0
+
 [node name="CheckBox" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/Mute/HBoxContainer" index="1"]
 focus_neighbor_left = NodePath("../../../../../../../../MarginContainer/VBoxContainer/HBoxContainer3/Settings")
+
+[node name="OptionButton" parent="SettingsScreen/VBoxContainer/Audio/MarginContainer/VBoxContainer/Mute/HBoxContainer" index="3"]
+popup/item_0/id = 0
 
 [connection signal="button_down" from="MarginContainer/VBoxContainer/HBoxContainer/Resume" to="." method="_on_resume_button_down"]
 [connection signal="focus_entered" from="MarginContainer/VBoxContainer/HBoxContainer/Resume" to="." method="_on_resume_focus_entered"]

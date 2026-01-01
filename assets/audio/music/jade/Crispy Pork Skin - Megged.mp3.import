@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://pg0ogktuhqhk"
+path="res://.godot/imported/Crispy Pork Skin - Megged.mp3-17e0b1278cf66d4c10190e7ae4c14515.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/jade/Crispy Pork Skin - Megged.mp3"
+dest_files=["res://.godot/imported/Crispy Pork Skin - Megged.mp3-17e0b1278cf66d4c10190e7ae4c14515.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

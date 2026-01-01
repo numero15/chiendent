@@ -79,6 +79,8 @@ func _physics_process(delta):
 				owner.maxSpeed = owner.maxSpeedGrind
 				
 			owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_drift")
+			if not owner.SFXDrift.is_playing():
+				owner.SFXDrift.play()
 			owner.particlesDust.emitting = true;
 			owner.boostChanged.emit(owner.curBoost, owner.maxBoost)
 			multiplier = drift_multiplier_turn
@@ -91,6 +93,7 @@ func _physics_process(delta):
 				owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.5)
 		else :
 			owner.particlesDust.emitting = false;
+			owner.SFXDrift.stop()
 			
 		if _v.dot(Vector2(0,-1))>-.5 and  _v.length()>0 :
 			var _r = (Input.get_action_strength("move_left") - Input.get_action_strength("move_right")) * owner.STICK_SENS*1.2 * multiplier
@@ -114,6 +117,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("ui_jump"):
 		#owner.particlesJump.emitting = true;
 		owner.timerFootstep.stop()
+		owner.SFXDrift.stop()
 		change_state.emit($"../Air", {jump = owner.avgNormal})
 		
 		
@@ -140,5 +144,15 @@ func _on_checker_grind_body_entered(_body):
 
 func _on_timer_footstep_timeout() -> void:
 	owner.SFXFootstep.play()
+	
+func exit_state() -> void:
+	if  is_instance_valid(owner.particlesGrind):
+		owner.particlesGrind.emitting = false;
+		owner.particlesGrind2.emitting = false;
+		owner.particlesGrind.hide();
+		owner.particlesGrind2.hide();
+		
+		set_physics_process(false)
+		set_process_input(false)
 	
 	

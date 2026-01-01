@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://badtvlun3sxc4"
+path="res://.godot/imported/AIRBlow_Compressed Air Spray Burst Long 04.wav-3fb7f50c92eb7a9882cc4189b42021c9.sample"
+
+[deps]
+
+source_file="res://assets/audio/AIRBlow_Compressed Air Spray Burst Long 04.wav"
+dest_files=["res://.godot/imported/AIRBlow_Compressed Air Spray Burst Long 04.wav-3fb7f50c92eb7a9882cc4189b42021c9.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

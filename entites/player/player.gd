@@ -47,6 +47,7 @@ var affected_by_gravity: bool = true
 @onready var SFXFall : AudioStreamPlayer = get_node("AudioFXFall")
 @onready var SFXVoiceJump : AudioStreamPlayer = get_node("AudioFXVoiceJump")
 @onready var SFXFootstep : AudioStreamPlayer = get_node("AudioFootstep")
+@onready var SFXDrift : AudioStreamPlayer = get_node("AudioFXManual")
 @onready var timerFootstep = get_node("TimerFootstep")
 @onready var timerJumpRevertGrav = get_node("TimerJumpRevertGrav")
 @onready var timerAirMinDuration = get_node("TimerAirMinDuration")

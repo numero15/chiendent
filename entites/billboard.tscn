@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://dgabxv03jv3hy"]
+[gd_scene load_steps=18 format=3 uid="uid://dgabxv03jv3hy"]
 
-[ext_resource type="Script" path="res://entites/billboard.gd" id="1_yjmq2"]
+[ext_resource type="Script" uid="uid://tvdn8cpmr5t2" path="res://entites/billboard.gd" id="1_yjmq2"]
 [ext_resource type="Texture2D" uid="uid://dut4g36lu8xyf" path="res://assets/billboard_textures/pub_01 - Copie.png" id="2_2k1t8"]
 [ext_resource type="Texture2D" uid="uid://2dmeg0f4wuek" path="res://assets/particle_textures/blob_01.png" id="3_rv814"]
-[ext_resource type="Texture2D" uid="uid://cxvl0pm8hkltf" path="res://assets/billboard_textures/graph_02.png" id="3_xbt4u"]
+[ext_resource type="Texture2D" uid="uid://dlqgckcgtskx7" path="res://assets/billboard_textures/eat_the_rich_01.png" id="3_xnph7"]
+[ext_resource type="AudioStream" uid="uid://chs66ddq46n21" path="res://assets/audio/UIAlert_Modern_UI_Completion_01.wav" id="5_j57g1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0b717"]
 shading_mode = 0
@@ -17,13 +18,12 @@ transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 shading_mode = 0
-albedo_color = Color(0.61248, 0.99, 0.5544, 1)
-albedo_texture = ExtResource("3_xbt4u")
+albedo_texture = ExtResource("3_xnph7")
 distance_fade_min_distance = 10.0
 distance_fade_max_distance = 15.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_2o6ro"]
-size = Vector2(10, 8)
+size = Vector2(10, 7)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0wdbc"]
 size = Vector3(8, 6, 1)
@@ -32,10 +32,9 @@ size = Vector3(8, 6, 1)
 transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
-shading_mode = 0
-vertex_color_use_as_albedo = true
-albedo_color = Color(0.368627, 0.878431, 0.462745, 1)
+diffuse_mode = 3
 albedo_texture = ExtResource("3_rv814")
+roughness = 0.0
 billboard_mode = 3
 billboard_keep_scale = true
 particles_anim_h_frames = 1
@@ -83,7 +82,8 @@ mesh = SubResource("QuadMesh_hu4gu")
 skeleton = NodePath("../..")
 
 [node name="Graphitti" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01)
+transform = Transform3D(0.99084234, -0.13502386, 0, 0.13502386, 0.99084234, 0, 0, 0, 1, 0, 0, 0.01)
+visible = false
 material_override = SubResource("StandardMaterial3D_8ebkd")
 mesh = SubResource("QuadMesh_2o6ro")
 skeleton = NodePath("../..")
@@ -101,5 +101,8 @@ one_shot = true
 explosiveness = 0.8
 process_material = SubResource("ParticleProcessMaterial_6yjmi")
 draw_pass_1 = SubResource("QuadMesh_chmcj")
+
+[node name="AudioSuccess" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_j57g1")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

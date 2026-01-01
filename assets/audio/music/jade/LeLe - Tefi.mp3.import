@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bi8drwhev6678"
+path="res://.godot/imported/LeLe - Tefi.mp3-c981d2ef094af6267fcf8ce144aaf2e0.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/jade/LeLe - Tefi.mp3"
+dest_files=["res://.godot/imported/LeLe - Tefi.mp3-c981d2ef094af6267fcf8ce144aaf2e0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

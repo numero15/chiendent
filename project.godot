@@ -12,26 +12,27 @@ config_version=5
 
 config/name="test"
 run/main_scene="res://entites/level_base.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-CyclopsAutoload="*res://addons/cyclops_level_builder/cyclops_global_scene.tscn"
 ConfigFileHandler="*res://scripts/singletons/ConfigFileHandler.gd"
+SceenSwitcher="res://scripts/singletons/sceen_switcher.gd"
+ShaderPause="*res://scripts/singletons/ShaderPause.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/cyclops_level_builder/plugin.cfg")
-
 [filesystem]
 
 import/fbx/enabled=false
+
+[global_group]
+
+shader_nodes="a group for nodes with shaders which needs to be paused"
 
 [input]
 

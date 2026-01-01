@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://fdix42yjf625"
+path="res://.godot/imported/He Is a Good Guy - Tefi.mp3-cc421cd0e9a3db654a344ccec3ffc0f0.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/jade/He Is a Good Guy - Tefi.mp3"
+dest_files=["res://.godot/imported/He Is a Good Guy - Tefi.mp3-cc421cd0e9a3db654a344ccec3ffc0f0.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

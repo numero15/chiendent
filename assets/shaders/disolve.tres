@@ -34,8 +34,8 @@ frequency = 0.0016
 fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hn5xc"]
-seamless = true
 noise = SubResource("FastNoiseLite_cfmno")
+seamless = true
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_ube8g"]
 texture = SubResource("NoiseTexture2D_hn5xc")
@@ -54,7 +54,7 @@ input_name = "color"
 
 [resource]
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_toon, specular_schlick_ggx;
+render_mode blend_mix, depth_draw_opaque, depth_test_default, cull_back, diffuse_toon, specular_schlick_ggx;
 
 uniform sampler2D tex_frg_8;
 uniform sampler2D tex_frg_4;

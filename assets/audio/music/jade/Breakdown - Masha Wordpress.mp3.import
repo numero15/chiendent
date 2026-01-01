@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c0mx783rghdwn"
+path="res://.godot/imported/Breakdown - Masha Wordpress.mp3-4563234d2709e7f69abc30fed82924ae.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/music/jade/Breakdown - Masha Wordpress.mp3"
+dest_files=["res://.godot/imported/Breakdown - Masha Wordpress.mp3-4563234d2709e7f69abc30fed82924ae.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

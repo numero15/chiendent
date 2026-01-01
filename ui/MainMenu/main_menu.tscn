@@ -1,0 +1,158 @@
+[gd_scene load_steps=13 format=3 uid="uid://crdpwnqoc1ppu"]
+
+[ext_resource type="Theme" uid="uid://dppgtoyaq4ox" path="res://ui/base_theme.tres" id="1_fvmap"]
+[ext_resource type="FontFile" uid="uid://b01flwope34xi" path="res://ui/assets/fonts/outward-block.ttf" id="2_12bnm"]
+[ext_resource type="Shader" uid="uid://djxjw408ilv78" path="res://ui/MainMenu/bands.tres" id="2_45m1c"]
+[ext_resource type="Texture2D" uid="uid://46mvaoo4jgcu" path="res://ui/assets/icon_resume.png" id="3_f2gs5"]
+[ext_resource type="Texture2D" uid="uid://blh8bk722ejxo" path="res://ui/assets/icon_settings.png" id="4_11j51"]
+[ext_resource type="Script" path="res://ui/settings/grab_focus.gd" id="4_g16h3"]
+[ext_resource type="Texture2D" uid="uid://c72ln8fjomfgp" path="res://ui/assets/icon_quit.png" id="5_l6ywu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aw5f7"]
+shader = ExtResource("2_45m1c")
+
+[sub_resource type="Gradient" id="Gradient_agew7"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xawu8"]
+gradient = SubResource("Gradient_agew7")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mjwqp"]
+bg_color = Color(0.937255, 0.937255, 0.937255, 1)
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4f0e"]
+shader = ExtResource("2_45m1c")
+
+[node name="mainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_left = 50.0
+offset_top = 85.0
+offset_right = 524.0
+offset_bottom = 343.0
+theme_override_colors/font_color = Color(0.968627, 0.329412, 0.301961, 1)
+theme_override_fonts/font = ExtResource("2_12bnm")
+theme_override_font_sizes/font_size = 300
+text = "CHIENDENT"
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_aw5f7")
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -41.0
+offset_bottom = 59.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_xawu8")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = 28.0
+offset_right = 300.0
+offset_bottom = 231.0
+grow_vertical = 2
+theme = ExtResource("1_fvmap")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Start"
+alignment = 0
+expand_icon = true
+script = ExtResource("4_g16h3")
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mjwqp")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("3_f2gs5")
+expand_mode = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Settings" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Settings"
+alignment = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mjwqp")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer3/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("4_11j51")
+expand_mode = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+material = SubResource("ShaderMaterial_o4f0e")
+layout_mode = 2
+
+[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Quit"
+alignment = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mjwqp")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("5_l6ywu")
+expand_mode = 3

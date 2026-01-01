@@ -112,11 +112,14 @@ func _physics_process(delta):
 			change_state.emit($"../Air", {align = curve.sample_baked_up_vector(offset, true)})
 			return
 	
-
+	#old : instantly align up of player and grind
 	owner.global_transform = pathFollow.global_transform.rotated_local(Vector3.UP, 180*direction)
-	#owner.curSpeed-= 5*delta
-	#if owner.curSpeed < 5 :
-		#owner.curSpeed = 5
+	
+	#lerp 'up' of player to match 'up' of grind
+	#owner.global_transform.origin = pathFollow.global_position
+	#owner.global_transform.basis = owner.global_transform.basis.slerp(pathFollow.global_transform.rotated_local(Vector3.UP, 180*direction).basis.orthonormalized(),.1)
+	
+	
 	
 	if Input.is_action_just_pressed("ui_jump"):
 		owner.timerCoolDownGrind.start();
