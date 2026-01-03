@@ -19,6 +19,8 @@ var affected_by_gravity: bool = true
 @export var gravity_strength :float= 1.0
 @export var jump_strength :float= 20
 
+@export var speedKnockBack := .01
+
 @onready var checkerGrind = get_node("head/checkerGrind")
 @onready var character = get_node("head")
 @onready var characterMesh = get_node("head/character_rigged")
@@ -27,6 +29,7 @@ var affected_by_gravity: bool = true
 @onready var particlesGrind = get_node("head/BoneAttachmentFoot/ParticlesGrind")
 @onready var particlesGrind2 = get_node("head/BoneAttachmentFoot2/ParticlesGrind")
 
+@onready var model = get_node("head/character_rigged/rig_game/Skeleton3D/Leg_001")
 @onready var trail = get_node("head/Trail")
 @onready var particlesBoost = get_node("head/Trail/Node3D/ParticlesBoost")
 @onready var particlesJump = get_node("head/ParticlesJump")
@@ -51,6 +54,7 @@ var affected_by_gravity: bool = true
 @onready var timerFootstep = get_node("TimerFootstep")
 @onready var timerJumpRevertGrav = get_node("TimerJumpRevertGrav")
 @onready var timerAirMinDuration = get_node("TimerAirMinDuration")
+@onready var timerKnockBackDuration = get_node("TimerKnockBackDuration")
 
 var gravity := Vector3(0,-3,0)
 var jumpVec := Vector3( 0, 80, 0)
@@ -59,8 +63,9 @@ var MOUSE_SENS := 0.001
 var STICK_SENS := 0.03
 var KEYBOARD_SENS := 0.1
 
-
+#is is_falling useless ?
 var is_falling :bool = false
+
 var maxSpeed : float
 var minSpeed : float
 var acceleration : float
@@ -101,7 +106,6 @@ func _ready() -> void:
 	#control_settings = ConfigFileHandler.load_control_settings()
 	
 func _physics_process(delta):
-
 	screen_lines.material.set("shader_parameter/line_density",clamp(curSpeed - maxSpeed,0,50)/25)
 	
 	if curSpeed-1 <= maxSpeed :
@@ -228,6 +232,7 @@ func move():
 	up_direction = avgNormal.normalized()
 	move_and_slide()
 	
+	
 	#push back physical objects
 	var push_force = 2
 	for i in get_slide_collision_count():
@@ -240,8 +245,6 @@ func move():
 			
 			
 	#empèche de monter un angle à 90°	
-	#if !_isWall and $head/RayCastGround.is_colliding():
-	
 	if !isWall() or affected_by_gravity  :
 		var _transform= align_with_up(global_transform,up_direction)
 		global_transform = global_transform.interpolate_with(_transform, .4)
@@ -251,12 +254,7 @@ func isWall()-> bool:
 	for ray in $head/rayFolderWall.get_children():
 		if ray.is_colliding():
 			_isWall = true
-			
-	#if _isWall and curSpeed>0 and is_on_wall():
-		#var a = Quaternion(character.global_transform.basis)
-		#var b = Quaternion(character.global_transform.basis.looking_at(velocity.normalized(),character.global_transform.basis.y))
-		#var c = a.slerp(b,0.05)
-		#character.global_transform.basis = Basis(c)
+		
 	return _isWall
 
 func get_dir() -> Vector3:

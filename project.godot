@@ -33,6 +33,7 @@ import/fbx/enabled=false
 [global_group]
 
 shader_nodes="a group for nodes with shaders which needs to be paused"
+pushers=""
 
 [input]
 

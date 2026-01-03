@@ -20,17 +20,20 @@ func enter_state(_msg := {}) -> void:
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].start("BAKED_brake")
 		
 func _physics_process(delta):
-	
-	#owner.movement_dir.x = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")
-	#owner.movement_dir.z = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
-	#owner.character.rotation.y += owner.movement_dir.x * owner.KEYBOARD_SENS
-	
+
 	owner.vel = owner.curSpeed * owner.get_dir()
 	owner.check_boost(delta)
 	owner.checkRays()
 	owner.jumpVectors = Vector3.ZERO
 	owner.velocity = owner.vel + owner.jumpVectors
 	owner.move()
+	
+	#check for pushers (cars, etc.)
+	for i in owner.get_slide_collision_count():
+		var collision = owner.get_slide_collision(i)
+		if collision.get_collider().is_in_group("pushers"):
+			owner.timerFootstep.stop()
+			change_state.emit($"../KnockBack",{new_dir = collision.get_normal()})
 	
 
 	if owner.velocity.length()>1 and owner.timerFootstep.is_stopped() :
@@ -115,7 +118,6 @@ func _physics_process(delta):
 	
 
 	if Input.is_action_just_pressed("ui_jump"):
-		#owner.particlesJump.emitting = true;
 		owner.timerFootstep.stop()
 		owner.SFXDrift.stop()
 		change_state.emit($"../Air", {jump = owner.avgNormal})
@@ -139,8 +141,6 @@ func _input(event: InputEvent) -> void:
 
 func _on_checker_grind_body_entered(_body):
 	pass
-	#change_state.emit($"../Grind",{_body = body})
-
 
 func _on_timer_footstep_timeout() -> void:
 	owner.SFXFootstep.play()

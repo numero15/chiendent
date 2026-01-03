@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8a304naqm2f1"
-path.s3tc="res://.godot/imported/switch_buttons_left_outline.png-e679e11c7853fc902dd864023a2e4361.s3tc.ctex"
+uid="uid://gl44qw7cytwu"
+path="res://.godot/imported/car_01.png-f9bb6b1c74b579878a3955251435316b.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/tutorial/switch_buttons_left_outline.png"
-dest_files=["res://.godot/imported/switch_buttons_left_outline.png-e679e11c7853fc902dd864023a2e4361.s3tc.ctex"]
+source_file="res://assets/vehicles/car_01.png"
+dest_files=["res://.godot/imported/car_01.png-f9bb6b1c74b579878a3955251435316b.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -24,7 +23,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -38,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

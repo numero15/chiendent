@@ -1,10 +1,11 @@
-[gd_scene load_steps=148 format=3 uid="uid://bnwli54rmfaj2"]
+[gd_scene load_steps=153 format=3 uid="uid://bnwli54rmfaj2"]
 
 [ext_resource type="PackedScene" uid="uid://dgabxv03jv3hy" path="res://entites/billboard.tscn" id="1_024mk"]
 [ext_resource type="Script" uid="uid://bwl2u2okuajky" path="res://entites/levels/buildings.gd" id="1_ism2f"]
 [ext_resource type="Shader" uid="uid://bxvaqlxs0gx52" path="res://assets/shaders/blocking02.gdshader" id="2_ikikm"]
 [ext_resource type="Texture2D" uid="uid://bbsxgdte1on5r" path="res://assets/textures/concrete02.png" id="4_6mimc"]
 [ext_resource type="Texture2D" uid="uid://teuba7o62soq" path="res://assets/textures/fence02-01.png" id="5_01xdi"]
+[ext_resource type="PackedScene" uid="uid://dummg55fgtm7q" path="res://entites/movables/car.tscn" id="6_ap2s1"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_2b05v"]
 size = Vector3(20, 12, 41)
@@ -469,7 +470,7 @@ points = PackedVector3Array(5, 0, 25, -5, 0, 25, 5, 0, -25, -5, 0, -25)
 bake_interval = 3.0
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, -5.34475, 2.54578, 2.25057, 0, 0, 0, 0, 0, 0, -44.1905, 2.33596, 2.2483),
-"tilts": PackedFloat32Array(3.1415927, 3.1415927)
+"tilts": PackedFloat32Array(0, 0)
 }
 point_count = 2
 
@@ -533,6 +534,28 @@ _data = {
 "tilts": PackedFloat32Array(-1.7096525, 0, 0)
 }
 point_count = 3
+
+[sub_resource type="Curve3D" id="Curve3D_wubvg"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -75.81629, 0, 13.541082, 0, 0, 0, 0, 0, 0, -67.43361, 0, 49.406418, 3.088894, 0, -5.973179, -3.088894, 0, 5.973179, -56.170418, 0, 76.506226, -9.940704, 0, -5.602577, 9.940704, 0, 5.602577, 12.195377, 0, 69.73628, -7.9356995, -3.8146973e-05, -0.9992752, 7.9356995, 3.8146973e-05, 0.9992752, 44.237213, 0, 70.983955, -6.209057, -3.8146973e-05, 2.0268784, 6.209057, 3.8146973e-05, -2.0268784, 72.81324, 0, 63.101578, -7.065346, 0, 13.347332, 7.065346, 0, -13.347332, 93.841, 0, 40.387, 19.018501, -3.8146973e-05, -2.7897148, -19.018501, 3.8146973e-05, 2.7897148, 60.643623, 0, -16.540611),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 8
+
+[sub_resource type="Animation" id="Animation_1732w"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_8wtxg"]
+resource_name = "loop"
+length = 30.0
+loop_mode = 1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vqw58"]
+_data = {
+&"RESET": SubResource("Animation_1732w"),
+&"loop": SubResource("Animation_8wtxg")
+}
 
 [node name="test_02" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -1498,3 +1521,22 @@ path_local = true
 path_continuous_u = true
 path_u_distance = 1.0
 path_joined = false
+
+[node name="MovingPlatforms" type="Node3D" parent="."]
+
+[node name="Platform1" type="Node3D" parent="MovingPlatforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.15902, 1.709877, -14.386803)
+
+[node name="Path3D" type="Path3D" parent="MovingPlatforms/Platform1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.719574, 0)
+curve = SubResource("Curve3D_wubvg")
+
+[node name="Car" parent="MovingPlatforms/Platform1/Path3D" instance=ExtResource("6_ap2s1")]
+transform = Transform3D(-0.973726, 0, -0.22758894, 0, 0.99994147, 0, 0.22758567, 0, -0.9737399, -75.81629, 0, 13.541082)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MovingPlatforms/Platform1"]
+root_node = NodePath("../../..")
+libraries = {
+&"": SubResource("AnimationLibrary_vqw58")
+}
+autoplay = "loop"

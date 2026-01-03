@@ -68,16 +68,13 @@ func enter_state(_msg := {}) -> void:
 		#WHYYY ?
 		owner.character.rotation.y = 45
 	
-	#reset sprite rotation to make it automatically follow curve
-	#owner.character.rotation.y = 90
 	
 
 	
 func _physics_process(delta):
 	owner.check_boost(delta)
-	#accelerate deprecated
-	#if Input.is_action_pressed("ui_up") and !Input.is_action_pressed("ui_down") and owner.curSpeed<owner.maxSpeed:
-	#owner.maxSpeed = owner.maxSpeedMove
+	
+
 	if owner.check_trick() :
 		var new_trick = rng.randi_range(1,3)
 		while cur_trick == new_trick :
@@ -85,7 +82,6 @@ func _physics_process(delta):
 		cur_trick = new_trick
 		owner.animationTree["parameters/StateMachineLocomotion/playback"].travel("BAKED_grind_transition_"+str(new_trick))
 		
-		#owner.maxSpeed = owner.maxSpeedManual
 		owner.curSpeed = lerp(owner.curSpeed,owner.maxSpeed,.3)
 	#brake
 	elif Input.is_action_pressed("ui_down"):
@@ -94,10 +90,8 @@ func _physics_process(delta):
 	else :
 		owner.curSpeed = lerp(owner.curSpeed,owner.minSpeedGrind,.002)
 	
-	var  prev_progress_ratio : float
-	#var  prev_offset : float
+	var  prev_progress_ratio : float	
 	prev_progress_ratio = progress_ratio
-	#prev_offset = offset
 	offset += owner.curSpeed*delta*direction
 	pathFollow.progress = offset
 	progress_ratio = pathFollow.progress_ratio
@@ -113,11 +107,10 @@ func _physics_process(delta):
 			return
 	
 	#old : instantly align up of player and grind
+	# change to : lerp up to match grind
 	owner.global_transform = pathFollow.global_transform.rotated_local(Vector3.UP, 180*direction)
 	
-	#lerp 'up' of player to match 'up' of grind
-	#owner.global_transform.origin = pathFollow.global_position
-	#owner.global_transform.basis = owner.global_transform.basis.slerp(pathFollow.global_transform.rotated_local(Vector3.UP, 180*direction).basis.orthonormalized(),.1)
+	
 	
 	
 	
@@ -134,6 +127,4 @@ func exit_state() -> void:
 	owner.particlesGrind2.emitting = false;
 	owner.particlesGrind.hide();
 	owner.particlesGrind2.hide();
-	#owner.particlesGrind2.emitting = false;
-	#owner.particlesGrind2.hide();
 	

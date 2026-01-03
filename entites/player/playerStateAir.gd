@@ -1,6 +1,7 @@
 extends StateFSM
 
 func enter_state(_msg := {}) -> void:
+	print('air')
 	owner.particlesDust.emitting = false;
 	set_physics_process(true)
 	set_process_input(true)
@@ -58,6 +59,14 @@ func enter_state(_msg := {}) -> void:
 			owner.timerAnim.start()
 	
 func _physics_process(delta):
+	
+	#check for pushers (cars, etc.)
+	for i in owner.get_slide_collision_count():
+		var collision = owner.get_slide_collision(i)
+		if collision.get_collider().is_in_group("pushers"):
+			owner.timerFootstep.stop()
+			change_state.emit($"../KnockBack",{new_dir = collision.get_normal()})
+			
 	owner.check_boost(delta)
 	owner.checkRays(true)
 	
@@ -91,7 +100,15 @@ func _physics_process(delta):
 		owner.timerAnim.stop()
 		
 	
-	owner.move()
+	owner.move()	
+	#check for pushers (cars, etc.)
+	for i in owner.get_slide_collision_count():
+		var collision = owner.get_slide_collision(i)
+		if collision.get_collider().is_in_group("pushers"):
+			owner.timerFootstep.stop()
+			change_state.emit($"../KnockBack",{new_dir = collision.get_normal()})
+			
+			
 	if owner.is_on_floor():
 		#prevent leaving air while cooldown grind is running, might not be bullet proof
 		if owner.checkerGroundJump.get_collision_normal().dot(owner.global_transform.basis.y) > .5 and owner.timerCoolDownGrind.is_stopped():

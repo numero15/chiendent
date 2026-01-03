@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8a304naqm2f1"
-path.s3tc="res://.godot/imported/switch_buttons_left_outline.png-e679e11c7853fc902dd864023a2e4361.s3tc.ctex"
+uid="uid://clyhtoubba3sg"
+path.s3tc="res://.godot/imported/wheel.png-63e16fd3eb1fe03f0c996719eb67e316.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/textures/tutorial/switch_buttons_left_outline.png"
-dest_files=["res://.godot/imported/switch_buttons_left_outline.png-e679e11c7853fc902dd864023a2e4361.s3tc.ctex"]
+source_file="res://assets/vehicles/wheel.png"
+dest_files=["res://.godot/imported/wheel.png-63e16fd3eb1fe03f0c996719eb67e316.s3tc.ctex"]
 
 [params]
 

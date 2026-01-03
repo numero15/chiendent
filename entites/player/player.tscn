@@ -1,4 +1,4 @@
-[gd_scene load_steps=179 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=180 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" uid="uid://bigt8bjqwdi56" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" uid="uid://c8l7m4g48olno" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cogdofoy7dt8r" path="res://entites/player/playerStateGrind.gd" id="5_5lvde"]
 [ext_resource type="PackedScene" uid="uid://ds5fbr0ibur8t" path="res://assets/character_rigged_03_grt.glb" id="6_hxj3o"]
 [ext_resource type="Script" uid="uid://bpyt5phoruejp" path="res://entites/player/playerStateAir.gd" id="6_ji8i7"]
+[ext_resource type="Script" uid="uid://8lew61hnq7w" path="res://entites/player/playerStateKnockBack.gd" id="6_kweh4"]
 [ext_resource type="Shader" uid="uid://b1kj22fytyara" path="res://assets/shaders/outlines.gdshader" id="7_45gid"]
 [ext_resource type="Texture2D" uid="uid://cnc8a8bbrpq7y" path="res://assets/particle_textures/lightning.png" id="7_ggdwn"]
 [ext_resource type="Material" uid="uid://byuv25o8m5dkc" path="res://entites/player/player_material.tres" id="7_l0vrq"]
@@ -603,14 +604,15 @@ states/BAKED_grind_transition_3/position = Vector2(453, -282)
 states/BAKED_idle/node = SubResource("AnimationNodeAnimation_ktebn")
 states/BAKED_idle/position = Vector2(336, 275)
 states/BAKED_jump/node = SubResource("AnimationNodeAnimation_gc4cm")
-states/BAKED_jump/position = Vector2(346, 6)
+states/BAKED_jump/position = Vector2(355, 15)
 states/BAKED_push/node = SubResource("AnimationNodeAnimation_ynldh")
 states/BAKED_push/position = Vector2(722, 275)
 states/Start/position = Vector2(62, 270)
 transitions = ["BAKED_idle", "BAKED_jump", SubResource("AnimationNodeStateMachineTransition_7k54i"), "BAKED_jump", "BAKED_idle", SubResource("AnimationNodeStateMachineTransition_kw2nr"), "BAKED_idle", "BAKED_push", SubResource("AnimationNodeStateMachineTransition_k66qf"), "BAKED_push", "BAKED_idle", SubResource("AnimationNodeStateMachineTransition_37qxc"), "BAKED_push", "BAKED_jump", SubResource("AnimationNodeStateMachineTransition_jfn75"), "BAKED_jump", "BAKED_push", SubResource("AnimationNodeStateMachineTransition_qsi18"), "Start", "BAKED_idle", SubResource("AnimationNodeStateMachineTransition_0hhdh"), "BAKED_jump", "BAKED_fall", SubResource("AnimationNodeStateMachineTransition_llcch"), "BAKED_fall", "BAKED_idle", SubResource("AnimationNodeStateMachineTransition_q26te"), "BAKED_push", "BAKED_fall", SubResource("AnimationNodeStateMachineTransition_3r1bc"), "BAKED_fall", "BAKED_push", SubResource("AnimationNodeStateMachineTransition_esiag"), "BAKED_grind_transition_1", "BAKED_grind_1", SubResource("AnimationNodeStateMachineTransition_fs7t3"), "BAKED_grind_1", "BAKED_grind_transition_2", SubResource("AnimationNodeStateMachineTransition_qs3wg"), "BAKED_grind_2", "BAKED_grind_transition_1", SubResource("AnimationNodeStateMachineTransition_8uk0t"), "BAKED_grind_transition_2", "BAKED_grind_2", SubResource("AnimationNodeStateMachineTransition_d7i0q"), "BAKED_grind_transition_3", "BAKED_grind_3", SubResource("AnimationNodeStateMachineTransition_ajenb"), "BAKED_grind_1", "BAKED_grind_transition_3", SubResource("AnimationNodeStateMachineTransition_wa1kr"), "BAKED_grind_2", "BAKED_grind_transition_3", SubResource("AnimationNodeStateMachineTransition_ldpte"), "BAKED_grind_3", "BAKED_grind_transition_2", SubResource("AnimationNodeStateMachineTransition_10o3l"), "BAKED_grind_3", "BAKED_grind_transition_1", SubResource("AnimationNodeStateMachineTransition_gjrkn"), "BAKED_jump", "BAKED_grind_1", SubResource("AnimationNodeStateMachineTransition_4os3f"), "BAKED_jump", "BAKED_grind_2", SubResource("AnimationNodeStateMachineTransition_hqcm1"), "BAKED_jump", "BAKED_grind_3", SubResource("AnimationNodeStateMachineTransition_cbgsx"), "BAKED_fall", "BAKED_grind_3", SubResource("AnimationNodeStateMachineTransition_2yl4r"), "BAKED_fall", "BAKED_grind_2", SubResource("AnimationNodeStateMachineTransition_yg3dh"), "BAKED_fall", "BAKED_grind_1", SubResource("AnimationNodeStateMachineTransition_vfvtn"), "BAKED_jump", "BAKED_air_trick", SubResource("AnimationNodeStateMachineTransition_m0ysg"), "BAKED_fall", "BAKED_air_trick", SubResource("AnimationNodeStateMachineTransition_sl0e7"), "BAKED_air_trick", "BAKED_fall", SubResource("AnimationNodeStateMachineTransition_dpbnv"), "BAKED_push", "BAKED_drift", SubResource("AnimationNodeStateMachineTransition_asfrt"), "BAKED_drift", "BAKED_push", SubResource("AnimationNodeStateMachineTransition_ddxtr"), "BAKED_brake", "BAKED_idle", SubResource("AnimationNodeStateMachineTransition_ohy00"), "BAKED_drift", "BAKED_fall", SubResource("AnimationNodeStateMachineTransition_76wph"), "BAKED_drift", "BAKED_jump", SubResource("AnimationNodeStateMachineTransition_gih6o"), "BAKED_drift", "BAKED_drift_trick", SubResource("AnimationNodeStateMachineTransition_rhnjh"), "BAKED_drift_trick", "BAKED_drift", SubResource("AnimationNodeStateMachineTransition_yrkei"), "BAKED_fall", "BAKED_drift", SubResource("AnimationNodeStateMachineTransition_1qp6a"), "BAKED_drift_trick", "BAKED_jump", SubResource("AnimationNodeStateMachineTransition_e3dbp")]
-graph_offset = Vector2(65, -24)
+graph_offset = Vector2(-217, -200)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_vukso"]
+graph_offset = Vector2(-515.2352, -128.69002)
 nodes/output/position = Vector2(760, 120)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_ejxcu")
 nodes/Animation/position = Vector2(-180, 340)
@@ -693,6 +695,7 @@ script = ExtResource("1_gujcv")
 maxSpeedGrind = 18.0
 gravity_strength = 0.25
 jump_strength = 8.0
+speedKnockBack = 30.0
 
 [node name="States" type="Node" parent="." node_paths=PackedStringArray("state")]
 script = ExtResource("2_lbal6")
@@ -706,6 +709,9 @@ script = ExtResource("6_ji8i7")
 
 [node name="Grind" type="Node" parent="States"]
 script = ExtResource("5_5lvde")
+
+[node name="KnockBack" type="Node" parent="States"]
+script = ExtResource("6_kweh4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.752569, 0)
@@ -1117,6 +1123,10 @@ wait_time = 0.6
 wait_time = 0.4
 one_shot = true
 
+[node name="TimerKnockBackDuration" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
 [node name="AudioFXFall" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_pmb2k")
 
@@ -1167,6 +1177,7 @@ draw_pass_1 = SubResource("SphereMesh_kweh4")
 [connection signal="change_state" from="States/Move" to="States" method="change_state"]
 [connection signal="change_state" from="States/Air" to="States" method="change_state"]
 [connection signal="change_state" from="States/Grind" to="States" method="change_state"]
+[connection signal="change_state" from="States/KnockBack" to="States" method="change_state"]
 [connection signal="body_entered" from="head/checkerGrind" to="States/Move" method="_on_checker_grind_body_entered"]
 [connection signal="body_entered" from="head/checkerGrind" to="States/Air" method="_on_checker_grind_body_entered"]
 [connection signal="timeout" from="head/Special/Timer" to="head/Special" method="_on_timer_timeout"]
@@ -1177,5 +1188,6 @@ draw_pass_1 = SubResource("SphereMesh_kweh4")
 [connection signal="timeout" from="TimerResetCamera" to="." method="_on_timer_camera_replace_timeout"]
 [connection signal="timeout" from="TimerFootstep" to="States/Move" method="_on_timer_footstep_timeout"]
 [connection signal="timeout" from="TimerJumpRevertGrav" to="States/Air" method="_on_timer_jump_revert_grav_timeout"]
+[connection signal="timeout" from="TimerKnockBackDuration" to="States/KnockBack" method="_on_timer_knock_back_duration_timeout"]
 
 [editable path="head/character_rigged"]

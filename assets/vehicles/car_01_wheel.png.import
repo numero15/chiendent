@@ -2,17 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8a304naqm2f1"
-path.s3tc="res://.godot/imported/switch_buttons_left_outline.png-e679e11c7853fc902dd864023a2e4361.s3tc.ctex"
+uid="uid://dmas2ycbapyx8"
+path.s3tc="res://.godot/imported/car_01_wheel.png-63684691dbdfd9c2fcad5cbf6d7facd3.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "8637da68ab5e75de78d83c8a82e81df5"
+}
 
 [deps]
 
-source_file="res://assets/textures/tutorial/switch_buttons_left_outline.png"
-dest_files=["res://.godot/imported/switch_buttons_left_outline.png-e679e11c7853fc902dd864023a2e4361.s3tc.ctex"]
+source_file="res://assets/vehicles/car_01_wheel.png"
+dest_files=["res://.godot/imported/car_01_wheel.png-63684691dbdfd9c2fcad5cbf6d7facd3.s3tc.ctex"]
 
 [params]
 

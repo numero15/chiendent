@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://r20a6o8lufwn" path="res://root.gd" id="1_piqpb"]
 [ext_resource type="Shader" uid="uid://c04d7j3rammr3" path="res://assets/shaders/sky.gdshader" id="2_gha10"]
-[ext_resource type="PackedScene" uid="uid://f2f7g6mfqp0d" path="res://entites/levels/tutorial/tutorial.tscn" id="3_nybf2"]
+[ext_resource type="PackedScene" uid="uid://bnwli54rmfaj2" path="res://entites/levels/test_02.tscn" id="3_nybf2"]
 [ext_resource type="PackedScene" uid="uid://bpogwtwx10igk" path="res://entites/player/player.tscn" id="4_0ha35"]
 [ext_resource type="Shader" uid="uid://d3s875ufbggsi" path="res://assets/shaders/SpeedLines.gdshader" id="5_gbiu2"]
 [ext_resource type="Shader" uid="uid://c4dxnv7kw1g1m" path="res://assets/shaders/FishEye.gdshader" id="5_kn070"]
@@ -186,10 +186,10 @@ shadow_blur = 0.0
 
 [node name="LevelContainer" type="Node3D" parent="."]
 
-[node name="Tutorial" parent="LevelContainer" instance=ExtResource("3_nybf2")]
+[node name="test_02" parent="LevelContainer" instance=ExtResource("3_nybf2")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("screen_lines", "distortion") instance=ExtResource("4_0ha35")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15650177, 4.8636737, 30.2202)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.24004, 0.51757956, -11.941729)
 screen_lines = NodePath("../SpeedLines")
 distortion = NodePath("../Distortion")
 
@@ -202,13 +202,13 @@ bones/5/rotation = Quaternion(-0.23313513, 0.30248883, -0.076567896, 0.9210243)
 bones/6/rotation = Quaternion(0.07860404, 0.28265774, -0.18909314, 0.93710715)
 
 [node name="Trail" parent="Player/head" index="8"]
-transform = Transform3D(-1, 6.88589e-07, 2.2014544e-06, 6.4757664e-08, 0.9624063, -0.27161348, -2.3057246e-06, -0.27161348, -0.9624062, 4.4703484e-08, 1.3403478, -0.01802063)
+transform = Transform3D(-1, 6.88589e-07, 2.2014544e-06, 6.4757664e-08, 0.9624063, -0.27161348, -2.3057246e-06, -0.27161348, -0.9624062, 0, 1.3403475, -0.01802063)
 
 [node name="BoneAttachmentFoot" parent="Player/head" index="10"]
-transform = Transform3D(-0.9947841, 0.052174915, 0.08764082, -0.10199509, -0.5088954, -0.8547639, 1.4268508e-06, -0.8592452, 0.5115621, 0.22231382, 0.21793127, 0.026439667)
+transform = Transform3D(-0.9947841, 0.052174915, 0.08764082, -0.10199509, -0.5088954, -0.8547639, 1.4268508e-06, -0.8592452, 0.5115621, 0.22231293, 0.21793115, 0.026438713)
 
 [node name="BoneAttachmentFoot2" parent="Player/head" index="11"]
-transform = Transform3D(-0.99478483, -0.052171048, -0.08764271, 0.101995274, -0.50889635, -0.8547636, -7.1115164e-06, -0.8592448, 0.51156354, -0.222314, 0.2179308, 0.02643776)
+transform = Transform3D(-0.99478483, -0.052171048, -0.08764271, 0.101995274, -0.50889635, -0.8547636, -7.1115164e-06, -0.8592448, 0.51156354, -0.22231293, 0.2179308, 0.02643776)
 
 [node name="Camera3D" parent="Player" index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5339603, 0)

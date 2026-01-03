@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://f2f7g6mfqp0d"]
+[gd_scene load_steps=82 format=3 uid="uid://f2f7g6mfqp0d"]
 
 [ext_resource type="Script" uid="uid://bwl2u2okuajky" path="res://entites/levels/buildings.gd" id="1_tuvx4"]
 [ext_resource type="PackedScene" uid="uid://dgabxv03jv3hy" path="res://entites/billboard.tscn" id="2_i6egi"]
@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://klnufq5mtc77" path="res://assets/textures/tutorial/arrow_short.png" id="5_fgepi"]
 [ext_resource type="Texture2D" uid="uid://dft7mgvc2wfpy" path="res://assets/textures/tutorial/picto_R.png" id="6_6k5ev"]
 [ext_resource type="Texture2D" uid="uid://cedrounedwsiw" path="res://assets/textures/tutorial/arrow_long.png" id="7_fgepi"]
+[ext_resource type="Texture2D" uid="uid://dj3tx4nr1k35h" path="res://assets/textures/tutorial/switch_buttons_down_outline.png" id="8_hjqtg"]
+[ext_resource type="Texture2D" uid="uid://c8a304naqm2f1" path="res://assets/textures/tutorial/switch_buttons_left_outline.png" id="9_s204t"]
+[ext_resource type="Texture2D" uid="uid://bo7dcw2428p4r" path="res://assets/textures/tutorial/switch_buttons_right_outline.png" id="10_yly8w"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_4t2wc"]
 size = Vector3(47, 1, 58)
@@ -158,6 +161,9 @@ size = Vector3(1, 100, 100)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ckvdt"]
 points = PackedVector3Array(0.5, 50, 50, -0.5, 50, 50, 0.5, -50, 50, 0.5, 50, -50, -0.5, 50, -50, -0.5, -50, 50, 0.5, -50, -50, -0.5, -50, -50)
 
+[sub_resource type="BoxMesh" id="BoxMesh_aqefb"]
+size = Vector3(1, 100, 100)
+
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_d8moi"]
 points = PackedVector3Array(0.5, 50, 50, -0.5, 50, 50, 0.5, -50, 50, 0.5, 50, -50, -0.5, 50, -50, -0.5, -50, 50, 0.5, -50, -50, -0.5, -50, -50)
 
@@ -229,6 +235,38 @@ transparency = 2
 alpha_scissor_threshold = 0.5
 alpha_antialiasing_mode = 0
 albedo_texture = ExtResource("6_6k5ev")
+
+[sub_resource type="QuadMesh" id="QuadMesh_06sur"]
+size = Vector2(2.3, 1.7)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fuup"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("8_hjqtg")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8k24k"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("9_s204t")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hjqtg"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("6_6k5ev")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ubk38"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+albedo_texture = ExtResource("10_yly8w")
 
 [node name="Tutorial" type="Node3D"]
 
@@ -474,6 +512,15 @@ mesh = SubResource("BoxMesh_wrfp3")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Buildings/MeshInstance3D29/MeshInstance3D29_col"]
 shape = SubResource("ConvexPolygonShape3D_ckvdt")
 
+[node name="MeshInstance3D31" type="MeshInstance3D" parent="Buildings"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -7.6850133, 29.013237, -270.78357)
+mesh = SubResource("BoxMesh_aqefb")
+
+[node name="MeshInstance3D29_col" type="StaticBody3D" parent="Buildings/MeshInstance3D31"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Buildings/MeshInstance3D31/MeshInstance3D29_col"]
+shape = SubResource("ConvexPolygonShape3D_ckvdt")
+
 [node name="MeshInstance3D30" type="MeshInstance3D" parent="Buildings"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.0149, 29.013237, -280.64804)
 mesh = SubResource("BoxMesh_wrfp3")
@@ -513,10 +560,13 @@ shape = SubResource("ConvexPolygonShape3D_8px7g")
 [node name="Billboards" type="Node3D" parent="."]
 
 [node name="Node3D" parent="Billboards" instance=ExtResource("2_i6egi")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7.1230145, 62.52694, -256.4781)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -7.1230145, 61.455284, -256.4781)
+
+[node name="Node3D3" parent="Billboards" instance=ExtResource("2_i6egi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.91442966, 61.455284, -270.2741)
 
 [node name="Node3D2" parent="Billboards" instance=ExtResource("2_i6egi")]
-transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 7.2479277, 62.52694, -256.4781)
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 7.2479277, 61.455284, -256.4781)
 
 [node name="Path3DRail2" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.280371, 2.0426898, -52.09507)
@@ -631,36 +681,36 @@ path_joined = false
 [node name="Texts" type="Node3D" parent="."]
 
 [node name="Label3D" type="Label3D" parent="Texts"]
-transform = Transform3D(1, 0, 0, 0, -8.742278e-08, 1, 0, -2, -4.371139e-08, 0, -0.032341957, -9.773384)
+transform = Transform3D(1, 0, 0, 0, -8.742278e-08, 1, 0, -2, -4.371139e-08, 0, -0.18664122, -9.773384)
 shaded = true
 alpha_cut = 1
 modulate = Color(0, 0, 0, 1)
-text = "PRESS A TO JUMP"
+text = "PRESS        TO JUMP"
 font = ExtResource("3_54sar")
-font_size = 400
+font_size = 350
 outline_size = 0
 
 [node name="Label3D2" type="Label3D" parent="Texts"]
-transform = Transform3D(1, 0, 0, 0, -8.742278e-08, 1, 0, -2, -4.371139e-08, 0, 0.32069778, -41.72649)
+transform = Transform3D(1, 0, 0, 0, -8.742278e-08, 1, 0, -2, -4.371139e-08, 0, 0.29856992, -41.72649)
 shaded = true
 alpha_cut = 1
 modulate = Color(0, 0, 0, 1)
 text = "JUMP TO GRIND"
 font = ExtResource("3_54sar")
-font_size = 400
+font_size = 350
 outline_size = 0
 
 [node name="Label3D3" type="Label3D" parent="Texts"]
-transform = Transform3D(1, 0, 0, 0, -1.1920929e-07, 2, 0, -2, -1.1920929e-07, 0, 4.5757637, -85.99747)
+transform = Transform3D(1, 0, 0, 0, -1.1920929e-07, 2, 0, -2, -1.1920929e-07, 0, 4.5188985, -85.9892)
 shaded = true
 alpha_cut = 1
 modulate = Color(0, 0, 0, 1)
-text = "SPEED
+text = "SPEED UP
 TO
-X
+
 PRESS"
 font = ExtResource("3_54sar")
-font_size = 400
+font_size = 350
 outline_size = 0
 
 [node name="Label3D4" type="Label3D" parent="Texts"]
@@ -668,20 +718,21 @@ transform = Transform3D(1, 0, 0, 0, -1.1920929e-07, 2, 0, -2, -1.1920929e-07, 0,
 shaded = true
 alpha_cut = 1
 modulate = Color(0, 0, 0, 1)
-text = "HOLD R TO DRIFT"
+text = "HOLD        TO DRIFT"
 font = ExtResource("3_54sar")
-font_size = 400
+font_size = 350
 outline_size = 0
 
 [node name="Label3D6" type="Label3D" parent="Texts"]
-transform = Transform3D(1, 0, 0, 0, -1.1920929e-07, 2, 0, -2, -1.1920929e-07, 0.18114758, 58.17834, -255.36798)
+transform = Transform3D(1, 0, 0, 0, -1.1920929e-07, 2, 0, -2, -1.1920929e-07, 0.18114758, 57.953686, -254.9254)
 shaded = true
 alpha_cut = 1
 modulate = Color(0, 0, 0, 1)
 text = "TO PAINT
-PRESS B"
+
+PRESS"
 font = ExtResource("3_54sar")
-font_size = 400
+font_size = 350
 outline_size = 0
 
 [node name="Label3D5" type="Label3D" parent="Texts"]
@@ -693,7 +744,7 @@ text = "SLOPE
 ON
 CLIMB"
 font = ExtResource("3_54sar")
-font_size = 400
+font_size = 350
 outline_size = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Texts"]
@@ -795,3 +846,23 @@ transform = Transform3D(1.1984262, 0, 2.446329e-15, 0, 1, 0, 0, 0, 0.87282, -2.0
 mesh = SubResource("QuadMesh_sjmx8")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_3osw7")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="Texts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8939166, -0.20765734, -10.129029)
+mesh = SubResource("QuadMesh_06sur")
+surface_material_override/0 = SubResource("StandardMaterial3D_0fuup")
+
+[node name="MeshInstance3D18" type="MeshInstance3D" parent="Texts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22262001, 4.5060315, -83.261856)
+mesh = SubResource("QuadMesh_06sur")
+surface_material_override/0 = SubResource("StandardMaterial3D_8k24k")
+
+[node name="MeshInstance3D20" type="MeshInstance3D" parent="Texts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0899664, 4.5129666, -143.325)
+mesh = SubResource("QuadMesh_06sur")
+surface_material_override/0 = SubResource("StandardMaterial3D_hjqtg")
+
+[node name="MeshInstance3D19" type="MeshInstance3D" parent="Texts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16053581, 57.996857, -255.13313)
+mesh = SubResource("QuadMesh_06sur")
+surface_material_override/0 = SubResource("StandardMaterial3D_ubk38")
