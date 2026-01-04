@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://hogl3kclkqle"]
 
-[ext_resource type="Script" path="res://entites/NPC/NPC.gd" id="1_d8kie"]
+[ext_resource type="Script" uid="uid://byvxvpoj7pypo" path="res://entites/NPC/NPC.gd" id="1_d8kie"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_bu2eg"]
 radius = 0.1
@@ -16,16 +16,20 @@ radius = 2.5
 [node name="NPC" type="CharacterBody3D"]
 collision_layer = 16
 collision_mask = 3
+floor_max_angle = 0.43633232
 script = ExtResource("1_d8kie")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="Body" type="Node3D" parent="."]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Body"]
 transform = Transform3D(1.91068e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, -0.0772048, 1, 0.0770821)
 mesh = SubResource("CapsuleMesh_bu2eg")
 skeleton = NodePath("../MeshInstance3D")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_ucjl4")
+skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -35,7 +39,7 @@ shape = SubResource("CapsuleShape3D_lck53")
 one_shot = true
 
 [node name="TimerDirection" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 4.0
 autostart = true
 
 [node name="Area3D" type="Area3D" parent="."]
@@ -45,6 +49,80 @@ collision_mask = 2
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("CylinderShape3D_qjfmg")
+
+[node name="RayCasts" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.933238, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="RayCasts"]
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D2" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D3" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(0.49999997, 0, 0.86602545, 0, 1, 0, -0.86602545, 0, 0.49999997, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D4" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D5" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(-0.50000006, 0, 0.8660254, 0, 1, 0, -0.8660254, 0, -0.50000006, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D6" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(-0.8660254, 0, 0.50000006, 0, 1, 0, -0.50000006, 0, -0.8660254, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D7" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D8" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(-0.8660254, 0, -0.49999997, 0, 1, 0, 0.49999997, 0, -0.8660254, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D9" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(-0.4999999, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, -0.4999999, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D10" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D11" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(0.4999999, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.4999999, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
+
+[node name="RayCast3D12" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(0.8660253, 0, -0.5000002, 0, 1, 0, 0.5000002, 0, 0.8660253, 0, 0, 0)
+enabled = false
+target_position = Vector3(0, 0, 3)
+collision_mask = 3
 
 [connection signal="timeout" from="TimerScared" to="." method="_on_timer_scared_timeout"]
 [connection signal="timeout" from="TimerDirection" to="." method="set_direction"]

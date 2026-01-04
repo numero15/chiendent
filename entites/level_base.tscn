@@ -189,7 +189,7 @@ shadow_blur = 0.0
 [node name="test_02" parent="LevelContainer" instance=ExtResource("3_nybf2")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("screen_lines", "distortion") instance=ExtResource("4_0ha35")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.24004, 0.51757956, -11.941729)
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0.00033161257, 0, -0.00033161257, 0.99999994, -13.088875, 1.1018791, -27.413876)
 screen_lines = NodePath("../SpeedLines")
 distortion = NodePath("../Distortion")
 
@@ -202,13 +202,13 @@ bones/5/rotation = Quaternion(-0.23313513, 0.30248883, -0.076567896, 0.9210243)
 bones/6/rotation = Quaternion(0.07860404, 0.28265774, -0.18909314, 0.93710715)
 
 [node name="Trail" parent="Player/head" index="8"]
-transform = Transform3D(-1, 6.88589e-07, 2.2014544e-06, 6.4757664e-08, 0.9624063, -0.27161348, -2.3057246e-06, -0.27161348, -0.9624062, 0, 1.3403475, -0.01802063)
+transform = Transform3D(-1, 6.88589e-07, 2.2014544e-06, 6.475766e-08, 0.9624063, -0.27161345, -2.3057244e-06, -0.27161345, -0.9624062, 0, 1.3403475, -0.01802063)
 
 [node name="BoneAttachmentFoot" parent="Player/head" index="10"]
-transform = Transform3D(-0.9947841, 0.052174915, 0.08764082, -0.10199509, -0.5088954, -0.8547639, 1.4268508e-06, -0.8592452, 0.5115621, 0.22231293, 0.21793115, 0.026438713)
+transform = Transform3D(-0.9947841, 0.052174915, 0.08764082, -0.10199509, -0.5088953, -0.8547639, 1.4268517e-06, -0.8592452, 0.511562, 0.22231388, 0.21793115, 0.02643776)
 
 [node name="BoneAttachmentFoot2" parent="Player/head" index="11"]
-transform = Transform3D(-0.99478483, -0.052171048, -0.08764271, 0.101995274, -0.50889635, -0.8547636, -7.1115164e-06, -0.8592448, 0.51156354, -0.22231293, 0.2179308, 0.02643776)
+transform = Transform3D(-0.99478483, -0.052171048, -0.08764271, 0.101995274, -0.50889623, -0.8547636, -7.1115173e-06, -0.8592448, 0.5115635, -0.22231388, 0.2179308, 0.026435852)
 
 [node name="Camera3D" parent="Player" index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5339603, 0)
@@ -276,7 +276,52 @@ script = ExtResource("12_a886i")
 origin_node = NodePath("../Player")
 
 [node name="NPC" parent="." instance=ExtResource("12_q5br5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.35695, -4.49863)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.067768, 0.0031363964, -38.3229)
+
+[node name="NPC2" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.370968, 0.0031363964, -39.484493)
+
+[node name="NPC3" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.702974, 0.0031363964, -34.318085)
+
+[node name="NPC4" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.879765, 0.0031363964, -45.433567)
+
+[node name="NPC5" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.81486, 0.0031363964, -42.536457)
+
+[node name="NPC6" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.822386, 0.0031363964, -43.05712)
+
+[node name="NPC7" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.19944, 0.0031363964, -36.89749)
+
+[node name="NPC8" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.84751, 0.0031363964, -39.270348)
+
+[node name="NPC9" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.103104, 0.0031359196, -34.546486)
+
+[node name="NPC10" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.586147, 0.0031359196, -30.725739)
+
+[node name="NPC11" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.177872, 0.0031363964, -33.745247)
+
+[node name="NPC12" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.091198, 0.0031363964, -38.86763)
+
+[node name="NPC13" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.23522, 0.0031363964, -46.37493)
+
+[node name="NPC14" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.393068, 0.0031363964, -44.24153)
+
+[node name="NPC15" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.944538, 0.0031363964, -54.18769)
+
+[node name="NPC16" parent="." instance=ExtResource("12_q5br5")]
+transform = Transform3D(0.9982841, 0, 0.058557168, 0, 1, 0, -0.058557168, 0, 0.9982841, -31.354094, 0.0031363964, -47.3672)
 
 [node name="Camera3DTop" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0)

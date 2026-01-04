@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dummg55fgtm7q"]
+[gd_scene load_steps=12 format=3 uid="uid://dummg55fgtm7q"]
 
 [ext_resource type="Script" uid="uid://c00j3ub66supe" path="res://entites/movables/car.gd" id="1_6r0x2"]
 [ext_resource type="ArrayMesh" uid="uid://cq5gatbv5kg33" path="res://assets/vehicles/truck_01.obj" id="2_ecxqk"]
@@ -22,10 +22,7 @@ albedo_texture = ExtResource("4_ecxqk")
 albedo_texture = ExtResource("4_ecxqk")
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_sbixc"]
-points = PackedVector3Array(0.75499105, 2.2707, -0.65499544, -0.9323198, 1.1057955, -2.3378, -0.9079559, 1.1214565, -0.6184, 0.935, 1.1113913, -2.3297164, -0.72901815, 2.25976, -1.5891162, 0.91934156, 1.1214565, -0.6184, 0.8418097, 2.1266258, -1.8150839, -0.7436054, 2.2707, -0.65499544, -0.96984047, 1.499804, -2.302946, 0.98122615, 1.499804, -2.302946, 0.74040383, 2.25976, -1.5891162, -0.83074033, 2.0302265, -0.6303297, -0.830424, 2.1266258, -1.8150839, 0.8399858, 1.9652946, -0.63247, 0.98122615, 1.3604695, -2.3726406, -0.96984047, 1.3604695, -2.3726406, -0.8948292, 1.5801238, -0.63058907, 0.9039077, 1.5163641, -0.6327314, -0.96984047, 1.56941, -2.2330742)
-
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_qp37l"]
-points = PackedVector3Array(-0.935, 1.061646, -2.2930052, 0.9001785, 0.97129995, 1.9016889, 0.9082777, 0.008344385, 1.9202014, 0.935, 1.0551398, -2.266981, -0.9012282, 0.0058665457, -2.2158127, -0.896892, 0.008344385, 1.9202014, 0.91261387, 0.0058665457, -2.2158127, -0.8887928, 0.97129995, 1.9016889)
+points = PackedVector3Array(-0.935024, 0.00145, -0.6186631, -0.935024, 0.0060070925, -2.0790257, -5.9604645e-08, 0.0060070925, -2.563473, 0.9350239, 0.00145, -0.6186631, -5.9604645e-08, 0.00864541, 2.2182786, -0.935024, 0.00864541, 2.0516474, -0.935024, 1.297823, -2.0790257, -5.9604645e-08, 1.297823, -2.563473, 0.9350239, 0.0060070925, -2.0790257, 0.9350239, 0.00864541, 2.0516474, -5.9604645e-08, 1.2517723, 2.2182786, -0.935024, 0.64783764, 2.0516474, -0.68076634, 2.0351126, -1.5810046, -5.9604645e-08, 2.423185, -1.6872554, -0.935024, 1.440532, -0.21799946, 0.9350239, 1.297823, -2.0790257, 0.9350239, 0.64783764, 2.0516474, -5.9604645e-08, 2.451727, -0.39680028, -0.68076634, 1.8509101, -0.6186631, 0.68058324, 2.0351126, -1.5810046, 0.9350239, 1.440532, -0.21799946, 0.68058324, 1.8509101, -0.6186631)
 
 [node name="PathFollow3D" type="PathFollow3D"]
 script = ExtResource("1_6r0x2")
@@ -45,11 +42,8 @@ surface_material_override/5 = SubResource("StandardMaterial3D_m5gs2")
 visible = false
 mesh = ExtResource("5_sbixc")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="Car"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Car"]
 shape = SubResource("ConvexPolygonShape3D_sbixc")
-
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Car"]
-shape = SubResource("ConvexPolygonShape3D_qp37l")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="."]
 remote_path = NodePath("../Car")

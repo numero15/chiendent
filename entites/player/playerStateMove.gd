@@ -33,7 +33,9 @@ func _physics_process(delta):
 		var collision = owner.get_slide_collision(i)
 		if collision.get_collider().is_in_group("pushers"):
 			owner.timerFootstep.stop()
+			owner.SFXDrift.stop()
 			change_state.emit($"../KnockBack",{new_dir = collision.get_normal()})
+			return
 	
 
 	if owner.velocity.length()>1 and owner.timerFootstep.is_stopped() :
@@ -114,6 +116,7 @@ func _physics_process(delta):
 			
 	if not owner.is_on_floor():
 		owner.timerFootstep.stop()
+		owner.SFXDrift.stop()
 		change_state.emit($"../Air")
 	
 
