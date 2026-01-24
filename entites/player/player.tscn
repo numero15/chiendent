@@ -1,4 +1,4 @@
-[gd_scene load_steps=181 format=3 uid="uid://bpogwtwx10igk"]
+[gd_scene load_steps=190 format=3 uid="uid://bpogwtwx10igk"]
 
 [ext_resource type="Script" uid="uid://bigt8bjqwdi56" path="res://entites/player/player.gd" id="1_gujcv"]
 [ext_resource type="Script" uid="uid://c8l7m4g48olno" path="res://scripts/StateMachine.gd" id="2_lbal6"]
@@ -30,10 +30,13 @@
 [ext_resource type="AudioStream" uid="uid://b2nmanoq03fkh" path="res://assets/audio/SWSH_Bamboo_03.wav" id="19_b5v4d"]
 [ext_resource type="AudioStream" uid="uid://dqqyldlsm4uiv" path="res://assets/audio/voices/confirmation_9_meghan.wav" id="19_kq0f7"]
 [ext_resource type="AudioStream" uid="uid://dgwhut3eylyh6" path="res://assets/audio/boom-2-208745_[cut_1sec].mp3" id="20_82rjj"]
+[ext_resource type="Shader" uid="uid://bhyd0v4x5sqsh" path="res://assets/shaders/color_mapping.gdshader" id="20_cycbf"]
 [ext_resource type="AudioStream" uid="uid://bi7pp16dsodws" path="res://assets/audio/SWSH_Bamboo_04.wav" id="20_ij0cs"]
 [ext_resource type="AudioStream" uid="uid://elm4kcyw1tl7" path="res://assets/audio/voices/greeting_3_meghan.wav" id="20_lct7d"]
 [ext_resource type="AudioStream" uid="uid://w6modnv5h634" path="res://assets/audio/voices/greeting_9_meghan.wav" id="21_1r7or"]
 [ext_resource type="AudioStream" uid="uid://du4jofffkxamn" path="res://assets/audio/SWSH_Bamboo_05.wav" id="21_58mms"]
+[ext_resource type="Gradient" uid="uid://dy8j37yvxp1wi" path="res://assets/gradients/gradient_blue_yellow_far.tres" id="21_em7h0"]
+[ext_resource type="Gradient" uid="uid://mvs48lsljtyh" path="res://assets/gradients/gradient_blue_yellow_near.tres" id="22_70irh"]
 [ext_resource type="AudioStream" uid="uid://dnnkxvcj4far6" path="res://assets/audio/voices/miscellaneous_3_meghan.wav" id="22_om1yi"]
 [ext_resource type="AudioStream" uid="uid://beixoslopkbfc" path="res://assets/audio/voices/miscellaneous_4_meghan.wav" id="23_obqhy"]
 [ext_resource type="AudioStream" uid="uid://d2nvt6qf0dyi1" path="res://assets/audio/voices/miscellaneous_10_meghan.wav" id="24_uuxb6"]
@@ -402,6 +405,31 @@ shader_parameter/gradient_cutoff = SubResource("GradientTexture1D_xqewx")
 shader_parameter/fog_intensity = 0.533
 shader_parameter/fog_amount = 0.005
 shader_parameter/depth_limit = 500.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_kfc6m"]
+flip_faces = true
+size = Vector3(2, 2, 2)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_70irh"]
+gradient = ExtResource("21_em7h0")
+
+[sub_resource type="Curve" id="Curve_prenc"]
+_data = [Vector2(0.24199289, 0), 0.0, -0.0012638745, 0, 0, Vector2(1, 1), 0.8879142, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8bykw"]
+curve = SubResource("Curve_prenc")
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dphrr"]
+gradient = ExtResource("22_70irh")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_egofg"]
+render_priority = 0
+shader = ExtResource("20_cycbf")
+shader_parameter/gradient_mix = SubResource("CurveTexture_8bykw")
+shader_parameter/gradient_near = SubResource("GradientTexture1D_dphrr")
+shader_parameter/gradient_far = SubResource("GradientTexture1D_70irh")
+shader_parameter/fog_length = 0.010000000475
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_agdtd"]
 radius = 1.5
@@ -1073,6 +1101,10 @@ surface_material_override/0 = SubResource("ShaderMaterial_i86so")
 visible = false
 mesh = SubResource("BoxMesh_44t01")
 surface_material_override/0 = SubResource("ShaderMaterial_t74sj")
+
+[node name="Outlines3" type="MeshInstance3D" parent="Camera3D"]
+mesh = SubResource("BoxMesh_kfc6m")
+surface_material_override/0 = SubResource("ShaderMaterial_egofg")
 
 [node name="ActionArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04155, 0)

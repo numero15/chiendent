@@ -26,7 +26,6 @@ points = PackedVector3Array(-0.935024, 0.00145, -0.6186631, -0.935024, 0.0060070
 
 [node name="PathFollow3D" type="PathFollow3D"]
 script = ExtResource("1_6r0x2")
-move_speed = 0.0
 
 [node name="Car" type="AnimatableBody3D" parent="." groups=["pushers"]]
 

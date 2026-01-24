@@ -16,7 +16,7 @@ func enter_state(_msg := {}) -> void:
 	owner.SFXHurt.play()
 	
 	
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	owner.avgNormal = lerp(owner.avgNormal,Vector3.UP,0.1)
 	owner.jumpVectors += owner.gravity
 	owner.curSpeed =lerp(owner.curSpeed,0.0,0.1)

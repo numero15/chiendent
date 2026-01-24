@@ -380,6 +380,7 @@ void fragment() {
 
 		// find saturation
 		//this part broke lights
+		//https://sot.com.sg/hsl/
 		float _sat = 0.0;
 		float _min;
 		_min = min(original.r, original.g);

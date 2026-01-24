@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+#in case of preformance issue try to replace move_and_slide by move_and_collide
+
 @export var speed_normal = 1.0
 @export var speed_scared = 10.0
 @onready var timer_scared : Timer = get_node("TimerScared")
@@ -35,11 +37,11 @@ func set_direction():
 	#weighed random
 	var random_float = rng.randf()
 	if random_float < 0.8:
-		new_dir = possible_dirs[rng.randi_range(0,int(possible_dirs.size()/4))]
+		new_dir = possible_dirs[rng.randi_range(0,int(possible_dirs.size()/4.0))]
 	elif random_float < 0.95:
-		new_dir = possible_dirs[rng.randi_range(int(possible_dirs.size()/4),int(possible_dirs.size()/4*2))]
+		new_dir = possible_dirs[rng.randi_range(int(possible_dirs.size()/4.0),int(possible_dirs.size()/4.0*2))]
 	else:
-		new_dir = possible_dirs[rng.randi_range(int(possible_dirs.size()/4*2),int(possible_dirs.size()/4*3))]
+		new_dir = possible_dirs[rng.randi_range(int(possible_dirs.size()/4.0*2.0),int(possible_dirs.size()/4.0*3))]
 	velocity = new_dir * speed
 	
 	
@@ -63,6 +65,7 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta	
+		
 	move_and_slide()
 	if is_on_wall():
 		set_dir_on_wall()
@@ -71,11 +74,11 @@ func _physics_process(delta: float) -> void:
 	var direction = velocity.normalized()
 	body.rotation.y = lerp(body.rotation.y, atan2(-direction.x, -direction.z),0.1)
 
-func player_body_entered(body: Node3D) -> void:
+func player_body_entered(_body: Node3D) -> void:
 	timer_direction.stop()
 	timer_scared.start()
 	speed = speed_scared
-	var _direction : Vector3 = self.global_transform.origin - body.global_transform.origin
+	var _direction : Vector3 = self.global_transform.origin - _body.global_transform.origin
 	_direction = _direction.normalized()
 	velocity = _direction * speed
 
